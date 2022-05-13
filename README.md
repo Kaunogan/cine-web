@@ -2,5 +2,5 @@
 #BDD shema : 
 
 <p align="center">
-  <img src="/srcReadme/cine-web-bdd.drawio (1).png" width="350" title="hover text">
+  <img src="https://github.com/Kaunogan/cine-web/blob/main/SrcReadme/cine-web-bdd.drawio%20(1).png" width="600" >
 </p>
