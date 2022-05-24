@@ -22,4 +22,10 @@ export default class AuthController {
       expiresIn: this.expiresIn,
     })
   }
+
+  public async logout({ auth }: HttpContextContract) {
+    await auth.use('api').revoke()
+
+    return { revoked: true }
+  }
 }
