@@ -23,7 +23,9 @@ import Route from '@ioc:Adonis/Core/Route'
 Route.group(() => {
   Route.group(() => {
     Route.resource('users', 'UsersController').apiOnly().except(['store'])
-  }).middleware('auth')
+  })
+    .middleware('auth')
+    .where('id', Route.matchers.number())
 
   Route.post('/register', 'AuthController.register')
   Route.post('/login', 'AuthController.login')
