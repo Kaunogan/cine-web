@@ -4,18 +4,18 @@ import AddUserFriendValidator from 'App/Validators/AddUserFriendValidator'
 
 export default class FriendsController {
   public async index({ bouncer, request }: HttpContextContract) {
-    const id = request.param('user_id')
+    const userId = request.param('user_id')
     const page = request.input('page', 1)
     const limit = request.input('limit', 12)
 
-    await bouncer.with('UserPolicy').authorize('view', id)
+    await bouncer.with('UserPolicy').authorize('view', userId)
 
-    const user = await User.findOrFail(id)
+    const user = await User.findOrFail(userId)
 
     return user
       .related('friends')
       .query()
-      .wherePivot('user_id', id)
+      .wherePivot('user_id', userId)
       .select(['id', 'email', 'pseudo'])
       .paginate(page, limit)
   }
@@ -46,15 +46,15 @@ export default class FriendsController {
   }
 
   public async store({ bouncer, request, response }: HttpContextContract) {
-    const id = request.param('user_id')
-    const { friend } = await request.validate(AddUserFriendValidator)
-    const userFriend = await User.findOrFail(friend)
+    const userId = request.param('user_id')
+    const { friend_email: friendEmail } = await request.validate(AddUserFriendValidator)
 
-    await bouncer.with('UserPolicy').authorize('view', id)
+    await bouncer.with('UserPolicy').authorize('view', userId)
 
-    const user = await User.findOrFail(id)
+    const user = await User.findOrFail(userId)
+    const userFriend = await User.findByOrFail('email', friendEmail)
 
-    if (id === userFriend.id) {
+    if (userId === userFriend.id) {
       return response.status(400).send({
         message: 'Friend cannot be the same as the user',
       })
@@ -63,11 +63,12 @@ export default class FriendsController {
     const friendAlreadyExist = await user
       .related('friends')
       .query()
-      .wherePivot('user_id', id)
-      .where('friend', userFriend.id)
+      .wherePivot('user_id', userId)
+      .andWherePivot('friend', userFriend.id)
+      .first()
 
-    if (friendAlreadyExist?.length === 1) {
-      return response.status(400).send({
+    if (friendAlreadyExist !== null) {
+      return response.status(409).send({
         message: 'Friend already exist',
       })
     }
