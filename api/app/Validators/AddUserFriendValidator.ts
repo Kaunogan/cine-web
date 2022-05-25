@@ -24,7 +24,10 @@ export default class AddUserFriendValidator {
    *    ```
    */
   public schema = schema.create({
-    friend: schema.number([rules.exists({ table: 'users', column: 'id' })]),
+    friend_email: schema.string({}, [
+      rules.email(),
+      rules.exists({ table: 'users', column: 'email' }),
+    ]),
   })
 
   /**
@@ -39,6 +42,9 @@ export default class AddUserFriendValidator {
    *
    */
   public messages: CustomMessages = {
+    required: 'The {{ field }} is required',
     exists: '{{ field }} not found',
+    string: 'The {{ field }} must be a string',
+    email: 'The {{ field }} must be in an email format',
   }
 }

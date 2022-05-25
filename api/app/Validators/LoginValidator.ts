@@ -42,6 +42,8 @@ export default class LoginValidator {
   public messages: CustomMessages = {
     'required': 'The {{ field }} is required',
     'exists': '{{ field }} does not exist',
+    'string': 'The {{ field }} must be a string',
+    'email': 'The {{ field }} must be in an email format',
     'password.minLength': '{{ field }} must have minimum of {{ options.minLength }} characters',
     'password.maxLength': '{{ field }} must have maximum of {{ options.maxLength }} characters',
   }

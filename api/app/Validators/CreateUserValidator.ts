@@ -43,6 +43,8 @@ export default class CreateUserValidator {
   public messages: CustomMessages = {
     'required': 'The {{ field }} is required',
     'unique': '{{ field }} is already used',
+    'string': 'The {{ field }} must be a string',
+    'email': 'The {{ field }} must be in an email format',
     'pseudo.minLength': '{{ field }} must have minimum of {{ options.minLength }} characters',
     'pseudo.maxLength': '{{ field }} must have maximum of {{ options.maxLength }} characters',
     'password.minLength': '{{ field }} must have minimum of {{ options.minLength }} characters',
