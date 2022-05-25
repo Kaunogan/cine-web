@@ -5,7 +5,7 @@ import UsersController from 'App/Controllers/Http/UsersController'
 export default class AuthController {
   private expiresIn = '30mins'
 
-  public async register({ request, auth }: HttpContextContract) {
+  public async register({ auth, request }: HttpContextContract) {
     const userController = new UsersController()
 
     const { email, password } = await userController.store(request)
