@@ -1,7 +1,7 @@
 import { schema, CustomMessages, rules } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class CreateUserValidator {
+export default class AddUserFriendValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   /*
@@ -24,9 +24,7 @@ export default class CreateUserValidator {
    *    ```
    */
   public schema = schema.create({
-    email: schema.string({}, [rules.email(), rules.unique({ table: 'users', column: 'email' })]),
-    pseudo: schema.string({}, [rules.minLength(3), rules.maxLength(15)]),
-    password: schema.string({}, [rules.minLength(5), rules.maxLength(30)]),
+    friend: schema.number([rules.exists({ table: 'users', column: 'id' })]),
   })
 
   /**
@@ -38,14 +36,9 @@ export default class CreateUserValidator {
    *   'profile.username.required': 'Username is required',
    *   'scores.*.number': 'Define scores as valid numbers'
    * }
-   *s
+   *
    */
   public messages: CustomMessages = {
-    'required': 'The {{ field }} is required',
-    'unique': '{{ field }} is already used',
-    'pseudo.minLength': '{{ field }} must have minimum of {{ options.minLength }} characters',
-    'pseudo.maxLength': '{{ field }} must have maximum of {{ options.maxLength }} characters',
-    'password.minLength': '{{ field }} must have minimum of {{ options.minLength }} characters',
-    'password.maxLength': '{{ field }} must have maximum of {{ options.maxLength }} characters',
+    exists: '{{ field }} not found',
   }
 }
