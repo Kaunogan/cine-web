@@ -2,23 +2,13 @@ import User from 'App/Models/User'
 import CreateUserValidator from 'App/Validators/CreateUserValidator'
 import { RequestContract } from '@ioc:Adonis/Core/Request'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import UnAuthorizedException from 'App/Exceptions/UnAuthorizedException'
 import UpdateUserValidator from 'App/Validators/UpdateUserValidator'
 
 export default class UsersController {
-  // Check if user has authorization
-  protected checkIfUserIsAuthorized(id: number, connectedUserId?: number): void {
-    if (id === connectedUserId) return
-    throw new UnAuthorizedException('You are not authorized', 403, 'E_UNAUTHORIZED')
-  }
-
-  // Crud methods
-  public async index() {
-    return User.all()
-  }
-
-  public show({ request }: HttpContextContract) {
+  public async show({ request, bouncer }: HttpContextContract) {
     const id = request.param('id')
+
+    await bouncer.with('UserPolicy').authorize('view', id)
 
     return User.findOrFail(id)
   }
@@ -29,25 +19,22 @@ export default class UsersController {
     return payload
   }
 
-  public async update({ auth, request }: HttpContextContract) {
+  public async update({ request, bouncer }: HttpContextContract) {
     const id = request.param('id')
-    const connectedUserId = auth.user?.id
     const payload = await request.validate(UpdateUserValidator)
 
-    this.checkIfUserIsAuthorized(id, connectedUserId)
+    await bouncer.with('UserPolicy').authorize('view', id)
 
     const user = await User.findOrFail(id)
-
     await user.merge(payload).save()
 
     return user
   }
 
-  public async destroy({ auth, request }: HttpContextContract) {
+  public async destroy({ auth, request, bouncer }: HttpContextContract) {
     const id = request.param('id')
-    const connectedUserId = auth.user?.id
 
-    this.checkIfUserIsAuthorized(id, connectedUserId)
+    await bouncer.with('UserPolicy').authorize('view', id)
 
     const user = await User.findOrFail(id)
 

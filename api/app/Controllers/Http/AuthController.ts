@@ -10,22 +10,33 @@ export default class AuthController {
 
     const { email, password } = await userController.store(request)
 
-    return auth.use('api').attempt(email, password, {
+    const { token, expiresAt, user } = await auth.use('api').attempt(email, password, {
       expiresIn: this.expiresIn,
     })
+
+    return {
+      token,
+      userId: user.id,
+      expiresAt,
+    }
   }
 
   public async login({ auth, request }: HttpContextContract) {
     const { email, password } = await request.validate(LoginValidator)
 
-    return auth.use('api').attempt(email, password, {
+    const { token, expiresAt, user } = await auth.use('api').attempt(email, password, {
       expiresIn: this.expiresIn,
     })
+
+    return {
+      token,
+      userId: user.id,
+      expiresAt,
+    }
   }
 
   public async logout({ auth }: HttpContextContract) {
     await auth.use('api').revoke()
-
     return { revoked: true }
   }
 }

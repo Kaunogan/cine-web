@@ -22,12 +22,12 @@ import Route from '@ioc:Adonis/Core/Route'
 
 Route.group(() => {
   Route.group(() => {
-    Route.resource('users', 'UsersController').apiOnly().except(['store'])
+    Route.resource('users', 'UsersController').apiOnly().except(['index', 'store'])
     Route.post('/logout', 'AuthController.logout')
-  })
-    .middleware('auth')
-    .where('id', Route.matchers.number())
+  }).middleware('auth')
 
   Route.post('/register', 'AuthController.register')
   Route.post('/login', 'AuthController.login')
-}).prefix('/api')
+})
+  .prefix('/api')
+  .where('id', Route.matchers.number())
