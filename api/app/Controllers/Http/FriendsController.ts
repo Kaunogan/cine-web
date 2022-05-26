@@ -22,27 +22,27 @@ export default class FriendsController {
 
   public async show({ bouncer, request, response }: HttpContextContract) {
     const userId = request.param('user_id')
-    let friendId = request.param('id')
+    let friendNumber = request.param('id')
 
-    friendId = friendId === 0 ? 0 : friendId - 1
+    friendNumber = friendNumber === 0 ? 0 : friendNumber - 1
 
     await bouncer.with('UserPolicy').authorize('view', userId)
 
     const user = await User.findOrFail(userId)
 
-    const userFriend = await user
+    const userFriends = await user
       .related('friends')
       .query()
       .wherePivot('user_id', userId)
       .select(['id', 'email', 'pseudo'])
 
-    if (friendId >= userFriend.length) {
+    if (friendNumber >= userFriends.length) {
       return response.status(404).send({
         message: 'Friend not found',
       })
     }
 
-    return userFriend[friendId]
+    return userFriends[friendNumber]
   }
 
   public async store({ bouncer, request, response }: HttpContextContract) {
@@ -54,20 +54,20 @@ export default class FriendsController {
     const user = await User.findOrFail(userId)
     const userFriend = await User.findByOrFail('email', friendEmail)
 
-    if (userId === userFriend.id) {
-      return response.status(400).send({
+    if (user.id === userFriend.id) {
+      return response.status(409).send({
         message: 'Friend cannot be the same as the user',
       })
     }
 
-    const friendAlreadyExist = await user
+    const existingFriend = await user
       .related('friends')
       .query()
-      .wherePivot('user_id', userId)
+      .wherePivot('user_id', user.id)
       .andWherePivot('friend', userFriend.id)
       .first()
 
-    if (friendAlreadyExist !== null) {
+    if (existingFriend !== null) {
       return response.status(409).send({
         message: 'Friend already exist',
       })

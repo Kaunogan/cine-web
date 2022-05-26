@@ -18,6 +18,10 @@ export default class User extends BaseModel {
   @manyToMany(() => User, {
     pivotRelatedForeignKey: 'friend',
     pivotTable: 'user_friend',
+    pivotTimestamps: {
+      createdAt: 'created_at',
+      updatedAt: false,
+    },
   })
   public friends: ManyToMany<typeof User>
 
