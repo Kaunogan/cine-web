@@ -79,4 +79,35 @@ export default class FriendsController {
       message: 'ok',
     }
   }
+
+  public async destroy({ bouncer, request, response }: HttpContextContract) {
+    const userId = request.param('user_id')
+    let friendNumber = request.param('id')
+
+    friendNumber = friendNumber === 0 ? 0 : friendNumber - 1
+
+    await bouncer.with('UserPolicy').authorize('view', userId)
+
+    const user = await User.findOrFail(userId)
+
+    const userFriends = await user
+      .related('friends')
+      .query()
+      .wherePivot('user_id', userId)
+      .select(['id', 'email', 'pseudo'])
+
+    if (friendNumber >= userFriends.length) {
+      return response.status(404).send({
+        message: 'Friend not found',
+      })
+    }
+
+    const userFriend = userFriends[friendNumber]
+
+    await user.related('friends').detach([userFriend.id])
+
+    return {
+      delete: 'ok',
+    }
+  }
 }
