@@ -23,6 +23,7 @@ import Route from '@ioc:Adonis/Core/Route'
 Route.group(() => {
   Route.group(() => {
     Route.resource('users', 'UsersController').apiOnly().except(['index', 'store'])
+    Route.resource('users.friends', 'FriendsController').apiOnly().except(['update'])
     Route.post('/logout', 'AuthController.logout')
   }).middleware('auth')
 
@@ -31,3 +32,4 @@ Route.group(() => {
 })
   .prefix('/api')
   .where('id', Route.matchers.number())
+  .where('user_id', Route.matchers.number())

@@ -31,14 +31,13 @@ export default class UsersController {
     return user
   }
 
-  public async destroy({ auth, request, bouncer }: HttpContextContract) {
+  public async destroy({ request, bouncer }: HttpContextContract) {
     const id = request.param('id')
 
     await bouncer.with('UserPolicy').authorize('view', id)
 
     const user = await User.findOrFail(id)
 
-    await auth.use('api').revoke()
     await user.delete()
 
     return { deleted: true }

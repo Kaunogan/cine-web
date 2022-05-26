@@ -1,7 +1,7 @@
 import { schema, CustomMessages, rules } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class LoginValidator {
+export default class AddUserFriendValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   /*
@@ -24,8 +24,10 @@ export default class LoginValidator {
    *    ```
    */
   public schema = schema.create({
-    email: schema.string({}, [rules.email(), rules.exists({ table: 'users', column: 'email' })]),
-    password: schema.string({}, [rules.minLength(5), rules.maxLength(30)]),
+    friend_email: schema.string({}, [
+      rules.email(),
+      rules.exists({ table: 'users', column: 'email' }),
+    ]),
   })
 
   /**
@@ -40,11 +42,9 @@ export default class LoginValidator {
    *
    */
   public messages: CustomMessages = {
-    'required': 'The {{ field }} is required',
-    'exists': '{{ field }} does not exist',
-    'string': 'The {{ field }} must be a string',
-    'email': 'The {{ field }} must be in an email format',
-    'password.minLength': '{{ field }} must have minimum of {{ options.minLength }} characters',
-    'password.maxLength': '{{ field }} must have maximum of {{ options.maxLength }} characters',
+    required: 'The {{ field }} is required',
+    exists: '{{ field }} not found',
+    string: 'The {{ field }} must be a string',
+    email: 'The {{ field }} must be in an email format',
   }
 }

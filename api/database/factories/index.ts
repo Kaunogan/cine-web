@@ -7,6 +7,8 @@ const UserFactory = Factory.define(User, ({ faker }) => ({
   email: faker.internet.email(),
   pseudo: faker.internet.userName(),
   password: 'cineweb',
-})).build()
+}))
+  .relation('friends', () => UserFactory)
+  .build()
 
 export default UserFactory
