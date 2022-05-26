@@ -24,6 +24,7 @@ Route.group(() => {
   Route.group(() => {
     Route.resource('users', 'UsersController').apiOnly().except(['index', 'store'])
     Route.resource('users.friends', 'UserFriendsController').apiOnly().except(['update'])
+    Route.resource('users.categories', 'CategoriesController').apiOnly()
     Route.post('/logout', 'AuthController.logout')
   }).middleware('auth')
 

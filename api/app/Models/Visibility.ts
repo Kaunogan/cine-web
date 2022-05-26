@@ -9,5 +9,5 @@ export default class Visibility extends BaseModel {
   public type: string
 
   @hasMany(() => Category)
-  public category: HasMany<typeof Category>
+  public categories: HasMany<typeof Category>
 }

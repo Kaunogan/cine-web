@@ -12,29 +12,26 @@ export default class UserFriendsController {
 
     const user = await User.findOrFail(userId)
 
-    return user
-      .related('friends')
-      .query()
-      .wherePivot('user_id', userId)
-      .select(['id', 'email', 'pseudo'])
-      .paginate(page, limit)
+    return user.related('friends').query().select(['id', 'email', 'pseudo']).paginate(page, limit)
   }
 
   public async show({ bouncer, request, response }: HttpContextContract) {
     const userId = request.param('user_id')
     let friendNumber = request.param('id')
 
-    friendNumber = friendNumber === 0 ? 0 : friendNumber - 1
+    if (friendNumber === 0) {
+      return response.status(400).send({
+        message: 'Bad friend id',
+      })
+    }
+
+    friendNumber -= 1
 
     await bouncer.with('UserPolicy').authorize('view', userId)
 
     const user = await User.findOrFail(userId)
 
-    const userFriends = await user
-      .related('friends')
-      .query()
-      .wherePivot('user_id', userId)
-      .select(['id', 'email', 'pseudo'])
+    const userFriends = await user.related('friends').query().select(['id', 'email', 'pseudo'])
 
     if (friendNumber >= userFriends.length) {
       return response.status(404).send({
@@ -63,8 +60,7 @@ export default class UserFriendsController {
     const existingFriend = await user
       .related('friends')
       .query()
-      .wherePivot('user_id', user.id)
-      .andWherePivot('friend', userFriend.id)
+      .wherePivot('friend', userFriend.id)
       .first()
 
     if (existingFriend !== null) {
@@ -84,17 +80,19 @@ export default class UserFriendsController {
     const userId = request.param('user_id')
     let friendNumber = request.param('id')
 
-    friendNumber = friendNumber === 0 ? 0 : friendNumber - 1
+    if (friendNumber === 0) {
+      return response.status(400).send({
+        message: 'Bad friend id',
+      })
+    }
+
+    friendNumber -= 1
 
     await bouncer.with('UserPolicy').authorize('view', userId)
 
     const user = await User.findOrFail(userId)
 
-    const userFriends = await user
-      .related('friends')
-      .query()
-      .wherePivot('user_id', userId)
-      .select(['id', 'email', 'pseudo'])
+    const userFriends = await user.related('friends').query().select(['id', 'email', 'pseudo'])
 
     if (friendNumber >= userFriends.length) {
       return response.status(404).send({

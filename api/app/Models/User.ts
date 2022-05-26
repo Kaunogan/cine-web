@@ -35,7 +35,7 @@ export default class User extends BaseModel {
   public friends: ManyToMany<typeof User>
 
   @hasMany(() => Category)
-  public category: HasMany<typeof Category>
+  public categories: HasMany<typeof Category>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
