@@ -1,6 +1,15 @@
 import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
-import { column, beforeSave, BaseModel, manyToMany, ManyToMany } from '@ioc:Adonis/Lucid/Orm'
+import {
+  column,
+  beforeSave,
+  BaseModel,
+  manyToMany,
+  ManyToMany,
+  hasMany,
+  HasMany,
+} from '@ioc:Adonis/Lucid/Orm'
+import Category from 'App/Models/Category'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -24,6 +33,9 @@ export default class User extends BaseModel {
     },
   })
   public friends: ManyToMany<typeof User>
+
+  @hasMany(() => Category)
+  public category: HasMany<typeof Category>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
