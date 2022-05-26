@@ -2,7 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 import AddUserFriendValidator from 'App/Validators/AddUserFriendValidator'
 
-export default class FriendsController {
+export default class UserFriendsController {
   public async index({ bouncer, request }: HttpContextContract) {
     const userId = request.param('user_id')
     const page = request.input('page', 1)
