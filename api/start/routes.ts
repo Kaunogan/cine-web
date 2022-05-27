@@ -24,7 +24,10 @@ Route.group(() => {
   Route.group(() => {
     Route.resource('users', 'UsersController').apiOnly().except(['index', 'store'])
     Route.resource('users.friends', 'UserFriendsController').apiOnly().except(['update'])
-    Route.resource('users.categories', 'CategoriesController').apiOnly()
+    Route.resource('users.categories', 'UserCategoriesController').apiOnly()
+    Route.resource('users.categories.films', 'UserCategoryFilmsController')
+      .apiOnly()
+      .only(['store', 'destroy'])
     Route.post('/logout', 'AuthController.logout')
   }).middleware('auth')
 
@@ -34,3 +37,4 @@ Route.group(() => {
   .prefix('/api')
   .where('id', Route.matchers.number())
   .where('user_id', Route.matchers.number())
+  .where('category_id', Route.matchers.number())

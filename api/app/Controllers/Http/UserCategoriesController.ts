@@ -5,7 +5,7 @@ import Category from 'App/Models/Category'
 import Visibility from 'App/Models/Visibility'
 import UpdateCategoryValidator from 'App/Validators/UpdateCategoryValidator'
 
-export default class CategoriesController {
+export default class UserCategoriesController {
   public async index({ bouncer, request }: HttpContextContract) {
     const userId = request.param('user_id')
     const page = request.input('page', 1)
