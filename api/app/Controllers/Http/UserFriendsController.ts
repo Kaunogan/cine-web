@@ -82,7 +82,7 @@ export default class UserFriendsController {
     await user.related('friends').detach([userFriend.id])
 
     return {
-      delete: 'ok',
+      delete: true,
     }
   }
 }

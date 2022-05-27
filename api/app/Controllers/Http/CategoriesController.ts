@@ -81,4 +81,21 @@ export default class CategoriesController {
 
     return category
   }
+
+  public async destroy({ bouncer, request }: HttpContextContract) {
+    const userId = request.param('user_id')
+    const categoryId = request.param('id')
+
+    await bouncer.with('UserPolicy').authorize('view', userId)
+
+    const user = await User.findOrFail(userId)
+
+    const category = await user.related('categories').query().where('id', categoryId).firstOrFail()
+
+    await category.delete()
+
+    return {
+      delete: true,
+    }
+  }
 }
