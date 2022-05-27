@@ -1,7 +1,15 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import {
+  BaseModel,
+  BelongsTo,
+  belongsTo,
+  column,
+  ManyToMany,
+  manyToMany,
+} from '@ioc:Adonis/Lucid/Orm'
 import Visibility from 'App/Models/Visibility'
 import User from 'App/Models/User'
+import Film from 'App/Models/Film'
 
 export default class Category extends BaseModel {
   @column({ isPrimary: true })
@@ -25,6 +33,15 @@ export default class Category extends BaseModel {
 
   @belongsTo(() => Visibility)
   public visibility: BelongsTo<typeof Visibility>
+
+  @manyToMany(() => Film, {
+    pivotTable: 'film_category',
+    pivotTimestamps: {
+      createdAt: 'created_at',
+      updatedAt: false,
+    },
+  })
+  public films: ManyToMany<typeof Film>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

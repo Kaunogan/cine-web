@@ -1,20 +1,19 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'categories'
+  protected tableName = 'film_category'
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
-      table.integer('user_id').unsigned().references('users.id').onDelete('CASCADE')
-      table.string('name', 255).notNullable()
-      table.integer('visibility_id').unsigned().references('visibilities.id')
+      table.integer('category_id').unsigned().references('categories.id')
+      table.integer('film_id').unsigned().references('films.id')
+      table.unique(['category_id', 'film_id'])
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
       table.timestamp('created_at', { useTz: true })
-      table.timestamp('updated_at', { useTz: true })
     })
   }
 
