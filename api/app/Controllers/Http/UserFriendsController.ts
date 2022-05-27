@@ -12,7 +12,7 @@ export default class UserFriendsController {
 
     const user = await User.findOrFail(userId)
 
-    return user.related('friends').query().select(['id', 'email', 'pseudo']).paginate(page, limit)
+    return user.related('friends').query().select(['id', 'pseudo']).paginate(page, limit)
   }
 
   public async show({ bouncer, request }: HttpContextContract) {
@@ -27,7 +27,7 @@ export default class UserFriendsController {
       .related('friends')
       .query()
       .wherePivot('friend', friendId)
-      .select(['id', 'email', 'pseudo'])
+      .select(['id', 'pseudo'])
       .firstOrFail()
   }
 

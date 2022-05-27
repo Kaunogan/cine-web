@@ -78,7 +78,7 @@ export default class UserCategoriesController {
     }
 
     await category.save()
-    await category.preload('visibility')
+    await category.load('visibility')
 
     return category
   }
