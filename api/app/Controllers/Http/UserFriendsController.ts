@@ -12,37 +12,23 @@ export default class UserFriendsController {
 
     const user = await User.findOrFail(userId)
 
-    return user
-      .related('friends')
-      .query()
-      .wherePivot('user_id', userId)
-      .select(['id', 'email', 'pseudo'])
-      .paginate(page, limit)
+    return user.related('friends').query().select(['id', 'pseudo']).paginate(page, limit)
   }
 
-  public async show({ bouncer, request, response }: HttpContextContract) {
+  public async show({ bouncer, request }: HttpContextContract) {
     const userId = request.param('user_id')
-    let friendNumber = request.param('id')
-
-    friendNumber = friendNumber === 0 ? 0 : friendNumber - 1
+    const friendId = request.param('id')
 
     await bouncer.with('UserPolicy').authorize('view', userId)
 
     const user = await User.findOrFail(userId)
 
-    const userFriends = await user
+    return user
       .related('friends')
       .query()
-      .wherePivot('user_id', userId)
-      .select(['id', 'email', 'pseudo'])
-
-    if (friendNumber >= userFriends.length) {
-      return response.status(404).send({
-        message: 'Friend not found',
-      })
-    }
-
-    return userFriends[friendNumber]
+      .wherePivot('friend', friendId)
+      .select(['id', 'pseudo'])
+      .firstOrFail()
   }
 
   public async store({ bouncer, request, response }: HttpContextContract) {
@@ -63,8 +49,7 @@ export default class UserFriendsController {
     const existingFriend = await user
       .related('friends')
       .query()
-      .wherePivot('user_id', user.id)
-      .andWherePivot('friend', userFriend.id)
+      .wherePivot('friend', userFriend.id)
       .first()
 
     if (existingFriend !== null) {
@@ -80,34 +65,24 @@ export default class UserFriendsController {
     }
   }
 
-  public async destroy({ bouncer, request, response }: HttpContextContract) {
+  public async destroy({ bouncer, request }: HttpContextContract) {
     const userId = request.param('user_id')
-    let friendNumber = request.param('id')
-
-    friendNumber = friendNumber === 0 ? 0 : friendNumber - 1
+    const friendId = request.param('id')
 
     await bouncer.with('UserPolicy').authorize('view', userId)
 
     const user = await User.findOrFail(userId)
 
-    const userFriends = await user
+    const userFriend = await user
       .related('friends')
       .query()
-      .wherePivot('user_id', userId)
-      .select(['id', 'email', 'pseudo'])
-
-    if (friendNumber >= userFriends.length) {
-      return response.status(404).send({
-        message: 'Friend not found',
-      })
-    }
-
-    const userFriend = userFriends[friendNumber]
+      .wherePivot('friend', friendId)
+      .firstOrFail()
 
     await user.related('friends').detach([userFriend.id])
 
     return {
-      delete: 'ok',
+      delete: true,
     }
   }
 }
