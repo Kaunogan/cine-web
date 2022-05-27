@@ -15,7 +15,7 @@ export default class UserCategoriesController {
 
     const user = await User.findOrFail(userId)
 
-    return user.related('categories').query().preload('visibility').paginate(page, limit)
+    return user.related('categories').query().paginate(page, limit)
   }
 
   public async show({ bouncer, request }: HttpContextContract) {
@@ -31,6 +31,7 @@ export default class UserCategoriesController {
       .query()
       .where('id', categoryId)
       .preload('visibility')
+      .preload('films')
       .firstOrFail()
   }
 
