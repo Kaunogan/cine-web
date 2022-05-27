@@ -1,7 +1,7 @@
-import { schema, CustomMessages } from '@ioc:Adonis/Core/Validator'
+import { schema, CustomMessages, rules } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class CreateCategoryValidator {
+export default class UpdateCategoryValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   /*
@@ -24,7 +24,8 @@ export default class CreateCategoryValidator {
    *    ```
    */
   public schema = schema.create({
-    name: schema.string(),
+    name: schema.string.optional(),
+    visibility_id: schema.number.optional([rules.exists({ table: 'visibilities', column: 'id' })]),
   })
 
   /**
@@ -39,7 +40,8 @@ export default class CreateCategoryValidator {
    *
    */
   public messages: CustomMessages = {
-    required: 'The {{ field }} is required',
+    exists: '{{ field }} does not exist',
     string: 'The {{ field }} must be a string',
+    number: 'The {{ field }} must be a number',
   }
 }
