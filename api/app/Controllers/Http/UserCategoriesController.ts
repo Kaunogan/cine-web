@@ -15,7 +15,7 @@ export default class UserCategoriesController {
 
     const user = await User.findOrFail(userId)
 
-    return user.related('categories').query().paginate(page, limit)
+    return user.related('categories').query().select(['id', 'name']).paginate(page, limit)
   }
 
   public async show({ bouncer, request }: HttpContextContract) {
