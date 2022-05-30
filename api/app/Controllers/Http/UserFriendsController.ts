@@ -1,9 +1,10 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 import AddUserFriendValidator from 'App/Validators/AddUserFriendValidator'
+import ConflictException from 'App/Exceptions/ConflictException'
 
 export default class UserFriendsController {
-  public async index({ bouncer, request }: HttpContextContract) {
+  public async index({ bouncer, request, response }: HttpContextContract) {
     const userId = request.param('user_id')
     const page = request.input('page', 1)
     const limit = request.input('limit', 12)
@@ -12,10 +13,21 @@ export default class UserFriendsController {
 
     const user = await User.findOrFail(userId)
 
-    return user.related('friends').query().select(['id', 'pseudo']).paginate(page, limit)
+    const friends = await user
+      .related('friends')
+      .query()
+      .select(['id', 'pseudo'])
+      .paginate(page, limit)
+
+    return {
+      message: 'Ok',
+      status: response.getStatus(),
+      pagination: friends.getMeta(),
+      results: friends.all(),
+    }
   }
 
-  public async show({ bouncer, request }: HttpContextContract) {
+  public async show({ bouncer, request, response }: HttpContextContract) {
     const userId = request.param('user_id')
     const friendId = request.param('id')
 
@@ -23,12 +35,18 @@ export default class UserFriendsController {
 
     const user = await User.findOrFail(userId)
 
-    return user
+    const friend = await user
       .related('friends')
       .query()
       .wherePivot('friend', friendId)
       .select(['id', 'pseudo'])
       .firstOrFail()
+
+    return {
+      message: 'Ok',
+      status: response.getStatus(),
+      results: friend,
+    }
   }
 
   public async store({ bouncer, request, response }: HttpContextContract) {
@@ -41,9 +59,7 @@ export default class UserFriendsController {
     const userFriend = await User.findByOrFail('email', friendEmail)
 
     if (user.id === userFriend.id) {
-      return response.status(409).send({
-        message: 'Friend cannot be the same as the user',
-      })
+      throw new ConflictException('Friend cannot be the same as the user', 409, 'E_CONFLICT')
     }
 
     const existingFriend = await user
@@ -53,19 +69,18 @@ export default class UserFriendsController {
       .first()
 
     if (existingFriend !== null) {
-      return response.status(409).send({
-        message: 'Friend already exist',
-      })
+      throw new ConflictException('Friend already exist', 409, 'E_CONFLICT')
     }
 
     await user.related('friends').attach([userFriend.id])
 
-    return {
-      message: 'ok',
-    }
+    response.created({
+      message: 'Friend added successfully',
+      status: response.getStatus(),
+    })
   }
 
-  public async destroy({ bouncer, request }: HttpContextContract) {
+  public async destroy({ bouncer, request, response }: HttpContextContract) {
     const userId = request.param('user_id')
     const friendId = request.param('id')
 
@@ -82,7 +97,8 @@ export default class UserFriendsController {
     await user.related('friends').detach([userFriend.id])
 
     return {
-      delete: true,
+      message: 'Friend deleted successfully',
+      status: response.getStatus(),
     }
   }
 }

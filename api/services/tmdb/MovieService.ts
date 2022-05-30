@@ -1,6 +1,7 @@
 import axios from 'axios'
 import tmdbConfig from 'Config/tmdb'
 import { IMovie, IMovieDetails } from 'Services/tmdb/interfaces'
+import TmdbRequestException from 'App/Exceptions/TmdbRequestException'
 
 class TmdbMovieService {
   protected config: typeof tmdbConfig
@@ -33,9 +34,15 @@ class TmdbMovieService {
     const basePathApi = this.config.basePath.api
     const { apiKey } = this.config
 
-    const { data } = await axios.get(`${basePathApi}/movie/popular?api_key=${apiKey}&page=${page}`)
+    try {
+      const { data } = await axios.get(
+        `${basePathApi}/movie/popular?api_key=${apiKey}&page=${page}`
+      )
 
-    return this.parseResult(data)
+      return this.parseResult(data)
+    } catch ({ response }) {
+      throw new TmdbRequestException(response.data.status_message, response.status, 'E_TMDB_API')
+    }
   }
 
   // Search for movies
@@ -43,11 +50,15 @@ class TmdbMovieService {
     const basePathApi = this.config.basePath.api
     const { apiKey } = this.config
 
-    const { data } = await axios.get(
-      `${basePathApi}/search/movie?api_key=${apiKey}&query=${query}&page=${page}`
-    )
+    try {
+      const { data } = await axios.get(
+        `${basePathApi}/search/movie?api_key=${apiKey}&query=${query}&page=${page}`
+      )
 
-    return this.parseResult(data)
+      return this.parseResult(data)
+    } catch ({ response }) {
+      throw new TmdbRequestException(response.data.status_message, response.status, 'E_TMDB_API')
+    }
   }
 
   // Get the primary information about a movie

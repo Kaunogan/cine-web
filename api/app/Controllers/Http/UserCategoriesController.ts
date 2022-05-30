@@ -6,7 +6,7 @@ import Visibility from 'App/Models/Visibility'
 import UpdateCategoryValidator from 'App/Validators/UpdateCategoryValidator'
 
 export default class UserCategoriesController {
-  public async index({ bouncer, request }: HttpContextContract) {
+  public async index({ bouncer, request, response }: HttpContextContract) {
     const userId = request.param('user_id')
     const page = request.input('page', 1)
     const limit = request.input('limit', 12)
@@ -15,10 +15,21 @@ export default class UserCategoriesController {
 
     const user = await User.findOrFail(userId)
 
-    return user.related('categories').query().select(['id', 'name']).paginate(page, limit)
+    const results = await user
+      .related('categories')
+      .query()
+      .select(['id', 'name'])
+      .paginate(page, limit)
+
+    return {
+      message: 'Ok',
+      status: response.getStatus(),
+      pagination: results.getMeta(),
+      results: results.all(),
+    }
   }
 
-  public async show({ bouncer, request }: HttpContextContract) {
+  public async show({ bouncer, request, response }: HttpContextContract) {
     const userId = request.param('user_id')
     const categoryId = request.param('id')
 
@@ -26,16 +37,22 @@ export default class UserCategoriesController {
 
     const user = await User.findOrFail(userId)
 
-    return user
+    const results = await user
       .related('categories')
       .query()
       .where('id', categoryId)
       .preload('visibility')
       .preload('films')
       .firstOrFail()
+
+    return {
+      message: 'Ok',
+      status: response.getStatus(),
+      results,
+    }
   }
 
-  public async store({ bouncer, request }: HttpContextContract) {
+  public async store({ bouncer, request, response }: HttpContextContract) {
     const userId = request.param('user_id')
     const { name } = await request.validate(CreateCategoryValidator)
 
@@ -51,14 +68,15 @@ export default class UserCategoriesController {
     await category.related('user').associate(user)
     await category.related('visibility').associate(visibility)
 
-    await category.save()
+    const newCategory = await category.save()
 
-    return {
-      message: 'ok',
-    }
+    response.created({
+      message: `Category ${newCategory.name} created successfully`,
+      status: response.getStatus(),
+    })
   }
 
-  public async update({ bouncer, request }: HttpContextContract) {
+  public async update({ bouncer, request, response }: HttpContextContract) {
     const userId = request.param('user_id')
     const categoryId = request.param('id')
 
@@ -80,10 +98,13 @@ export default class UserCategoriesController {
     await category.save()
     await category.load('visibility')
 
-    return category
+    return {
+      message: `Category ${category.name} updated successfully`,
+      status: response.getStatus(),
+    }
   }
 
-  public async destroy({ bouncer, request }: HttpContextContract) {
+  public async destroy({ bouncer, request, response }: HttpContextContract) {
     const userId = request.param('user_id')
     const categoryId = request.param('id')
 
@@ -96,7 +117,8 @@ export default class UserCategoriesController {
     await category.delete()
 
     return {
-      delete: true,
+      message: `Category ${category.name} deleted successfully`,
+      status: response.getStatus(),
     }
   }
 }
