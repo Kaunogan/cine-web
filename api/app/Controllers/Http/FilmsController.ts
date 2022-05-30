@@ -4,13 +4,16 @@ import MovieService from '@ioc:Tmdb/MovieService'
 export default class FilmsController {
   public async index({ request }: HttpContextContract) {
     const page = request.input('page', 1)
+    const query = request.input('query', '')
 
-    /*  const { data } = await axios.get(
-      `https://api.themoviedb.org/3/movie/popular?api_key=${Env.get('TMDB_API_KEY')}&page=${page}`
-    )
-
-    console.log(data.results.length) */
+    if (query !== '') return MovieService.searchMovie(query, page)
 
     return MovieService.getPopularMovie(page)
+  }
+
+  public async show({ request }: HttpContextContract) {
+    const tmdbFilmId = request.param('id')
+
+    return MovieService.getMovieDetails(tmdbFilmId)
   }
 }

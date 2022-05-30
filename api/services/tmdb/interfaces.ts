@@ -26,6 +26,7 @@ interface IMovie {
 | tmdbMovieId : the id of the movie from the TMDB api
 | title: the title of the movie
 | overview: synopsis of the movie
+| posterUrl: poster url of the movie
 | backdropUrl: background of the movie
 | trailerUrl: The youtube embed trailer url
 |
@@ -34,6 +35,7 @@ interface IMovieDetails {
   tmdbMovieId: number
   title: string
   overview: string
+  posterUrl: string
   backdropUrl: string
   trailerUrl: string
 }
