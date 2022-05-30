@@ -29,6 +29,7 @@ Route.group(() => {
       .apiOnly()
       .only(['store', 'destroy'])
     Route.post('/logout', 'AuthController.logout')
+    Route.resource('films', 'FilmsController').apiOnly().only(['index', 'show'])
   }).middleware('auth')
 
   Route.post('/register', 'AuthController.register')

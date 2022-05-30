@@ -12,7 +12,8 @@
     "App": "app",
     "Config": "config",
     "Database": "database",
-    "Contracts": "contracts"
+    "Contracts": "contracts",
+    "Services": "services"
   },
   "preloads": [
     "./start/routes",
@@ -24,7 +25,8 @@
     "@adonisjs/core",
     "@adonisjs/lucid",
     "@adonisjs/auth",
-    "@adonisjs/bouncer"
+    "@adonisjs/bouncer",
+    "./providers/TmdbProvider"
   ],
   "aceProviders": [
     "@adonisjs/repl"
