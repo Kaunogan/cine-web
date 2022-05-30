@@ -5,12 +5,18 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import UpdateUserValidator from 'App/Validators/UpdateUserValidator'
 
 export default class UsersController {
-  public async show({ request, bouncer }: HttpContextContract) {
+  public async show({ bouncer, request, response }: HttpContextContract) {
     const id = request.param('id')
 
     await bouncer.with('UserPolicy').authorize('view', id)
 
-    return User.findOrFail(id)
+    const user = await User.findOrFail(id)
+
+    return {
+      message: 'Ok',
+      status: response.getStatus(),
+      results: user,
+    }
   }
 
   public async store(request: RequestContract) {
@@ -19,7 +25,7 @@ export default class UsersController {
     return payload
   }
 
-  public async update({ request, bouncer }: HttpContextContract) {
+  public async update({ bouncer, request, response }: HttpContextContract) {
     const id = request.param('id')
     const payload = await request.validate(UpdateUserValidator)
 
@@ -28,10 +34,13 @@ export default class UsersController {
     const user = await User.findOrFail(id)
     await user.merge(payload).save()
 
-    return user
+    return {
+      message: `User ${user.pseudo} updated successfully`,
+      status: response.getStatus(),
+    }
   }
 
-  public async destroy({ request, bouncer }: HttpContextContract) {
+  public async destroy({ bouncer, request, response }: HttpContextContract) {
     const id = request.param('id')
 
     await bouncer.with('UserPolicy').authorize('view', id)
@@ -40,6 +49,9 @@ export default class UsersController {
 
     await user.delete()
 
-    return { deleted: true }
+    return {
+      message: 'User deleted successfully',
+      status: response.getStatus(),
+    }
   }
 }

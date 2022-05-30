@@ -18,23 +18,40 @@ import HttpExceptionHandler from '@ioc:Adonis/Core/HttpExceptionHandler'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class ExceptionHandler extends HttpExceptionHandler {
+  private handledCodes = [
+    'E_UNAUTHORIZED_ACCESS',
+    'E_AUTHORIZATION_FAILURE',
+    'E_ROW_NOT_FOUND',
+    'E_ROUTE_NOT_FOUND',
+    'E_CONFLICT',
+    'E_TMDB_API',
+  ]
+
   constructor() {
     super(Logger)
   }
 
   public async handle(error: any, ctx: HttpContextContract) {
-    if (error.code === 'E_ROW_NOT_FOUND') {
+    /**
+     * Self handle the validation exception
+     */
+    const { status } = error
+    const errorCode = error.code
+    const message = error.message.split(': ')[1]
+
+    const findHandledCode = this.handledCodes.find((code) => code === errorCode)
+
+    if (findHandledCode) {
       return ctx.response.send({
-        message: 'Not found',
+        message,
+        status,
+        errorCode,
       })
     }
 
-    if (error.code === 'E_UNAUTHORIZED_ACCESS') {
-      return ctx.response.send({
-        message: 'Unauthorized access',
-      })
-    }
-
+    /**
+     * Forward rest of the exceptions to the parent class
+     */
     return super.handle(error, ctx)
   }
 }

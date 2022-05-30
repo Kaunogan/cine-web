@@ -2,6 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import AddFilmInCategoryValidator from 'App/Validators/AddFilmInCategoryValidator'
 import Film from 'App/Models/Film'
 import User from 'App/Models/User'
+import ConflictException from 'App/Exceptions/ConflictException'
 
 export default class UserCategoryFilmsController {
   public async store({ bouncer, request, response }: HttpContextContract) {
@@ -33,19 +34,22 @@ export default class UserCategoryFilmsController {
       .first()
 
     if (filmAlreadyExist !== null) {
-      return response.status(409).send({
-        message: `Film already exist in ${category.name} category`,
-      })
+      throw new ConflictException(
+        `Film already exist in ${category.name} category`,
+        409,
+        'E_CONFLICT'
+      )
     }
 
     await category.related('films').attach([film.id])
 
-    return {
-      message: 'ok',
-    }
+    response.created({
+      message: 'Film added successfully',
+      status: response.getStatus(),
+    })
   }
 
-  public async destroy({ bouncer, request }: HttpContextContract) {
+  public async destroy({ bouncer, request, response }: HttpContextContract) {
     const userId = request.param('user_id')
     const categoryId = request.param('category_id')
     const filmId = request.param('id')
@@ -65,7 +69,8 @@ export default class UserCategoryFilmsController {
     if (categories.length === 0) await film.delete()
 
     return {
-      delete: true,
+      message: 'Movie deleted successfully',
+      status: response.getStatus(),
     }
   }
 }
