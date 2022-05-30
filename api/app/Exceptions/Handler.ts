@@ -24,6 +24,8 @@ export default class ExceptionHandler extends HttpExceptionHandler {
     'E_ROW_NOT_FOUND',
     'E_ROUTE_NOT_FOUND',
     'E_CONFLICT',
+    'E_INVALID_AUTH_PASSWORD',
+    'E_VALIDATION_FAILURE',
     'E_TMDB_API',
   ]
 
@@ -37,11 +39,15 @@ export default class ExceptionHandler extends HttpExceptionHandler {
      */
     const { status } = error
     const errorCode = error.code
-    const message = error.message.split(': ')[1]
-
     const findHandledCode = this.handledCodes.find((code) => code === errorCode)
 
+    let message = error.message.split(': ')[1]
+
     if (findHandledCode) {
+      if (findHandledCode === 'E_VALIDATION_FAILURE') {
+        message = error.messages.errors[0].message
+      }
+
       return ctx.response.send({
         message,
         status,
