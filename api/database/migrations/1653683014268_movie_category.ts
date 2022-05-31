@@ -1,14 +1,14 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'film_category'
+  protected tableName = 'movie_category'
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
       table.integer('category_id').unsigned().references('categories.id').onDelete('CASCADE')
-      table.integer('film_id').unsigned().references('films.id')
-      table.unique(['category_id', 'film_id'])
+      table.integer('movie_id').unsigned().references('movies.id')
+      table.unique(['category_id', 'movie_id'])
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

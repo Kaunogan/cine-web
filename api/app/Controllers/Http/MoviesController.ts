@@ -2,7 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import MovieService from '@ioc:Tmdb/MovieService'
 import { IMovie } from 'Services/tmdb/interfaces'
 
-export default class FilmsController {
+export default class MoviesController {
   public async index({ request, response }: HttpContextContract) {
     const page = request.input('page', 1)
     const query = request.input('query', '')
@@ -22,9 +22,9 @@ export default class FilmsController {
   }
 
   public async show({ request, response }: HttpContextContract) {
-    const tmdbFilmId = request.param('id')
+    const tmdbMovieId = request.param('id')
 
-    const movies = await MovieService.getMovieDetails(tmdbFilmId)
+    const movies = await MovieService.getMovieDetails(tmdbMovieId)
 
     return {
       message: 'Ok',

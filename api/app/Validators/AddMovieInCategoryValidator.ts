@@ -1,7 +1,7 @@
 import { schema, CustomMessages, rules } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class AddFilmInCategoryValidator {
+export default class AddMovieInCategoryValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   /*
@@ -27,7 +27,7 @@ export default class AddFilmInCategoryValidator {
   public schema = schema.create({
     title: schema.string(),
     poster_url: schema.string({}, [rules.url()]),
-    tmdb_film_id: schema.number(),
+    tmdb_movie_id: schema.number(),
   })
 
   /**

@@ -9,7 +9,7 @@ import {
 } from '@ioc:Adonis/Lucid/Orm'
 import Visibility from 'App/Models/Visibility'
 import User from 'App/Models/User'
-import Film from 'App/Models/Film'
+import Movie from 'App/Models/Movie'
 
 export default class Category extends BaseModel {
   @column({ isPrimary: true })
@@ -28,20 +28,23 @@ export default class Category extends BaseModel {
   })
   public visibilityId: number
 
+  @column()
+  public sharedId: string
+
   @belongsTo(() => User)
   public user: BelongsTo<typeof User>
 
   @belongsTo(() => Visibility)
   public visibility: BelongsTo<typeof Visibility>
 
-  @manyToMany(() => Film, {
-    pivotTable: 'film_category',
+  @manyToMany(() => Movie, {
+    pivotTable: 'movie_category',
     pivotTimestamps: {
       createdAt: 'created_at',
       updatedAt: false,
     },
   })
-  public films: ManyToMany<typeof Film>
+  public movies: ManyToMany<typeof Movie>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
