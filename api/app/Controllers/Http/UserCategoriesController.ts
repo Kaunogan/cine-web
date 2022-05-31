@@ -4,6 +4,13 @@ import User from 'App/Models/User'
 import Category from 'App/Models/Category'
 import Visibility from 'App/Models/Visibility'
 import UpdateCategoryValidator from 'App/Validators/UpdateCategoryValidator'
+import Encryption from '@ioc:Adonis/Core/Encryption'
+import BadRequestException from 'App/Exceptions/BadRequestException'
+import UnAuthorizedException from 'App/Exceptions/UnAuthorizedException'
+
+interface IDecryptedSharedKey {
+  category_id: number
+}
 
 export default class UserCategoriesController {
   public async index({ bouncer, request, response }: HttpContextContract) {
@@ -70,6 +77,10 @@ export default class UserCategoriesController {
 
     const newCategory = await category.save()
 
+    newCategory.sharedId = Encryption.encrypt({ category_id: newCategory.id })
+
+    await newCategory.save()
+
     response.created({
       message: `Category ${newCategory.name} created successfully`,
       status: response.getStatus(),
@@ -95,12 +106,23 @@ export default class UserCategoriesController {
       await category.related('visibility').associate(visibility)
     }
 
+    if (visibilityId === 3 && category.sharedId) {
+      category.sharedId = ''
+    }
+
+    if (visibilityId !== 3 && !category.sharedId) {
+      category.sharedId = Encryption.encrypt({ category_id: category.id })
+    }
+
     await category.save()
     await category.load('visibility')
 
     return {
       message: `Category ${category.name} updated successfully`,
       status: response.getStatus(),
+      results: {
+        shared_id: category.sharedId,
+      },
     }
   }
 
@@ -119,6 +141,46 @@ export default class UserCategoriesController {
     return {
       message: `Category ${category.name} deleted successfully`,
       status: response.getStatus(),
+    }
+  }
+
+  public async shared({ request, response, auth }: HttpContextContract) {
+    const sharedId = request.param('shared_id')
+    const { user: connectedUser } = auth
+
+    const decryptedKey = Encryption.decrypt<IDecryptedSharedKey>(sharedId)
+
+    if (!decryptedKey) {
+      throw new BadRequestException('Invalid shared id', 400, 'E_BAD_REQUEST')
+    }
+
+    const category = await Category.findOrFail(decryptedKey.category_id)
+
+    const movies = await category.related('movies').query()
+    const visibility = await category.related('visibility').query().firstOrFail()
+    const author = await category.related('user').query().firstOrFail()
+
+    if (visibility.id === 3 && connectedUser?.id !== author.id) {
+      throw new UnAuthorizedException('Unauthorized access', 401, 'E_UNAUTHORIZED_ACCESS')
+    }
+
+    if (visibility.id === 2 && connectedUser?.id !== author.id) {
+      const friends = await author.related('friends').query()
+
+      const isFriend = friends.find((friend) => friend.id === connectedUser?.id) !== undefined
+
+      if (!isFriend)
+        throw new UnAuthorizedException('Unauthorized access', 401, 'E_UNAUTHORIZED_ACCESS')
+    }
+
+    return {
+      message: 'Ok',
+      status: response.getStatus(),
+      results: {
+        category_name: category.name,
+        created_by: author.pseudo,
+        movies,
+      },
     }
   }
 }

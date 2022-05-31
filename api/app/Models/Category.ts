@@ -28,6 +28,9 @@ export default class Category extends BaseModel {
   })
   public visibilityId: number
 
+  @column()
+  public sharedId: string
+
   @belongsTo(() => User)
   public user: BelongsTo<typeof User>
 

@@ -26,6 +26,7 @@ export default class ExceptionHandler extends HttpExceptionHandler {
     'E_CONFLICT',
     'E_INVALID_AUTH_PASSWORD',
     'E_VALIDATION_FAILURE',
+    'E_BAD_REQUEST',
     'E_TMDB_API',
   ]
 
