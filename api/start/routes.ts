@@ -31,6 +31,7 @@ Route.group(() => {
     Route.resource('movies', 'MoviesController').apiOnly().only(['index', 'show'])
     Route.post('/logout', 'AuthController.logout')
     Route.get('/categories/shared/:shared_id', 'UserCategoriesController.share')
+    Route.get('/users/:id/profile', 'UsersController.getProfile')
   }).middleware('auth')
 
   Route.post('/register', 'AuthController.register')
