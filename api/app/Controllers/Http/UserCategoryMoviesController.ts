@@ -1,10 +1,10 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import AddFilmInCategoryValidator from 'App/Validators/AddFilmInCategoryValidator'
-import Film from 'App/Models/Film'
+import AddMovieInCategoryValidator from 'App/Validators/AddMovieInCategoryValidator'
+import Movie from 'App/Models/Movie'
 import User from 'App/Models/User'
 import ConflictException from 'App/Exceptions/ConflictException'
 
-export default class UserCategoryFilmsController {
+export default class UserCategoryMoviesController {
   public async store({ bouncer, request, response }: HttpContextContract) {
     const userId = request.param('user_id')
     const categoryId = request.param('category_id')
@@ -12,8 +12,8 @@ export default class UserCategoryFilmsController {
     const {
       title,
       poster_url: posterUrl,
-      tmdb_film_id: tmdbFilmId,
-    } = await request.validate(AddFilmInCategoryValidator)
+      tmdb_movie_id: tmdbMovieId,
+    } = await request.validate(AddMovieInCategoryValidator)
 
     await bouncer.with('UserPolicy').authorize('view', userId)
 
@@ -21,30 +21,30 @@ export default class UserCategoryFilmsController {
 
     const category = await user.related('categories').query().where('id', categoryId).firstOrFail()
 
-    const film = await Film.firstOrCreate({
+    const movie = await Movie.firstOrCreate({
       title,
       posterUrl,
-      tmdbFilmId,
+      tmdbMovieId,
     })
 
-    const filmAlreadyExist = await category
-      .related('films')
+    const movieAlreadyExist = await category
+      .related('movies')
       .query()
-      .wherePivot('film_id', film.id)
+      .wherePivot('movie_id', movie.id)
       .first()
 
-    if (filmAlreadyExist !== null) {
+    if (movieAlreadyExist !== null) {
       throw new ConflictException(
-        `Film already exist in ${category.name} category`,
+        `Movie already exist in ${category.name} category`,
         409,
         'E_CONFLICT'
       )
     }
 
-    await category.related('films').attach([film.id])
+    await category.related('movies').attach([movie.id])
 
     response.created({
-      message: 'Film added successfully',
+      message: 'Movie added successfully',
       status: response.getStatus(),
     })
   }
@@ -52,7 +52,7 @@ export default class UserCategoryFilmsController {
   public async destroy({ bouncer, request, response }: HttpContextContract) {
     const userId = request.param('user_id')
     const categoryId = request.param('category_id')
-    const filmId = request.param('id')
+    const movieId = request.param('id')
 
     await bouncer.with('UserPolicy').authorize('view', userId)
 
@@ -60,13 +60,17 @@ export default class UserCategoryFilmsController {
 
     const category = await user.related('categories').query().where('id', categoryId).firstOrFail()
 
-    const film = await category.related('films').query().wherePivot('film_id', filmId).firstOrFail()
+    const movie = await category
+      .related('movies')
+      .query()
+      .wherePivot('movie_id', movieId)
+      .firstOrFail()
 
-    await category.related('films').detach([film.id])
+    await category.related('movies').detach([movie.id])
 
-    const categories = await film.related('categories').query()
+    const categories = await movie.related('categories').query()
 
-    if (categories.length === 0) await film.delete()
+    if (categories.length === 0) await movie.delete()
 
     return {
       message: 'Movie deleted successfully',

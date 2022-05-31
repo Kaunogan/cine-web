@@ -2,7 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, column, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
 import Category from 'App/Models/Category'
 
-export default class Film extends BaseModel {
+export default class Movie extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
@@ -13,10 +13,10 @@ export default class Film extends BaseModel {
   public posterUrl: string
 
   @column()
-  public tmdbFilmId: number
+  public tmdbMovieId: number
 
   @manyToMany(() => Category, {
-    pivotTable: 'film_category',
+    pivotTable: 'movie_category',
     pivotTimestamps: {
       createdAt: 'created_at',
       updatedAt: false,

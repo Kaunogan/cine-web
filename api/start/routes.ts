@@ -25,11 +25,11 @@ Route.group(() => {
     Route.resource('users', 'UsersController').apiOnly().except(['index', 'store'])
     Route.resource('users.friends', 'UserFriendsController').apiOnly().except(['update'])
     Route.resource('users.categories', 'UserCategoriesController').apiOnly()
-    Route.resource('users.categories.films', 'UserCategoryFilmsController')
+    Route.resource('users.categories.movies', 'UserCategoryMoviesController')
       .apiOnly()
       .only(['store', 'destroy'])
     Route.post('/logout', 'AuthController.logout')
-    Route.resource('films', 'FilmsController').apiOnly().only(['index', 'show'])
+    Route.resource('movies', 'MoviesController').apiOnly().only(['index', 'show'])
   }).middleware('auth')
 
   Route.post('/register', 'AuthController.register')

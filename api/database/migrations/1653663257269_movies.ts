@@ -1,14 +1,14 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'films'
+  protected tableName = 'movies'
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
       table.string('title', 255).notNullable()
       table.string('poster_url', 255).notNullable()
-      table.integer('tmdb_film_id').notNullable()
+      table.integer('tmdb_movie_id').notNullable()
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

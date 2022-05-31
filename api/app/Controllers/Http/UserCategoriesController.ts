@@ -42,7 +42,7 @@ export default class UserCategoriesController {
       .query()
       .where('id', categoryId)
       .preload('visibility')
-      .preload('films')
+      .preload('movies')
       .firstOrFail()
 
     return {
