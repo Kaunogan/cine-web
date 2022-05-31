@@ -4,6 +4,11 @@ import { RequestContract } from '@ioc:Adonis/Core/Request'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import UpdateUserValidator from 'App/Validators/UpdateUserValidator'
 
+interface ICategoryToSend {
+  id: number
+  name: string
+}
+
 export default class UsersController {
   public async show({ bouncer, request, response }: HttpContextContract) {
     const id = request.param('id')
@@ -52,6 +57,73 @@ export default class UsersController {
     return {
       message: 'User deleted successfully',
       status: response.getStatus(),
+    }
+  }
+
+  public async getProfile({ auth, request, response }: HttpContextContract) {
+    const userId = request.param('id')
+    const { user: connectedUser } = auth
+
+    let categoriesToSend: ICategoryToSend[] = []
+    let nbOfMovies = 0
+
+    const user = await User.findOrFail(userId)
+
+    const categories = await user
+      .related('categories')
+      .query()
+      .select(['id', 'name', 'visibilityId'])
+      .preload('visibility')
+      .preload('movies')
+
+    const userFriends = await user.related('friends').query()
+
+    const connectedUserIsFriend =
+      userFriends.find((friend) => friend.id === connectedUser?.id) !== undefined
+
+    const isConnectedUser = connectedUser?.id === userId
+
+    // Get categories depending on connected user & visibility
+    if (isConnectedUser) {
+      categoriesToSend = categories.map(({ id, name, movies }) => {
+        nbOfMovies += movies.length
+
+        return {
+          id,
+          name,
+        }
+      })
+    } else {
+      categories.forEach(({ id, name, movies, visibility }) => {
+        const categoryToSend: ICategoryToSend = {
+          id,
+          name,
+        }
+
+        if (visibility.id === 1) {
+          categoriesToSend = [...categoriesToSend, categoryToSend]
+          nbOfMovies += movies.length
+        }
+
+        if (visibility.id === 2 && connectedUserIsFriend) {
+          categoriesToSend = [...categoriesToSend, categoryToSend]
+          nbOfMovies += movies.length
+        }
+      })
+    }
+
+    return {
+      message: 'Ok',
+      status: response.getStatus(),
+      results: {
+        user_pseudo: user.pseudo,
+        friend: isConnectedUser ? null : connectedUserIsFriend,
+        total: {
+          categories: categoriesToSend.length,
+          movies: nbOfMovies,
+        },
+        categories: categoriesToSend,
+      },
     }
   }
 }
