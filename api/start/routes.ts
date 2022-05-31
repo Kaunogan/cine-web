@@ -30,7 +30,7 @@ Route.group(() => {
       .only(['store', 'destroy'])
     Route.resource('movies', 'MoviesController').apiOnly().only(['index', 'show'])
     Route.post('/logout', 'AuthController.logout')
-    Route.get('/categories/shared/:shared_id', 'UserCategoriesController.shared')
+    Route.get('/categories/shared/:shared_id', 'UserCategoriesController.share')
   }).middleware('auth')
 
   Route.post('/register', 'AuthController.register')

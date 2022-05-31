@@ -144,7 +144,7 @@ export default class UserCategoriesController {
     }
   }
 
-  public async shared({ request, response, auth }: HttpContextContract) {
+  public async share({ request, response, auth }: HttpContextContract) {
     const sharedId = request.param('shared_id')
     const { user: connectedUser } = auth
 
