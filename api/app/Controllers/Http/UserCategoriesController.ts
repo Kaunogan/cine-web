@@ -160,11 +160,13 @@ export default class UserCategoriesController {
     const visibility = await category.related('visibility').query().firstOrFail()
     const author = await category.related('user').query().firstOrFail()
 
-    if (visibility.id === 3 && connectedUser?.id !== author.id) {
+    const authorIsConnectedUser = connectedUser?.id === author.id
+
+    if (visibility.id === 3 && !authorIsConnectedUser) {
       throw new UnAuthorizedException('Unauthorized access', 401, 'E_UNAUTHORIZED_ACCESS')
     }
 
-    if (visibility.id === 2 && connectedUser?.id !== author.id) {
+    if (visibility.id === 2 && !authorIsConnectedUser) {
       const friends = await author.related('friends').query()
 
       const isFriend = friends.find((friend) => friend.id === connectedUser?.id) !== undefined
