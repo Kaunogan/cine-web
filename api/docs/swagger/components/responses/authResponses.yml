@@ -1,6 +1,9 @@
-# Components
 components:
   authResponses:
+
+    #|--------------------------------------------------------------------------
+    #| Response ==> UserOAT : 200
+    #|--------------------------------------------------------------------------
     UserOAT:
       description: Success
       content:

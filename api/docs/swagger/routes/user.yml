@@ -1,0 +1,255 @@
+#|--------------------------------------------------------------------------
+#| Route ==> user
+#|--------------------------------------------------------------------------
+/api/users/{userId}:
+
+  #|--------------------------------------------------------------------------
+  #| Get user
+  #|--------------------------------------------------------------------------
+  get:
+    summary: Get user information
+    tags:
+      - User
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/userResponses/Infos'
+      401:
+        $ref: '#/components/errorResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/errorResponses/Forbidden'
+
+  #|--------------------------------------------------------------------------
+  #| Put user
+  #|--------------------------------------------------------------------------
+  put:
+    summary: Update user information
+    tags:
+      - User
+    security:
+      - bearerAuth: [ ]
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+    requestBody:
+      $ref: '#/components/userRequests/PutUser'
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/userResponses/Success'
+      401:
+        $ref: '#/components/errorResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/errorResponses/Forbidden'
+      422:
+        $ref: '#/components/errorResponses/UnprocessableEntity'
+
+  #|--------------------------------------------------------------------------
+  #| Delete user
+  #|--------------------------------------------------------------------------
+  delete:
+    summary: Delete user
+    tags:
+      - User
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/userResponses/Success'
+      401:
+        $ref: '#/components/errorResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/errorResponses/Forbidden'
+
+#|--------------------------------------------------------------------------
+#| Route ==> user profile
+#|--------------------------------------------------------------------------
+/api/users/{userId}/profile:
+
+  #|--------------------------------------------------------------------------
+  #| Get user profile
+  #|--------------------------------------------------------------------------
+  get:
+    summary: Get user profile
+    tags:
+      - User
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/userResponses/Profile'
+      401:
+        $ref: '#/components/errorResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/errorResponses/Forbidden'
+
+#|--------------------------------------------------------------------------
+#| Route ==> user friends
+#|--------------------------------------------------------------------------
+/api/users/{userId}/friends:
+
+  #|--------------------------------------------------------------------------
+  #| Get user friends
+  #|--------------------------------------------------------------------------
+  get:
+    summary: Get user friends
+    tags:
+      - User
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/userResponses/Friends'
+      401:
+        $ref: '#/components/errorResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/errorResponses/Forbidden'
+
+  #|--------------------------------------------------------------------------
+  #| Post user friend
+  #|--------------------------------------------------------------------------
+  post:
+    summary: Add a user friend
+    tags:
+      - User
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+    requestBody:
+      $ref: '#/components/userRequests/PostFriend'
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/userResponses/Success'
+      401:
+        $ref: '#/components/errorResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/errorResponses/Forbidden'
+      409:
+        $ref: '#/components/errorResponses/Conflict'
+      422:
+        $ref: '#/components/errorResponses/UnprocessableEntity'
+
+#|--------------------------------------------------------------------------
+#| Route ==> user friend
+#|--------------------------------------------------------------------------
+/api/users/{userId}/friends/{friendId}:
+
+  #|--------------------------------------------------------------------------
+  #| Get user friend
+  #|--------------------------------------------------------------------------
+  get:
+    summary: Get specific user friend
+    tags:
+      - User
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+      - in: path
+        name: friendId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the friend user to get
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/userResponses/Friend'
+      401:
+        $ref: '#/components/errorResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/errorResponses/Forbidden'
+      404:
+        $ref: '#/components/errorResponses/NotFound'
+
+  #|--------------------------------------------------------------------------
+  #| Delete user friend
+  #|--------------------------------------------------------------------------
+  delete:
+    summary: Delete user friend
+    tags:
+      - User
+    security:
+      - bearerAuth: [ ]
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+      - in: path
+        name: friendId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the friend user to get
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/userResponses/Success'
+      401:
+        $ref: '#/components/errorResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/errorResponses/Forbidden'
+      404:
+        $ref: '#/components/errorResponses/NotFound'
+      422:
+        $ref: '#/components/errorResponses/UnprocessableEntity'

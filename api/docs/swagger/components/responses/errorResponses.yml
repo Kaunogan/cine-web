@@ -1,38 +1,9 @@
-# Components
 components:
   errorResponses:
-    UnprocessableEntity:
-      description: Unprocessable Entity
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                description: Message responses.
-              status:
-                type: string
-                description: The status http code.
-              errorCode:
-                type: string
-                description: The error code.
-    UnauthorizedAccess:
-      description: Unauthorized access
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                description: Message responses.
-              status:
-                type: string
-                description: The status http code.
-              errorCode:
-                type: string
-                description: The error code.
+
+    #|--------------------------------------------------------------------------
+    #| Response ==> BadRequest : 400
+    #|--------------------------------------------------------------------------
     BadRequest:
       description: Bad requests
       content:
@@ -49,8 +20,92 @@ components:
               errorCode:
                 type: string
                 description: The error code.
+
+    #|--------------------------------------------------------------------------
+    #| Response ==> UnauthorizedAccess : 401
+    #|--------------------------------------------------------------------------
+    UnauthorizedAccess:
+      description: Unauthorized access
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Message responses.
+              status:
+                type: string
+                description: The status http code.
+              errorCode:
+                type: string
+                description: The error code.
+
+    #|--------------------------------------------------------------------------
+    #| Response ==> Forbidden : 403
+    #|--------------------------------------------------------------------------
     Forbidden:
       description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Message responses.
+              status:
+                type: string
+                description: The status http code.
+              errorCode:
+                type: string
+                description: The error code.
+
+    #|--------------------------------------------------------------------------
+    #| Response ==> NotFound : 404
+    #|--------------------------------------------------------------------------
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Message responses.
+              status:
+                type: string
+                description: The status http code.
+              errorCode:
+                type: string
+                description: The error code.
+
+    #|--------------------------------------------------------------------------
+    #| Response ==> Conflict : 409
+    #|--------------------------------------------------------------------------
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Message responses.
+              status:
+                type: string
+                description: The status http code.
+              errorCode:
+                type: string
+                description: The error code.
+
+    #|--------------------------------------------------------------------------
+    #| Response ==> UnprocessableEntity : 422
+    #|--------------------------------------------------------------------------
+    UnprocessableEntity:
+      description: Unprocessable Entity
       content:
         application/json:
           schema:

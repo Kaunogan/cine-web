@@ -1,6 +1,9 @@
-# Components
 components:
   userResponses:
+
+    #|--------------------------------------------------------------------------
+    #| Response ==> Success : 200
+    #|--------------------------------------------------------------------------
     Success:
       description: Success
       content:
@@ -14,6 +17,10 @@ components:
               status:
                 type: string
                 description: The status http code.
+
+    #|--------------------------------------------------------------------------
+    #| Response ==> Infos : 200
+    #|--------------------------------------------------------------------------
     Infos:
       description: Success
       content:
@@ -45,6 +52,10 @@ components:
                   updated_at:
                     type: string
                     description: The timestamp when user are updated
+
+    #|--------------------------------------------------------------------------
+    #| Response ==> Profile : 200
+    #|--------------------------------------------------------------------------
     Profile:
       description: Success
       content:
@@ -88,3 +99,86 @@ components:
                         name:
                           type: string
                           description: The name of category
+
+    #|--------------------------------------------------------------------------
+    #| Response ==> Friends : 200
+    #|--------------------------------------------------------------------------
+    Friends:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Message responses.
+              status:
+                type: string
+                description: The status http code.
+              pagination:
+                type: object
+                properties:
+                  total:
+                    type: number
+                    description: Get number of friends
+                  per_page:
+                    type: number
+                    description: Number of friends displayed per page
+                  current_page:
+                    type: number
+                    description: Number of friends displayed in current page
+                  last_page:
+                    type: number
+                    description: Number of friends displayed in last page
+                  first_page:
+                    type: number
+                    description: Number of friends displayed in first page
+                  first_page_url:
+                    type: number
+                  last_page_url:
+                    type: number
+                  next_page_url:
+                    type: number
+                  previous_page_url:
+                    type: number
+              results:
+                type: array
+                description: The user friends
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: The id of friend
+                    pseudo:
+                      type: string
+                      description: The pseudo of friend
+
+    #|--------------------------------------------------------------------------
+    #| Response ==> Friend : 200
+    #|--------------------------------------------------------------------------
+    Friend:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Message responses.
+              status:
+                type: string
+                description: The status http code.
+              results:
+                type: object
+                description: The user friends
+                properties:
+                  id:
+                    type: integer
+                    description: The id of friend
+                  pseudo:
+                    type: string
+                    description: The pseudo of friend
+
