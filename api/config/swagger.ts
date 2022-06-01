@@ -78,10 +78,24 @@ const config = {
       |
       */
       info: {
-        title: 'CineWeb swagger docs',
+        title: 'CineWeb',
         version: '1.0.0',
-        description: 'My application with swagger docs',
+        description: 'Made by **Melanie, Kaunogan & Elric**',
       },
+
+      /*
+      |--------------------------------------------------------------------------
+      | externalDocs
+      |--------------------------------------------------------------------------
+      |
+      | The external docs about the application
+      |
+      */
+      externalDocs: {
+        description: 'GitHub',
+        url: 'https://github.com/Kaunogan/cine-web',
+      },
+
       components: {
         securitySchemes: {
           /*
@@ -136,7 +150,7 @@ const config = {
   | specFilePath
   |--------------------------------------------------------------------------
   |
-  | The path to the specification file used when is in production
+  | The path to the specification file used when swagger is build
   |
   */
   specFilePath: 'docs/swagger.json',

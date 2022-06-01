@@ -1,0 +1,95 @@
+# Route : Login
+/api/login:
+  post:
+    summary: Log user & get opaque access token
+    tags:
+      - Auth
+    requestBody:
+      description: Send user email & password
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                example: 'john.doe@cineweb.fr'
+                required: true
+              password:
+                type: string
+                example: 'cineweb'
+                required: true
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/responses/UserOAT'
+      400:
+        $ref: '#/components/responses/BadRequest'
+      422:
+        $ref: '#/components/responses/UnprocessableEntity'
+
+# Route : Register
+/api/register:
+  post:
+    summary: Register user & get opaque access token
+    tags:
+      - Auth
+    requestBody:
+      description: Send user email, pseudo & password
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                example: 'john.doe@cineweb.fr'
+                required: true
+              pseudo:
+                type: string
+                example: 'John Doe'
+                required: true
+              password:
+                type: string
+                example: 'cineweb'
+                required: true
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/responses/UserOAT'
+      400:
+        $ref: '#/components/responses/BadRequest'
+      422:
+        $ref: '#/components/responses/UnprocessableEntity'
+
+# Route : Logout
+/api/logout:
+  post:
+    summary: Logout user using the opaque access token
+    tags:
+      - Auth
+    security:
+      - bearerAuth: [ ]
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: Message response.
+                status:
+                  type: string
+                  description: The status http code.
+      401:
+        $ref: '#/components/responses/UnauthorizedAccess'
+
