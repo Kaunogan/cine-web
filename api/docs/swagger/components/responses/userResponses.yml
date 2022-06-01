@@ -2,10 +2,10 @@ components:
   userResponses:
 
     #|--------------------------------------------------------------------------
-    #| Response ==> Success : 200
+    #| Response ==> OK : Success
     #|--------------------------------------------------------------------------
     Success:
-      description: Success
+      description: OK
       content:
         application/json:
           schema:
@@ -22,7 +22,7 @@ components:
     #| Response ==> Infos : 200
     #|--------------------------------------------------------------------------
     Infos:
-      description: Success
+      description: OK
       content:
         application/json:
           schema:
@@ -57,7 +57,7 @@ components:
     #| Response ==> Profile : 200
     #|--------------------------------------------------------------------------
     Profile:
-      description: Success
+      description: OK
       content:
         application/json:
           schema:
@@ -104,7 +104,7 @@ components:
     #| Response ==> Friends : 200
     #|--------------------------------------------------------------------------
     Friends:
-      description: Success
+      description: OK
       content:
         application/json:
           schema:
@@ -159,7 +159,7 @@ components:
     #| Response ==> Friend : 200
     #|--------------------------------------------------------------------------
     Friend:
-      description: Success
+      description: OK
       content:
         application/json:
           schema:
@@ -181,4 +181,3 @@ components:
                   pseudo:
                     type: string
                     description: The pseudo of friend
-

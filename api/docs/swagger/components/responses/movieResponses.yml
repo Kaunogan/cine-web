@@ -1,0 +1,73 @@
+components:
+  movieResponses:
+
+    #|--------------------------------------------------------------------------
+    #| Response ==> PopularMovies : 200
+    #|--------------------------------------------------------------------------
+    PopularMovies:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Message responses.
+              status:
+                type: string
+                description: The status http code.
+              results:
+                type: array
+                description: The array of popular movies
+                items:
+                  type: object
+                  properties:
+                    tmdbMovieId:
+                      type: number
+                      description: The id of tmdb movie
+                    title:
+                      type: string
+                      description: The title of movie
+                    posterUrl:
+                      type: string
+                      description: The url of movie poster
+
+    #|--------------------------------------------------------------------------
+    #| Response ==> Movie : 200
+    #|--------------------------------------------------------------------------
+    Movie:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Message responses.
+              status:
+                type: string
+                description: The status http code.
+              results:
+                type: object
+                description: The array of popular movies
+                properties:
+                  tmdbMovieId:
+                    type: number
+                    description: The id of tmdb movie
+                  title:
+                    type: string
+                    description: The title of movie
+                  overview:
+                    type: string
+                    description: The synopsis of movie
+                  posterUrl:
+                    type: string
+                    description: The url of movie poster
+                  backdropUrl:
+                    type: string
+                    description: The url of movie backdrop
+                  trailerUrl:
+                    type: string
+                    description: The url of movie trailer

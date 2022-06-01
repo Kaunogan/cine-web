@@ -68,26 +68,30 @@ class TmdbMovieService {
     const { apiKey } = this.config
     let trailerUrl = ''
 
-    const { data: movieData } = await axios.get(
-      `${basePathApi}/movie/${tmdbMovieId}?api_key=${apiKey}`
-    )
-    const { data: videoData } = await axios.get(
-      `${basePathApi}/movie/${tmdbMovieId}/videos?api_key=${apiKey}`
-    )
+    try {
+      const { data: movieData } = await axios.get(
+        `${basePathApi}/movie/${tmdbMovieId}?api_key=${apiKey}`
+      )
+      const { data: videoData } = await axios.get(
+        `${basePathApi}/movie/${tmdbMovieId}/videos?api_key=${apiKey}`
+      )
 
-    const movieTrailer = videoData.results.find((movie) => movie.type === 'Trailer')
+      const movieTrailer = videoData.results.find((movie) => movie.type === 'Trailer')
 
-    if (movieTrailer !== undefined) {
-      trailerUrl = youtubeEmbed + movieTrailer.key
-    }
+      if (movieTrailer !== undefined) {
+        trailerUrl = youtubeEmbed + movieTrailer.key
+      }
 
-    return {
-      tmdbMovieId: movieData.id,
-      title: movieData.original_title,
-      overview: movieData.overview,
-      posterUrl: this.getOriginalImagePath(movieData.poster_path),
-      backdropUrl: this.getOriginalImagePath(movieData.backdrop_path),
-      trailerUrl,
+      return {
+        tmdbMovieId: movieData.id,
+        title: movieData.original_title,
+        overview: movieData.overview,
+        posterUrl: this.getOriginalImagePath(movieData.poster_path),
+        backdropUrl: this.getOriginalImagePath(movieData.backdrop_path),
+        trailerUrl,
+      }
+    } catch ({ response }) {
+      throw new TmdbRequestException(response.data.status_message, response.status, 'E_TMDB_API')
     }
   }
 }

@@ -5,7 +5,7 @@ components:
     #| Response ==> UserOAT : 200
     #|--------------------------------------------------------------------------
     UserOAT:
-      description: Success
+      description: OK
       content:
         application/json:
           schema:
