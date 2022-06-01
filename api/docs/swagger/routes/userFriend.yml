@@ -134,7 +134,7 @@
       - application/json
     responses:
       200:
-        $ref: '#/components/userFriendResponses/Success'
+        $ref: '#/components/globalResponses/Success'
       401:
         $ref: '#/components/globalResponses/UnauthorizedAccess'
       403:

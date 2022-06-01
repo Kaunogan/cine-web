@@ -7,6 +7,7 @@ import UpdateUserValidator from 'App/Validators/UpdateUserValidator'
 interface ICategoryToSend {
   id: number
   name: string
+  shared_id: string
 }
 
 export default class UsersController {
@@ -72,7 +73,7 @@ export default class UsersController {
     const categories = await user
       .related('categories')
       .query()
-      .select(['id', 'name', 'visibilityId'])
+      .select(['id', 'name', 'sharedId', 'visibilityId'])
       .preload('visibility')
       .preload('movies')
 
@@ -85,19 +86,21 @@ export default class UsersController {
 
     // Get categories depending on connected user & visibility
     if (isConnectedUser) {
-      categoriesToSend = categories.map(({ id, name, movies }) => {
+      categoriesToSend = categories.map(({ id, name, sharedId, movies }) => {
         nbOfMovies += movies.length
 
         return {
           id,
           name,
+          shared_id: sharedId,
         }
       })
     } else {
-      categories.forEach(({ id, name, movies, visibility }) => {
+      categories.forEach(({ id, name, movies, sharedId, visibility }) => {
         const categoryToSend: ICategoryToSend = {
           id,
           name,
+          shared_id: sharedId,
         }
 
         if (visibility.id === 1) {
