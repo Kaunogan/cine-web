@@ -1,47 +1,6 @@
 # Components
 components:
-  responses:
-    UserOAT:
-      description: Success
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                description: Message response.
-              status:
-                type: string
-                description: The status http code.
-              results:
-                type: object
-                properties:
-                  token:
-                    type: string
-                    description: The opaque access token.
-                  userId:
-                    type: number
-                    description: The user id.
-                  expiresAt:
-                    type: string
-                    description: The timestamp expiration token
-    BadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                description: Message response.
-              status:
-                type: string
-                description: The status http code.
-              errorCode:
-                type: string
-                description: The error code.
+  errorResponses:
     UnprocessableEntity:
       description: Unprocessable Entity
       content:
@@ -51,7 +10,7 @@ components:
             properties:
               message:
                 type: string
-                description: Message response.
+                description: Message responses.
               status:
                 type: string
                 description: The status http code.
@@ -67,7 +26,39 @@ components:
             properties:
               message:
                 type: string
-                description: Message response.
+                description: Message responses.
+              status:
+                type: string
+                description: The status http code.
+              errorCode:
+                type: string
+                description: The error code.
+    BadRequest:
+      description: Bad requests
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Message responses.
+              status:
+                type: string
+                description: The status http code.
+              errorCode:
+                type: string
+                description: The error code.
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Message responses.
               status:
                 type: string
                 description: The status http code.

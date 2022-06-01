@@ -11,34 +11,34 @@ import { AuthenticationException } from '@adonisjs/auth/build/standalone'
  */
 export default class AuthMiddleware {
   /**
-   * The URL to redirect to when request is Unauthorized
+   * The URL to redirect to when requests is Unauthorized
    */
   protected redirectTo = '/login'
 
   /**
-   * Authenticates the current HTTP request against a custom set of defined
+   * Authenticates the current HTTP requests against a custom set of defined
    * guards.
    *
    * The authentication loop stops as soon as the user is authenticated using any
    * of the mentioned guards and that guard will be used by the rest of the code
-   * during the current request.
+   * during the current requests.
    */
   protected async authenticate(auth: HttpContextContract['auth'], guards: (keyof GuardsList)[]) {
     /**
      * Hold reference to the guard last attempted within the for loop. We pass
      * the reference of the guard to the "AuthenticationException", so that
-     * it can decide the correct response behavior based upon the guard
+     * it can decide the correct responses behavior based upon the guard
      * driver
      */
     let guardLastAttempted: string | undefined
 
-    for (let guard of guards) {
+    for (const guard of guards) {
       guardLastAttempted = guard
 
       if (await auth.use(guard).check()) {
         /**
          * Instruct auth to use the given guard as the default guard for
-         * the rest of the request, since the user authenticated
+         * the rest of the requests, since the user authenticated
          * succeeded here
          */
         auth.defaultGuard = guard
@@ -53,14 +53,14 @@ export default class AuthMiddleware {
       'Unauthorized access',
       'E_UNAUTHORIZED_ACCESS',
       guardLastAttempted,
-      this.redirectTo,
+      this.redirectTo
     )
   }
 
   /**
-   * Handle request
+   * Handle requests
    */
-  public async handle (
+  public async handle(
     { auth }: HttpContextContract,
     next: () => Promise<void>,
     customGuards: (keyof GuardsList)[]

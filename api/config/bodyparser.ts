@@ -24,7 +24,7 @@ const bodyParserConfig: BodyParserConfig = {
   | JSON parser settings
   |--------------------------------------------------------------------------
   |
-  | The settings for the JSON parser. The types defines the request content
+  | The settings for the JSON parser. The types defines the requests content
   | types which gets processed by the JSON parser.
   |
   */
@@ -46,7 +46,7 @@ const bodyParserConfig: BodyParserConfig = {
   |--------------------------------------------------------------------------
   |
   | The settings for the `application/x-www-form-urlencoded` parser. The types
-  | defines the request content types which gets processed by the form parser.
+  | defines the requests content types which gets processed by the form parser.
   |
   */
   form: {
@@ -74,8 +74,8 @@ const bodyParserConfig: BodyParserConfig = {
   | Raw body parser settings
   |--------------------------------------------------------------------------
   |
-  | Raw body just reads the request body stream as a plain text, which you
-  | can process by hand. This must be used when request body type is not
+  | Raw body just reads the requests body stream as a plain text, which you
+  | can process by hand. This must be used when requests body type is not
   | supported by the body parser.
   |
   */
@@ -92,7 +92,7 @@ const bodyParserConfig: BodyParserConfig = {
   |--------------------------------------------------------------------------
   |
   | The settings for the `multipart/form-data` parser. The types defines the
-  | request content types which gets processed by the form parser.
+  | requests content types which gets processed by the form parser.
   |
   */
   multipart: {
@@ -173,7 +173,7 @@ const bodyParserConfig: BodyParserConfig = {
     | Max Fields
     |--------------------------------------------------------------------------
     |
-    | The maximum number of fields allowed in the request body. The field includes
+    | The maximum number of fields allowed in the requests body. The field includes
     | text inputs and files both.
     |
     */
@@ -184,7 +184,7 @@ const bodyParserConfig: BodyParserConfig = {
     | Request body limit
     |--------------------------------------------------------------------------
     |
-    | The total limit to the multipart body. This includes all request files
+    | The total limit to the multipart body. This includes all requests files
     | and fields data.
     |
     */

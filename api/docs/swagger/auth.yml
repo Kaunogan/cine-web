@@ -24,11 +24,11 @@
       - application/json
     responses:
       200:
-        $ref: '#/components/responses/UserOAT'
+        $ref: '#/components/authResponses/UserOAT'
       400:
-        $ref: '#/components/responses/BadRequest'
+        $ref: '#/components/errorResponses/BadRequest'
       422:
-        $ref: '#/components/responses/UnprocessableEntity'
+        $ref: '#/components/errorResponses/UnprocessableEntity'
 
 # Route : Register
 /api/register:
@@ -59,12 +59,12 @@
     produces:
       - application/json
     responses:
-      200:
-        $ref: '#/components/responses/UserOAT'
+      201:
+        $ref: '#/components/authResponses/UserOAT'
       400:
-        $ref: '#/components/responses/BadRequest'
+        $ref: '#/components/errorResponses/BadRequest'
       422:
-        $ref: '#/components/responses/UnprocessableEntity'
+        $ref: '#/components/errorResponses/UnprocessableEntity'
 
 # Route : Logout
 /api/logout:
@@ -73,7 +73,7 @@
     tags:
       - Auth
     security:
-      - bearerAuth: [ ]
+      - bearerAuth: []
     produces:
       - application/json
     responses:
@@ -86,10 +86,10 @@
               properties:
                 message:
                   type: string
-                  description: Message response.
+                  description: Message responses.
                 status:
                   type: string
                   description: The status http code.
       401:
-        $ref: '#/components/responses/UnauthorizedAccess'
+        $ref: '#/components/errorResponses/UnauthorizedAccess'
 
