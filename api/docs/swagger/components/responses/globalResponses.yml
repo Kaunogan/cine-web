@@ -1,11 +1,27 @@
 components:
-  errorResponses:
+  globalResponses:
+    #|--------------------------------------------------------------------------
+    #| Response ==> Success : 200
+    #|--------------------------------------------------------------------------
+    Success:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Message responses.
+              status:
+                type: string
+                description: The status http code.
 
     #|--------------------------------------------------------------------------
     #| Response ==> BadRequest : 400
     #|--------------------------------------------------------------------------
     BadRequest:
-      description: Bad requests
+      description: Bad request
       content:
         application/json:
           schema:

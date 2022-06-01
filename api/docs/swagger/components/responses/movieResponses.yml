@@ -1,6 +1,5 @@
 components:
   movieResponses:
-
     #|--------------------------------------------------------------------------
     #| Response ==> PopularMovies : 200
     #|--------------------------------------------------------------------------
@@ -51,9 +50,8 @@ components:
                 description: The status http code.
               results:
                 type: object
-                description: The array of popular movies
                 properties:
-                  tmdbMovieId:
+                  tmdb_movie_id:
                     type: number
                     description: The id of tmdb movie
                   title:

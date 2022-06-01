@@ -2,7 +2,6 @@
 #| Route ==> login
 #|--------------------------------------------------------------------------
 /api/login:
-
   #|--------------------------------------------------------------------------
   #| Log user
   #|--------------------------------------------------------------------------
@@ -32,15 +31,14 @@
       200:
         $ref: '#/components/authResponses/UserOAT'
       400:
-        $ref: '#/components/errorResponses/BadRequest'
+        $ref: '#/components/globalResponses/BadRequest'
       422:
-        $ref: '#/components/errorResponses/UnprocessableEntity'
+        $ref: '#/components/globalResponses/UnprocessableEntity'
 
 #|--------------------------------------------------------------------------
 #| Route ==> register
 #|--------------------------------------------------------------------------
 /api/register:
-
   #|--------------------------------------------------------------------------
   #| Register user
   #|--------------------------------------------------------------------------
@@ -74,15 +72,14 @@
       201:
         $ref: '#/components/authResponses/UserOAT'
       400:
-        $ref: '#/components/errorResponses/BadRequest'
+        $ref: '#/components/globalResponses/BadRequest'
       422:
-        $ref: '#/components/errorResponses/UnprocessableEntity'
+        $ref: '#/components/globalResponses/UnprocessableEntity'
 
 #|--------------------------------------------------------------------------
 #| Route ==> logout
 #|--------------------------------------------------------------------------
 /api/logout:
-
   #|--------------------------------------------------------------------------
   #| Logout user
   #|--------------------------------------------------------------------------
@@ -109,5 +106,4 @@
                   type: string
                   description: The status http code.
       401:
-        $ref: '#/components/errorResponses/UnauthorizedAccess'
-
+        $ref: '#/components/globalResponses/UnauthorizedAccess'

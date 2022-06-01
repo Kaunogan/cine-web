@@ -76,7 +76,7 @@ export default class UserFriendsController {
 
     response.created({
       message: 'Friend added successfully',
-      status: response.getStatus(),
+      status: 201,
     })
   }
 

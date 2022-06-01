@@ -83,7 +83,7 @@ export default class UserCategoriesController {
 
     response.created({
       message: `Category ${newCategory.name} created successfully`,
-      status: response.getStatus(),
+      status: 201,
     })
   }
 
@@ -164,6 +164,10 @@ export default class UserCategoriesController {
 
     if (visibility.id === 3 && !authorIsConnectedUser) {
       throw new UnAuthorizedException('Unauthorized access', 401, 'E_UNAUTHORIZED_ACCESS')
+    }
+
+    if (category.sharedId !== sharedId) {
+      throw new BadRequestException('Invalid shared id', 400, 'E_BAD_REQUEST')
     }
 
     if (visibility.id === 2 && !authorIsConnectedUser) {

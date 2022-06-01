@@ -83,7 +83,7 @@ class TmdbMovieService {
       }
 
       return {
-        tmdbMovieId: movieData.id,
+        tmdb_movie_id: movieData.id,
         title: movieData.original_title,
         overview: movieData.overview,
         posterUrl: this.getOriginalImagePath(movieData.poster_path),

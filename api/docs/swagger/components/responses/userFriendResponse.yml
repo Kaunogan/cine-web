@@ -1,0 +1,82 @@
+components:
+  userFriendResponses:
+    #|--------------------------------------------------------------------------
+    #| Response ==> Friends : 200
+    #|--------------------------------------------------------------------------
+    Friends:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Message responses.
+              status:
+                type: string
+                description: The status http code.
+              pagination:
+                type: object
+                properties:
+                  total:
+                    type: number
+                    description: Get number of friends
+                  per_page:
+                    type: number
+                    description: Number of friends displayed per page
+                  current_page:
+                    type: number
+                    description: Number of friends displayed in current page
+                  last_page:
+                    type: number
+                    description: Number of friends displayed in last page
+                  first_page:
+                    type: number
+                    description: Number of friends displayed in first page
+                  first_page_url:
+                    type: number
+                  last_page_url:
+                    type: number
+                  next_page_url:
+                    type: number
+                  previous_page_url:
+                    type: number
+              results:
+                type: array
+                description: The user friends
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: The id of friend
+                    pseudo:
+                      type: string
+                      description: The pseudo of friend
+
+    #|--------------------------------------------------------------------------
+    #| Response ==> Friend : 200
+    #|--------------------------------------------------------------------------
+    Friend:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Message responses.
+              status:
+                type: string
+                description: The status http code.
+              results:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: The id of friend
+                  pseudo:
+                    type: string
+                    description: The pseudo of friend

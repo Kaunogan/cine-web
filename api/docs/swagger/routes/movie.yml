@@ -2,7 +2,6 @@
 #| Route ==> movies
 #|--------------------------------------------------------------------------
 /api/movies:
-
   #|--------------------------------------------------------------------------
   #| Get movies
   #|--------------------------------------------------------------------------
@@ -29,14 +28,13 @@
       200:
         $ref: '#/components/movieResponses/PopularMovies'
       401:
-        $ref: '#/components/errorResponses/UnauthorizedAccess'
+        $ref: '#/components/globalResponses/UnauthorizedAccess'
 
 
 #|--------------------------------------------------------------------------
 #| Route ==> movie
 #|--------------------------------------------------------------------------
 /api/movies/{movieId}:
-
   #|--------------------------------------------------------------------------
   #| Get movie
   #|--------------------------------------------------------------------------
@@ -59,6 +57,6 @@
       200:
         $ref: '#/components/movieResponses/Movie'
       401:
-        $ref: '#/components/errorResponses/UnauthorizedAccess'
+        $ref: '#/components/globalResponses/UnauthorizedAccess'
       404:
-        $ref: '#/components/errorResponses/NotFound'
+        $ref: '#/components/globalResponses/NotFound'
