@@ -6,7 +6,7 @@ import Visibility from 'App/Models/Visibility'
 import UpdateCategoryValidator from 'App/Validators/UpdateCategoryValidator'
 import Encryption from '@ioc:Adonis/Core/Encryption'
 import BadRequestException from 'App/Exceptions/BadRequestException'
-import UnAuthorizedException from 'App/Exceptions/UnAuthorizedException'
+import ForbiddenException from 'App/Exceptions/ForbiddenException'
 
 interface IDecryptedSharedKey {
   category_id: number
@@ -83,7 +83,7 @@ export default class UserCategoriesController {
 
     response.created({
       message: `Category ${newCategory.name} created successfully`,
-      status: response.getStatus(),
+      status: 201,
     })
   }
 
@@ -135,8 +135,18 @@ export default class UserCategoriesController {
     const user = await User.findOrFail(userId)
 
     const category = await user.related('categories').query().where('id', categoryId).firstOrFail()
+    const movies = await category.related('movies').query()
 
     await category.delete()
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const movie of movies) {
+      // eslint-disable-next-line no-await-in-loop
+      const categories = await movie.related('categories').query()
+
+      // eslint-disable-next-line no-await-in-loop
+      if (categories.length === 0) await movie.delete()
+    }
 
     return {
       message: `Category ${category.name} deleted successfully`,
@@ -162,8 +172,12 @@ export default class UserCategoriesController {
 
     const authorIsConnectedUser = connectedUser?.id === author.id
 
+    if (category.sharedId !== sharedId) {
+      throw new BadRequestException('Invalid shared id', 400, 'E_BAD_REQUEST')
+    }
+
     if (visibility.id === 3 && !authorIsConnectedUser) {
-      throw new UnAuthorizedException('Unauthorized access', 401, 'E_UNAUTHORIZED_ACCESS')
+      throw new ForbiddenException('You are not authorized', 403, 'E_AUTHORIZATION_FAILURE')
     }
 
     if (visibility.id === 2 && !authorIsConnectedUser) {
@@ -172,7 +186,7 @@ export default class UserCategoriesController {
       const isFriend = friends.find((friend) => friend.id === connectedUser?.id) !== undefined
 
       if (!isFriend)
-        throw new UnAuthorizedException('Unauthorized access', 401, 'E_UNAUTHORIZED_ACCESS')
+        throw new ForbiddenException('You are not authorized', 403, 'E_AUTHORIZATION_FAILURE')
     }
 
     return {

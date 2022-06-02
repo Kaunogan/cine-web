@@ -1,0 +1,62 @@
+#|--------------------------------------------------------------------------
+#| Route ==> movies
+#|--------------------------------------------------------------------------
+/api/movies:
+  #|--------------------------------------------------------------------------
+  #| Get movies
+  #|--------------------------------------------------------------------------
+  get:
+    summary: Get movies information from TMDB API
+    tags:
+      - Movie
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: query
+        schema:
+          type: string
+          description: Search film
+      - in: query
+        name: page
+        schema:
+          type: integer
+          description: Number of page
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/movieResponses/PopularMovies'
+      401:
+        $ref: '#/components/globalResponses/UnauthorizedAccess'
+
+
+#|--------------------------------------------------------------------------
+#| Route ==> movie
+#|--------------------------------------------------------------------------
+/api/movies/{movieId}:
+  #|--------------------------------------------------------------------------
+  #| Get movie
+  #|--------------------------------------------------------------------------
+  get:
+    summary: Get specific movie information from TMDB API
+    tags:
+      - Movie
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: movieId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the movie to get
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/movieResponses/Movie'
+      401:
+        $ref: '#/components/globalResponses/UnauthorizedAccess'
+      404:
+        $ref: '#/components/globalResponses/NotFound'

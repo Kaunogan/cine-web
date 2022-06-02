@@ -16,14 +16,14 @@ const corsConfig: CorsConfig = {
   | A boolean to enable or disable CORS integration from your AdonisJs
   | application.
   |
-  | Setting the value to `true` will enable the CORS for all HTTP request. However,
-  | you can define a function to enable/disable it on per request basis as well.
+  | Setting the value to `true` will enable the CORS for all HTTP requests. However,
+  | you can define a function to enable/disable it on per requests basis as well.
   |
   */
   enabled: true,
 
   // You can also use a function that return true or false.
-  // enabled: (request) => request.url().startsWith('/api')
+  // enabled: (requests) => requests.url().startsWith('/api')
 
   /*
   |--------------------------------------------------------------------------
@@ -35,11 +35,11 @@ const corsConfig: CorsConfig = {
   |
   | https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
   |
-  | Boolean (true)    - Allow current request origin.
+  | Boolean (true)    - Allow current requests origin.
   | Boolean (false)   - Disallow all.
   | String            - Comma separated list of allowed origins.
   | Array             - An array of allowed origins.
-  | String (*)        - A wildcard (*) to allow all request origins.
+  | String (*)        - A wildcard (*) to allow all requests origins.
   | Function          - Receives the current origin string and should return
   |                     one of the above values.
   |
@@ -83,7 +83,7 @@ const corsConfig: CorsConfig = {
   |--------------------------------------------------------------------------
   |
   | A list of headers to be exposed by setting `Access-Control-Expose-Headers`.
-  | header. By default following 6 simple response headers are exposed.
+  | header. By default following 6 simple responses headers are exposed.
   |
   | Cache-Control
   | Content-Language

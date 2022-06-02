@@ -32,7 +32,7 @@ interface IMovie {
 |
 */
 interface IMovieDetails {
-  tmdbMovieId: number
+  tmdb_movie_id: number
   title: string
   overview: string
   posterUrl: string
