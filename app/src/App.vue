@@ -1,6 +1,6 @@
 <template>
   <div class="h-screen flex justify-center items-center">
-    <h1 class="text-2xl">CineWeb</h1>
+    <h1 class="text-2xl text-primary">CineWeb</h1>
   </div>
 </template>
 
