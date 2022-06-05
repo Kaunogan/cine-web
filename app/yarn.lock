@@ -67,6 +67,11 @@
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==
 
+"@types/node@^17.0.40":
+  version "17.0.40"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.40.tgz#76ee88ae03650de8064a6cf75b8d95f9f4a16090"
+  integrity sha512-UXdBxNGqTMtm7hCwh9HtncFVLrXoqA3oJW30j6XWp5BH/wu3mVeaxo7cq5benFdBw34HB3XDT2TRPI7rXZ+mDg==
+
 "@typescript-eslint/eslint-plugin@^5.27.0":
   version "5.27.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-5.27.0.tgz#23d82a4f21aaafd8f69dbab7e716323bb6695cc8"
@@ -227,6 +232,11 @@
   dependencies:
     "@vue/compiler-dom" "3.2.36"
     "@vue/shared" "3.2.36"
+
+"@vue/devtools-api@^6.0.0":
+  version "6.1.4"
+  resolved "https://registry.yarnpkg.com/@vue/devtools-api/-/devtools-api-6.1.4.tgz#b4aec2f4b4599e11ba774a50c67fa378c9824e53"
+  integrity sha512-IiA0SvDrJEgXvVxjNkHPFfDx6SXw0b/TUkqMcDZWNg9fnCAHbTpoo59YfJ9QLFkwa3raau5vSlRVzMSLDnfdtQ==
 
 "@vue/reactivity-transform@3.2.36":
   version "3.2.36"
@@ -790,6 +800,11 @@ eslint-config-prettier@^8.5.0:
   version "8.5.0"
   resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.5.0.tgz#5a81680ec934beca02c7b1a61cf8ca34b66feab1"
   integrity sha512-obmWKLUNCnhtQRKc+tmnYuQl0pFU1ibYJQ5BGhTVB08bHe9wC8qUeG7c08dj9XX+AuPj1YSGSQIHl1pnDHZR0Q==
+
+eslint-import-resolver-alias@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/eslint-import-resolver-alias/-/eslint-import-resolver-alias-1.1.2.tgz#297062890e31e4d6651eb5eba9534e1f6e68fc97"
+  integrity sha512-WdviM1Eu834zsfjHtcGHtGfcu+F30Od3V7I9Fi57uhBEwPkjDcii7/yW8jAT+gOhn4P/vOxxNAXbFAKsrrc15w==
 
 eslint-import-resolver-node@^0.3.6:
   version "0.3.6"
@@ -1959,6 +1974,13 @@ vue-eslint-parser@^9.0.1:
     esquery "^1.4.0"
     lodash "^4.17.21"
     semver "^7.3.6"
+
+vue-router@4:
+  version "4.0.15"
+  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-4.0.15.tgz#b4a0661efe197f8c724e0f233308f8776e2c3667"
+  integrity sha512-xa+pIN9ZqORdIW1MkN2+d9Ui2pCM1b/UMgwYUCZOiFYHAvz/slKKBDha8DLrh5aCG/RibtrpyhKjKOZ85tYyWg==
+  dependencies:
+    "@vue/devtools-api" "^6.0.0"
 
 vue-tsc@^0.34.7:
   version "0.34.17"

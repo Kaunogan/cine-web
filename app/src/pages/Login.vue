@@ -1,6 +1,6 @@
 <template>
   <div class="h-screen flex justify-center items-center">
-    <router-view></router-view>
+    <h1 class="text-2xl text-primary">Login</h1>
   </div>
 </template>
 
