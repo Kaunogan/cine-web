@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen flex justify-center items-center">
+  <div>
     <h1 class="text-2xl text-primary">Login</h1>
   </div>
 </template>
