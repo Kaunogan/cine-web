@@ -1,5 +1,5 @@
 <template>
-  <button class="btn" :class="btnClass">
+  <button class="cw-btn" :class="btnClass">
     <slot></slot>
   </button>
 </template>
@@ -15,12 +15,12 @@ interface Props {
 const props = defineProps<Props>()
 
 // Computed
-const btnClass = computed(() => `btn--${props.btnType}`)
+const btnClass = computed(() => `cw-btn--${props.btnType}`)
 </script>
 
 <style lang="scss" scoped>
-.btn {
-  @apply w-auto flex items-center py-1 px-3 cursor-pointer font-light text-sm md:text-base rounded;
+.cw-btn {
+  @apply w-auto flex items-center py-1 px-3 cursor-pointer font-light text-base rounded;
 
   &--primary {
     @apply bg-primary text-white;

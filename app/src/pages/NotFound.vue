@@ -27,10 +27,10 @@ const clicked = () => router.back()
 
 <style lang="scss" scoped>
 .not-found {
-  @apply text-3xl font-bold text-tertiary;
+  @apply text-5xl font-bold text-tertiary font-header;
 
   &--color {
-    @apply mx-1 text-primary font-bold;
+    @apply mx-1.5 text-primary font-bold;
   }
 }
 </style>

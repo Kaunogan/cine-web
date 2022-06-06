@@ -8,4 +8,12 @@
 @tailwind utilities;
 
 
+/* Custom classes */
+.cw-container {
+    @apply bg-white w-full h-full flex flex-col justify-center items-center;
+}
 
+.cw-card {
+    @apply bg-white p-7 rounded-xl;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
