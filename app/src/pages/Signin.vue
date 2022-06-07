@@ -29,6 +29,7 @@
 
 <script setup lang="ts">
 import { reactive } from 'vue'
+import { useThrottleFn } from '@vueuse/core'
 import CwForm from '@/components/cwForm.vue'
 import CwFormInput from '@/components/cwFormInput.vue'
 
@@ -39,14 +40,14 @@ const state = reactive({
   password: '',
 })
 
-const signin = () => {
+const signin = useThrottleFn(() => {
   if (!state.email || !state.password) return
 
   AuthService.login({
     email: state.email,
     password: state.password,
   })
-}
+}, 1000)
 </script>
 
 <style lang="scss" scoped>
