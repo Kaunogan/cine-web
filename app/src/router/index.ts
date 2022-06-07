@@ -30,16 +30,16 @@ const router = VueRouter.createRouter({
   routes: [
     /*
     |--------------------------------------------------------------------------
-    | Login
+    | Signin
     |--------------------------------------------------------------------------
     |
-    | Route to authenticate user
+    | Route to sign in user
     |
     */
     {
-      path: '/login',
-      name: 'Login',
-      component: () => import('@/pages/Login.vue'),
+      path: '/signin',
+      name: 'Signin',
+      component: () => import('@/pages/Signin.vue'),
     },
 
     /*

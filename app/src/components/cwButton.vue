@@ -1,6 +1,6 @@
 <template>
   <button class="cw-btn" :class="btnClass">
-    <slot></slot>
+    <slot />
   </button>
 </template>
 
