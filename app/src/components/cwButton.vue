@@ -1,6 +1,7 @@
 <template>
   <button class="cw-btn" :class="btnClass">
-    <slot />
+    <slot v-if="!props.isLoading" />
+    <ph-circle-notch v-else size="24" class="animate-spin" />
   </button>
 </template>
 
@@ -9,6 +10,7 @@ import { computed } from 'vue'
 
 interface Props {
   btnType: 'primary' | 'primary-outlined'
+  isLoading?: boolean
 }
 
 // Props

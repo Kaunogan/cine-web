@@ -5,7 +5,7 @@
       <div class="cw-container">
         <div class="cw-card w-full max-w-md">
           <h1 class="text-2xl text-center font-light">Register</h1>
-          <cw-form @submit.prevent="register">
+          <cw-form :is-loading="state.isLoading" @submit.prevent="register">
             <cw-form-input label="Email" for="em">
               <input id="em" v-model="state.email" class="cw-input" type="email" name="email" placeholder="Please enter your email" />
               <ph-envelope size="24" class="ml-2" />
@@ -47,19 +47,28 @@ const state = reactive({
   email: '',
   pseudo: '',
   password: '',
+  isLoading: false,
 })
 
 // Function
 const register = useThrottleFn(async () => {
-  if (!state.email || !state.pseudo || !state.password) return
+  if (!state.email || !state.pseudo || !state.password || state.isLoading) return
 
-  await AuthService.register({
-    email: state.email,
-    pseudo: state.pseudo,
-    password: state.password,
-  })
+  state.isLoading = true
 
-  await router.push({ name: 'Home' })
+  try {
+    await AuthService.register({
+      email: state.email,
+      pseudo: state.pseudo,
+      password: state.password,
+    })
+
+    state.isLoading = false
+
+    await router.push({ name: 'Home' })
+  } catch (e) {
+    state.isLoading = false
+  }
 }, 2000)
 </script>
 

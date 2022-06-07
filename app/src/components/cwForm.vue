@@ -1,7 +1,7 @@
 <template>
   <form class="cw-form">
     <slot />
-    <cw-button btn-type="primary" class="transition mx-auto hover:opacity-80 mt-6">{{ props.btnText || 'Ok' }}</cw-button>
+    <cw-button :is-loading="props.isLoading" btn-type="primary" class="transition mx-auto hover:opacity-80 mt-6">{{ props.btnText || 'Ok' }}</cw-button>
   </form>
 </template>
 
@@ -10,6 +10,7 @@ import CwButton from '@/components/cwButton.vue'
 
 interface Props {
   btnText?: string
+  isLoading?: boolean
 }
 
 // Props
