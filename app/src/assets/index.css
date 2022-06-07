@@ -21,3 +21,12 @@
 .cw-input {
     @apply w-full font-light focus:outline-none;
 }
+
+.cw-auth-container {
+    @apply w-full h-full bg-cover;
+    background-image: url('../assets/images/wallpaper-poster.jpeg');
+}
+
+.cw-auth-shadow {
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+}

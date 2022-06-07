@@ -1,14 +1,19 @@
 <template>
-  <div class="cw-auth-container">
+  <div class="cw-auth-container flex justify-end">
     <div class="cw-container cw-auth-shadow p-4 md:p-8 lg:w-1/2">
       <h1 class="font-header text-4xl md:text-5xl">CineWeb</h1>
       <div class="cw-container">
         <div class="cw-card w-full max-w-md">
-          <h1 class="text-2xl text-center font-light">Sign in</h1>
-          <cw-form @submit.prevent="signin">
+          <h1 class="text-2xl text-center font-light">Register</h1>
+          <cw-form @submit.prevent="register">
             <cw-form-input label="Email" for="em">
               <input id="em" v-model="state.email" class="cw-input" type="email" name="email" placeholder="Please enter your email" />
               <ph-envelope size="24" class="ml-2" />
+            </cw-form-input>
+
+            <cw-form-input label="Pseudo" for="psd">
+              <input id="psd" v-model="state.pseudo" class="cw-input" type="text" name="pseudo" placeholder="Please enter your pseudo" />
+              <ph-user size="24" class="ml-2" />
             </cw-form-input>
 
             <cw-form-input label="Password" for="pwd">
@@ -17,7 +22,7 @@
             </cw-form-input>
           </cw-form>
         </div>
-        <h3 class="mt-4 font-light text-center">No account ? <router-link to="/register" class="text-primary">Register</router-link></h3>
+        <h3 class="mt-4 font-light text-center">Already have an account ? <router-link to="/signin" class="text-primary">Signin</router-link></h3>
       </div>
       <p class="text-center text-sm font-light font-light md:text-md">
         Made by Melanie, Kaunogan & Elric <br />
@@ -40,15 +45,17 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const state = reactive({
   email: '',
+  pseudo: '',
   password: '',
 })
 
 // Function
-const signin = useThrottleFn(async () => {
-  if (!state.email || !state.password) return
+const register = useThrottleFn(async () => {
+  if (!state.email || !state.pseudo || !state.password) return
 
-  await AuthService.login({
+  await AuthService.register({
     email: state.email,
+    pseudo: state.pseudo,
     password: state.password,
   })
 

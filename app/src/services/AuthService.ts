@@ -5,20 +5,30 @@ interface ILoginBody {
   password: string
 }
 
-interface ILoginResponse {
+interface IRegisterBody {
+  email: string
+  pseudo: string
+  password: string
+}
+
+interface IAuthResponse {
   token: string
   userId: number
   expiresAt: string
 }
 
 export async function login(loginBody: ILoginBody) {
-  const http = new HttpController('/auth')
+  const httpController = new HttpController('/auth')
 
-  const { results } = await http.post<ILoginResponse>('/login', loginBody)
+  const { results } = await httpController.post<IAuthResponse>('/login', loginBody)
 
   console.log(results.token)
 }
 
-export async function register() {
-  console.log('register')
+export async function register(registerBody: IRegisterBody) {
+  const httpController = new HttpController('/auth')
+
+  const { results } = await httpController.post<IAuthResponse>('/register', registerBody)
+
+  console.log(results)
 }
