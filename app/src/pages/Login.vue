@@ -6,14 +6,17 @@
         <div class="cw-card w-full max-w-md">
           <h1 class="text-2xl text-center font-light">Login</h1>
           <div class="my-6">
-            <cw-input id="email" label="Email" placeholder="Please enter your email" input-type="text">
+            <cw-form id="em" label="Email">
+              <input id="em" v-model="state.email" class="w-full font-light focus:outline-none" type="email" name="email" placeholder="Please enter your email" />
               <ph-envelope size="24" />
-            </cw-input>
-            <cw-input id="password" class="mt-6" label="Password" placeholder="Please enter your password" input-type="password">
+            </cw-form>
+
+            <cw-form id="pwd" label="Password" class="mt-6">
+              <input id="pwd" v-model="state.password" class="w-full font-light focus:outline-none" type="password" name="password" placeholder="Please enter your password" />
               <ph-password size="24" />
-            </cw-input>
+            </cw-form>
           </div>
-          <cw-button btn-type="primary" class="transition mx-auto hover:opacity-80">Ok</cw-button>
+          <cw-button btn-type="primary" class="transition mx-auto hover:opacity-80" @click="login">Ok</cw-button>
         </div>
         <h3 class="mt-4 font-light text-center">No account ? <router-link to="/register" class="text-primary">Register</router-link></h3>
       </div>
@@ -26,8 +29,22 @@
 </template>
 
 <script setup lang="ts">
-import CwInput from '@/components/cwInput.vue'
+import { reactive } from 'vue'
+import CwForm from '@/components/cwForm.vue'
 import CwButton from '@/components/cwButton.vue'
+import * as AuthService from '@/services/AuthService'
+
+const state = reactive({
+  email: '',
+  password: '',
+})
+
+const login = () => {
+  AuthService.login({
+    email: state.email,
+    password: state.password,
+  })
+}
 </script>
 
 <style lang="scss" scoped>
