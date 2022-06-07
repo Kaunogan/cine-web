@@ -1,4 +1,4 @@
-import Http from '@/services/Http'
+import HttpController from '@/controller/Http'
 
 interface ILoginBody {
   email: string
@@ -12,7 +12,7 @@ interface ILoginResponse {
 }
 
 export async function login(loginBody: ILoginBody) {
-  const http = new Http('/auth')
+  const http = new HttpController('/auth')
 
   const { results } = await http.post<ILoginResponse>('/login', loginBody)
 
@@ -20,5 +20,5 @@ export async function login(loginBody: ILoginBody) {
 }
 
 export async function register() {
-  console.log('regsiter')
+  console.log('register')
 }

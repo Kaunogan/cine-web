@@ -13,7 +13,7 @@ interface IResponse<T> {
   results: T
 }
 
-export default class Http {
+export default class HttpController {
   private instance: AxiosInstance
 
   private API_IP = import.meta.env.VITE_API_IP
