@@ -1,4 +1,5 @@
 import * as VueRouter from 'vue-router'
+import useAuth from '@/stores/authStore'
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,11 @@ const router = VueRouter.createRouter({
       path: '/signin',
       name: 'Signin',
       component: () => import('@/pages/Signin.vue'),
+      // eslint-disable-next-line consistent-return
+      beforeEnter: () => {
+        const auth = useAuth()
+        if (!auth.isExpired) return '/home'
+      },
     },
 
     /*
@@ -54,6 +60,11 @@ const router = VueRouter.createRouter({
       path: '/register',
       name: 'Register',
       component: () => import('@/pages/Register.vue'),
+      // eslint-disable-next-line consistent-return
+      beforeEnter: () => {
+        const auth = useAuth()
+        if (!auth.isExpired) return '/home'
+      },
     },
 
     /*
@@ -68,6 +79,7 @@ const router = VueRouter.createRouter({
       path: '/home',
       name: 'Home',
       component: () => import('@/pages/Home.vue'),
+      meta: { needLoggedIn: true },
     },
 
     /*
@@ -86,6 +98,19 @@ const router = VueRouter.createRouter({
 
     /*
     |--------------------------------------------------------------------------
+    | Redirect Home
+    |--------------------------------------------------------------------------
+    |
+    | Route that redirects to home page
+    |
+    */
+    {
+      path: '/',
+      redirect: '/home',
+    },
+
+    /*
+    |--------------------------------------------------------------------------
     | Redirect Not Found
     |--------------------------------------------------------------------------
     |
@@ -99,6 +124,20 @@ const router = VueRouter.createRouter({
       }),
     },
   ],
+})
+
+/*
+|--------------------------------------------------------------------------
+| Navigation Guard
+|--------------------------------------------------------------------------
+|
+| Check for each route if the token has not expired
+|
+*/
+// eslint-disable-next-line consistent-return
+router.beforeEach((to) => {
+  const auth = useAuth()
+  if (to.meta.needLoggedIn && auth.isExpired) return '/signin'
 })
 
 export default router
