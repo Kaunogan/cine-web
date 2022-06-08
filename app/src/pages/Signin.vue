@@ -56,10 +56,8 @@ const signin = useThrottleFn(async () => {
       password: state.password,
     })
 
-    state.isLoading = false
-
     await router.push({ name: 'Home' })
-  } catch (e) {
+  } finally {
     state.isLoading = false
   }
 }, 2000)
