@@ -1,4 +1,5 @@
 import HttpController from '@/controller/Http'
+import useAuth from '@/stores/authStore'
 
 interface ILoginBody {
   email: string
@@ -19,16 +20,20 @@ interface IAuthResponse {
 
 export async function login(loginBody: ILoginBody) {
   const httpController = new HttpController('/auth')
+  const auth = useAuth()
 
   const { results } = await httpController.post<IAuthResponse>('/login', loginBody)
 
-  console.log(results.token)
+  auth.token = results.token
+  auth.expireAt = results.expiresAt
 }
 
 export async function register(registerBody: IRegisterBody) {
   const httpController = new HttpController('/auth')
+  const auth = useAuth()
 
   const { results } = await httpController.post<IAuthResponse>('/register', registerBody)
 
-  console.log(results)
+  auth.token = results.token
+  auth.expireAt = results.expiresAt
 }
