@@ -1,5 +1,5 @@
 <template>
-  <h1 class="text-2xl text-primary">Home</h1>
+  <div class="flex-1 w-full bg-primary bg-white"></div>
 </template>
 
 <script setup lang="ts"></script>

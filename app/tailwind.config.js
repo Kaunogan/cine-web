@@ -9,8 +9,8 @@ module.exports = {
       tertiary: '#1E2D2F',
     },
     fontFamily: {
-      sans: ['Poppins', 'sans-serif'],
-      header: ['Bebas Neue', 'sans-serif'],
+      sans: ['Roboto', 'sans-serif'],
+      header: ['Poppins', 'sans-serif'],
     },
   },
   plugins: [],
