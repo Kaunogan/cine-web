@@ -1,4 +1,14 @@
 {
+    "settings": {
+        "import/resolver": {
+            "alias": {
+                "extensions": [".ts", ".vue"],
+                "map": [
+                    ["@", "./src"]
+                ]
+            }
+        }
+    },
     "env": {
         "browser": true,
         "es2021": true
@@ -18,5 +28,13 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "import/extensions": [
+            "error",
+            "ignorePackages",
+            {
+                "ts": "never"
+            }
+        ],
+        "vue/multi-word-component-names": 0
     }
 }
