@@ -1,0 +1,17 @@
+.cw-g-auth-container {
+  @apply flex h-full w-full bg-cover;
+  background-image: url('../images/wallpaper-poster.jpeg');
+}
+
+.cw-g-card {
+  @apply rounded-xl bg-white p-7;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
+.cw-g-input {
+  @apply w-full font-light focus:outline-none md:text-lg;
+}
+
+.cw-g-auth-shadow {
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+}
