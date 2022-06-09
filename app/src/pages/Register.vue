@@ -1,10 +1,10 @@
 <template>
   <div class="cw-auth-container flex justify-end">
-    <div class="cw-container cw-auth-shadow p-4 md:p-8 lg:w-1/2">
+    <div class="bg-white w-full h-full flex flex-col justify-center items-center cw-auth-shadow p-4 md:p-8 lg:w-1/2">
       <h1 class="font-header text-4xl md:text-5xl">CineWeb</h1>
-      <div class="cw-container">
+      <div class="bg-white w-full h-full flex flex-col justify-center items-center">
         <div class="cw-card w-full max-w-md">
-          <h1 class="text-2xl text-center font-light">Register</h1>
+          <h1 class="text-2xl text-center font-header font-light">Register</h1>
           <cw-form :is-loading="state.isLoading" @submit.prevent="register">
             <cw-form-input label="Email" for="em">
               <input id="em" v-model="state.email" class="cw-input" type="email" name="email" placeholder="Please enter your email" />
@@ -24,7 +24,7 @@
         </div>
         <h3 class="mt-4 font-light text-center">Already have an account ? <router-link to="/signin" class="text-primary">Signin</router-link></h3>
       </div>
-      <p class="text-center text-sm font-light font-light md:text-md">
+      <p class="text-center text-sm md:text-base font-light">
         Made by Melanie, Kaunogan & Elric <br />
         <a href="https://github.com/Kaunogan/cine-web" target="_blank"><ph-github-logo class="mx-auto" size="16" /> </a>
       </p>

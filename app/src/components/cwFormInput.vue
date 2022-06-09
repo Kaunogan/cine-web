@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col mt-6">
-    <label class="font-light" :for="props.for">{{ props.label }}</label>
+    <label class="md:text-lg font-header font-light" :for="props.for">{{ props.label }}</label>
     <div class="cw-form-input-container">
       <slot />
     </div>
