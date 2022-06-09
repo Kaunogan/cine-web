@@ -1,30 +1,30 @@
 <template>
-  <div class="cw-auth-container flex justify-end">
-    <div class="bg-white w-full h-full flex flex-col justify-center items-center cw-auth-shadow p-4 md:p-8 lg:w-1/2">
+  <div class="cw-g-auth-container justify-end">
+    <div class="cw-register-container cw-g-auth-shadow">
       <h1 class="font-header text-4xl md:text-5xl">CineWeb</h1>
-      <div class="bg-white w-full h-full flex flex-col justify-center items-center">
-        <div class="cw-card w-full max-w-md">
-          <h1 class="text-2xl text-center font-header font-light">Register</h1>
+      <div class="cw-register-form-container">
+        <div class="cw-g-card w-full max-w-md">
+          <h1 class="text-center font-header text-2xl font-light">Register</h1>
           <cw-form :is-loading="state.isLoading" @submit.prevent="register">
             <cw-form-input label="Email" for="em">
-              <input id="em" v-model="state.email" class="cw-input" type="email" name="email" placeholder="Please enter your email" />
+              <input id="em" v-model="state.email" class="cw-g-input" type="email" name="email" placeholder="Please enter your email" />
               <ph-envelope size="24" class="ml-2" />
             </cw-form-input>
 
             <cw-form-input label="Pseudo" for="psd">
-              <input id="psd" v-model="state.pseudo" class="cw-input" type="text" name="pseudo" placeholder="Please enter your pseudo" />
+              <input id="psd" v-model="state.pseudo" class="cw-g-input" type="text" name="pseudo" placeholder="Please enter your pseudo" />
               <ph-user size="24" class="ml-2" />
             </cw-form-input>
 
             <cw-form-input label="Password" for="pwd">
-              <input id="pwd" v-model="state.password" class="cw-input" type="password" name="password" placeholder="Please enter your password" />
+              <input id="pwd" v-model="state.password" class="cw-g-input" type="password" name="password" placeholder="Please enter your password" />
               <ph-password size="24" class="ml-2" />
             </cw-form-input>
           </cw-form>
         </div>
-        <h3 class="mt-4 font-light text-center">Already have an account ? <router-link to="/signin" class="text-primary">Signin</router-link></h3>
+        <h3 class="mt-4 text-center font-light">Already have an account ? <router-link to="/signin" class="text-primary">Signin</router-link></h3>
       </div>
-      <p class="text-center text-sm md:text-base font-light">
+      <p class="text-center text-sm font-light md:text-base">
         Made by Melanie, Kaunogan & Elric <br />
         <a href="https://github.com/Kaunogan/cine-web" target="_blank"><ph-github-logo class="mx-auto" size="16" /> </a>
       </p>
@@ -70,4 +70,12 @@ const register = useThrottleFn(async () => {
 }, 2000)
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.cw-register-container {
+  @apply flex h-full w-full flex-col items-center justify-center bg-white p-4 md:p-8 lg:w-1/2;
+}
+
+.cw-register-form-container {
+  @apply flex h-full w-full flex-col items-center justify-center bg-white;
+}
+</style>

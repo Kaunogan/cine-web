@@ -1,7 +1,7 @@
 <template>
   <form class="cw-form">
     <slot />
-    <cw-button :is-loading="props.isLoading" btn-type="primary" class="transition mx-auto hover:opacity-80 mt-6">
+    <cw-button :is-loading="props.isLoading" btn-type="primary" class="mx-auto mt-6 transition hover:opacity-80">
       <span class="md:text-lg">{{ props.btnText || 'Ok' }}</span>
     </cw-button>
   </form>
@@ -21,6 +21,6 @@ const props = defineProps<Props>()
 
 <style scoped>
 .cw-form {
-  @apply w-full h-full flex flex-col;
+  @apply flex h-full w-full flex-col;
 }
 </style>

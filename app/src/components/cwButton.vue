@@ -22,14 +22,14 @@ const btnClass = computed(() => `cw-btn--${props.btnType}`)
 
 <style lang="scss" scoped>
 .cw-btn {
-  @apply w-auto flex items-center py-1 px-3 cursor-pointer font-light text-base rounded;
+  @apply flex w-auto cursor-pointer items-center rounded py-1 px-3 text-base font-light;
 
   &--primary {
     @apply bg-primary text-white;
   }
 
   &--primary-outlined {
-    @apply bg-white border border-primary text-primary;
+    @apply border border-primary bg-white text-primary;
   }
 }
 </style>

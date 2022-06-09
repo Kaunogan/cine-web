@@ -1,11 +1,11 @@
 <template>
   <div v-if="showSideBar" class="cw-sidebar">
     <div class="cw-sidebar__header">
-      <h1 class="text-4xl font-header">CineWeb</h1>
+      <h1 class="font-header text-4xl">CineWeb</h1>
     </div>
 
     <div class="cw-sidebar__content">
-      <ul class="h-36 flex flex-col justify-between">
+      <ul class="flex h-36 flex-col justify-between">
         <li class="text-xl" :class="getClass('/home')">
           <router-link to="/home">Home</router-link>
         </li>
@@ -38,15 +38,15 @@ const getClass = (path: string) => (route.path === path ? 'text-secondary' : 'tr
 
 <style lang="scss" scoped>
 .cw-sidebar {
-  @apply transition duration-300 fixed -translate-x-full md:translate-x-0 md:static h-full w-72 bg-white;
+  @apply fixed h-full w-72 -translate-x-full bg-white transition duration-300 md:static md:translate-x-0;
   box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
 
   &__header {
-    @apply fixed z-10 h-24 w-72 flex justify-center items-center;
+    @apply fixed z-10 flex h-24 w-72 items-center justify-center;
   }
 
   &__content {
-    @apply fixed z-0 h-full w-72 flex justify-center items-center;
+    @apply fixed z-0 flex h-full w-72 items-center justify-center;
   }
 }
 </style>
