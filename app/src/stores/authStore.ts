@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia'
-import { useStorage } from '@vueuse/core'
 import moment from 'moment'
 
 const useAuth = defineStore('auth', {
   state: () => ({
-    token: useStorage('token', ''),
-    expireAt: useStorage('expireAt', ''),
+    token: '',
+    userId: 0,
+    expireAt: '',
   }),
   getters: {
     isExpired: (state): boolean => {
@@ -13,6 +13,7 @@ const useAuth = defineStore('auth', {
       return moment().isAfter(state.expireAt)
     },
   },
+  persist: true,
 })
 
 export default useAuth

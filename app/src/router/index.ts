@@ -1,5 +1,6 @@
 import * as VueRouter from 'vue-router'
 import useAuth from '@/stores/authStore'
+import * as LocalStorage from '@/controller/LocalStorage'
 
 /*
 |--------------------------------------------------------------------------
@@ -137,7 +138,11 @@ const router = VueRouter.createRouter({
 // eslint-disable-next-line consistent-return
 router.beforeEach((to) => {
   const auth = useAuth()
-  if (to.meta.needLoggedIn && auth.isExpired) return '/signin'
+
+  if (to.meta.needLoggedIn && auth.isExpired) {
+    LocalStorage.clearStoresApplication()
+    return '/signin'
+  }
 })
 
 export default router

@@ -1,5 +1,6 @@
 import HttpController from '@/controller/Http'
 import useAuth from '@/stores/authStore'
+import * as UserService from '@/services/UserService'
 
 interface ILoginBody {
   email: string
@@ -25,7 +26,10 @@ export async function login(loginBody: ILoginBody) {
   const { results } = await httpController.post<IAuthResponse>('/login', loginBody)
 
   auth.token = results.token
+  auth.userId = results.userId
   auth.expireAt = results.expiresAt
+
+  await UserService.getUserPseudo()
 }
 
 export async function register(registerBody: IRegisterBody) {
@@ -35,5 +39,8 @@ export async function register(registerBody: IRegisterBody) {
   const { results } = await httpController.post<IAuthResponse>('/register', registerBody)
 
   auth.token = results.token
+  auth.userId = results.userId
   auth.expireAt = results.expiresAt
+
+  await UserService.getUserPseudo()
 }

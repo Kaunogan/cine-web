@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosInstance } from 'axios'
+import axios, { AxiosError, AxiosInstance, AxiosRequestHeaders } from 'axios'
 import { useToast } from 'vue-toastification'
 
 interface IErrorResponse {
@@ -39,6 +39,21 @@ export default class HttpController {
       }
 
       this.toast.error(message)
+    }
+  }
+
+  public async get<T>(url: string, headers: AxiosRequestHeaders = {}): Promise<IResponse<T>> {
+    try {
+      const { data } = await this.instance.get<IResponse<T>>(url, { headers })
+      return data
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        this.handleError(error)
+      } else {
+        this.toast.error('An unexpected error occurred')
+      }
+
+      throw new Error()
     }
   }
 
