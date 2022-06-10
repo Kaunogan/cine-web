@@ -1,4 +1,4 @@
-import HttpController from '@/controller/Http'
+import HttpController from '@/controllers/Http'
 import useAuth from '@/stores/authStore'
 import * as UserService from '@/services/UserService'
 

@@ -1,6 +1,6 @@
 import useAuth from '@/stores/authStore'
 import useUser from '@/stores/userStore'
-import HttpController from '@/controller/Http'
+import HttpController from '@/controllers/Http'
 
 interface IUserInfoResponse {
   id: number

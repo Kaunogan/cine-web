@@ -1,6 +1,6 @@
 import * as VueRouter from 'vue-router'
 import useAuth from '@/stores/authStore'
-import * as LocalStorage from '@/controller/LocalStorage'
+import * as LocalStorage from '@/controllers/LocalStorage'
 
 /*
 |--------------------------------------------------------------------------
