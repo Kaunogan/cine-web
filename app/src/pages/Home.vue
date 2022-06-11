@@ -2,6 +2,7 @@
   <div class="cw-home-container">
     <div class="cw-home-navbar">
       <h1 class="hidden text-2xl font-light lg:block">Hello {{ user.pseudo }} 🍿</h1>
+      <ph-list size="28" class="lg:hidden" @click="components.slideSideBar()" />
       <cw-search-bar placeholder="Search for a movie" :callback="sendQuery" />
       <cw-settings-dropdown />
     </div>
@@ -13,10 +14,13 @@ import CwSearchBar from '@/components/cwSearchBar.vue'
 import CwSettingsDropdown from '@/components/cwSettingsDropdown.vue'
 import useUser from '@/stores/userStore'
 import { useThrottleFn } from '@vueuse/core'
+import useComponents from '@/stores/componentsStore'
 
 // State
 const user = useUser()
+const components = useComponents()
 
+// Function
 const sendQuery = useThrottleFn((query: string) => {
   console.log(query)
 }, 1000)
