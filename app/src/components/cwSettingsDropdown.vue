@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { onClickOutside } from '@vueuse/core'
-import * as AuthService from '@/services/AuthService'
+import * as AuthService from '@/services/Auth'
 import { useRouter } from 'vue-router'
 
 const isVisible = ref(false)

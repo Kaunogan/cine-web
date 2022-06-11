@@ -1,6 +1,6 @@
 import HttpController from '@/controllers/Http'
 import useAuth from '@/stores/authStore'
-import * as UserService from '@/services/UserService'
+import * as UserService from '@/services/User'
 import * as LocalStorageController from '@/controllers/LocalStorage'
 
 interface ILoginBody {
