@@ -1,6 +1,6 @@
 import * as VueRouter from 'vue-router'
 import useAuth from '@/stores/authStore'
-import * as LocalStorage from '@/controllers/LocalStorage'
+import * as LocalStorageController from '@/controllers/LocalStorage'
 
 /*
 |--------------------------------------------------------------------------
@@ -140,7 +140,7 @@ router.beforeEach((to) => {
   const auth = useAuth()
 
   if (to.meta.needLoggedIn && auth.isExpired) {
-    LocalStorage.clearStoresApplication()
+    LocalStorageController.clearStoresApplication()
     return '/signin'
   }
 })

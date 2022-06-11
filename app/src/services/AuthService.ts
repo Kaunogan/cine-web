@@ -1,6 +1,7 @@
 import HttpController from '@/controllers/Http'
 import useAuth from '@/stores/authStore'
 import * as UserService from '@/services/UserService'
+import * as LocalStorageController from '@/controllers/LocalStorage'
 
 interface ILoginBody {
   email: string
@@ -43,4 +44,13 @@ export async function register(registerBody: IRegisterBody) {
   auth.expireAt = results.expiresAt
 
   await UserService.getUserPseudo()
+}
+
+export async function logout() {
+  const httpController = new HttpController('/auth')
+  const auth = useAuth()
+
+  await httpController.post('/logout', {}, { Authorization: `Bearer ${auth.token}` })
+
+  LocalStorageController.clearStoresApplication()
 }

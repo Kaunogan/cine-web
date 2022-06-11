@@ -57,9 +57,9 @@ export default class HttpController {
     }
   }
 
-  public async post<T>(url: string, body: any): Promise<IResponse<T>> {
+  public async post<T>(url: string, body: any, headers: AxiosRequestHeaders = {}): Promise<IResponse<T>> {
     try {
-      const { data } = await this.instance.post<IResponse<T>>(url, body)
+      const { data } = await this.instance.post<IResponse<T>>(url, body, { headers })
       return data
     } catch (error) {
       if (axios.isAxiosError(error)) {

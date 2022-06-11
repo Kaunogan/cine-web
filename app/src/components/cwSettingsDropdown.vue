@@ -1,6 +1,8 @@
 <template>
-  <div class="cw-settings-dropdown-avatar" :class="getOpacity" @click="changeVisibility">
-    <ph-gear size="30" class="mx-auto text-white" />
+  <div ref="target" class="relative">
+    <div class="cw-settings-dropdown-avatar" :class="getAnimationsClasses" @click="changeVisibility">
+      <ph-gear size="30" class="mx-auto text-white" />
+    </div>
     <div v-if="isVisible" class="cw-settings-dropdown">
       <div class="cw-settings-dropdown__container">
         <div class="cw-settings-dropdown__item">
@@ -11,7 +13,7 @@
           <ph-wrench size="26" class="ml-3 mr-2" />
           <p class="font-light">Params</p>
         </div>
-        <div class="cw-settings-dropdown__item">
+        <div class="cw-settings-dropdown__item" @click="logout">
           <ph-sign-out size="26" class="ml-3 mr-2" />
           <p class="font-light text-primary">Logout</p>
         </div>
@@ -22,20 +24,37 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { onClickOutside } from '@vueuse/core'
+import * as AuthService from '@/services/AuthService'
+import { useRouter } from 'vue-router'
 
 const isVisible = ref(false)
+const target = ref(null)
 
-const getOpacity = computed(() => `${isVisible.value ? 'lg:hover:opacity-100' : 'lg:hover:opacity-80'}`)
+const router = useRouter()
+
+// Computed
+const getAnimationsClasses = computed(() => `${isVisible.value ? 'lg:hover:opacity-100 rotate-45' : 'lg:hover:opacity-80 rotate-0'}`)
 
 // Function
 const changeVisibility = () => {
   isVisible.value = !isVisible.value
 }
+
+const logout = async () => {
+  await AuthService.logout()
+  await router.push({ name: 'Signin' })
+}
+
+onClickOutside(target, () => {
+  if (!isVisible.value) return
+  isVisible.value = false
+})
 </script>
 
 <style lang="scss" scoped>
 .cw-settings-dropdown-avatar {
-  @apply relative  rounded-3xl bg-primary p-1.5;
+  @apply rounded-3xl bg-primary p-1.5 transition duration-300;
 }
 
 .cw-settings-dropdown {

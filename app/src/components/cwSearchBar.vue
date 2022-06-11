@@ -1,11 +1,23 @@
 <template>
   <div class="cw-searchbar">
     <ph-magnifying-glass size="24" class="test mr-2" />
-    <input type="text" name="search-bar" class="cw-g-input" placeholder="Search for a movie" />
+    <input v-model="query" type="text" name="search-bar" class="cw-g-input" :placeholder="props.placeholder" @keyup.enter="props.callback(query)" />
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from 'vue'
+
+interface Props {
+  placeholder: string
+  callback: Function
+}
+
+const query = ref()
+
+// Props
+const props = defineProps<Props>()
+</script>
 
 <style lang="scss" scoped>
 .cw-searchbar {
