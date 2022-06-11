@@ -1,3 +1,4 @@
+<script src="../../../api/services/tmdb/MovieService.ts"></script>
 <template>
   <div class="cw-home-container">
     <div class="cw-home-navbar">
@@ -7,7 +8,7 @@
       <cw-settings-dropdown />
     </div>
     <div>
-      {{ movies }}
+      <cw-movie-poster v-for="movie in movies" :key="movie.id" :poster-url="movie.posterUrl" :title="movie.title" />
     </div>
   </div>
 </template>
@@ -15,17 +16,22 @@
 <script setup lang="ts">
 import CwSearchBar from '@/components/cwSearchBar.vue'
 import CwSettingsDropdown from '@/components/cwSettingsDropdown.vue'
+import CwMoviePoster from '@/components/cwMoviePoster.vue'
+
 import useUser from '@/stores/userStore'
 import { useThrottleFn } from '@vueuse/core'
 import useComponents from '@/stores/componentsStore'
 import { onMounted, ref } from 'vue'
 import * as MovieService from '@/services/Movies'
+import { IMovieResponse } from '@/services/Movies'
 
 // State
 const user = useUser()
 const components = useComponents()
 
-const movies: any = ref([
+const movies = ref<IMovieResponse[]>()
+
+movies.value = [
   { tmdbMovieId: 338953, title: 'Fantastic Beasts: The Secrets of Dumbledore', posterUrl: 'https://themoviedb.org/t/p/original/jrgifaYeUtTnaH7NF5Drkgjg2MB.jpg' },
   { tmdbMovieId: 526896, title: 'Morbius', posterUrl: 'https://themoviedb.org/t/p/original/6JjfSchsU6daXk2AKX8EEBjO3Fm.jpg' },
   { tmdbMovieId: 752623, title: 'The Lost City', posterUrl: 'https://themoviedb.org/t/p/original/neMZH82Stu91d3iqvLdNQfqPPyl.jpg' },
@@ -46,7 +52,7 @@ const movies: any = ref([
   { tmdbMovieId: 629542, title: 'The Bad Guys', posterUrl: 'https://themoviedb.org/t/p/original/7qop80YfuO0BwJa1uXk1DXUUEwv.jpg' },
   { tmdbMovieId: 836225, title: 'The Exorcism of God', posterUrl: 'https://themoviedb.org/t/p/original/hangTmbxpSV4gpHG7MgSlCWSSFa.jpg' },
   { tmdbMovieId: 785985, title: 'The Takedown', posterUrl: 'https://themoviedb.org/t/p/original/h5hVeCfYSb8gIO0F41gqidtb0AI.jpg' },
-])
+]
 
 // Function
 const sendQuery = useThrottleFn((query: string) => {

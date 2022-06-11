@@ -3,7 +3,7 @@ components:
     #|--------------------------------------------------------------------------
     #| Response ==> PopularMovies : 200
     #|--------------------------------------------------------------------------
-    PopularMovies:
+    NowPlayingMovies:
       description: OK
       content:
         application/json:
@@ -22,13 +22,13 @@ components:
                 items:
                   type: object
                   properties:
-                    tmdbMovieId:
+                    tmdb_movie_id:
                       type: number
                       description: The id of tmdb movie
                     title:
                       type: string
                       description: The title of movie
-                    posterUrl:
+                    poster_url:
                       type: string
                       description: The url of movie poster
 
@@ -60,12 +60,12 @@ components:
                   overview:
                     type: string
                     description: The synopsis of movie
-                  posterUrl:
+                  poster_url:
                     type: string
                     description: The url of movie poster
-                  backdropUrl:
+                  backdrop_url:
                     type: string
                     description: The url of movie backdrop
-                  trailerUrl:
+                  trailer_url:
                     type: string
                     description: The url of movie trailer

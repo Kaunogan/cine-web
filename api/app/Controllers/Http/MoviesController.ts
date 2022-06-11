@@ -11,7 +11,7 @@ export default class MoviesController {
     if (query !== '') {
       movies = await MovieService.searchMovie(query, page)
     } else {
-      movies = await MovieService.getPopularMovie(page)
+      movies = await MovieService.getNowPlayingMovie(page)
     }
 
     return {
