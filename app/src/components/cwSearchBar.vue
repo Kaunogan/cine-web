@@ -9,6 +9,6 @@
 
 <style lang="scss" scoped>
 .cw-searchbar {
-  @apply mx-4 inline-flex w-3/4 items-center rounded-3xl border border-tertiary py-1.5 px-2 md:mx-0 md:w-80;
+  @apply inline-flex items-center rounded-3xl border border-tertiary py-1.5 px-2 md:w-80;
 }
 </style>

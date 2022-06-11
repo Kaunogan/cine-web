@@ -1,7 +1,7 @@
 <template>
   <form class="cw-form">
     <slot />
-    <cw-button :is-loading="props.isLoading" btn-type="primary" class="mx-auto mt-6 transition hover:opacity-80">
+    <cw-button :is-loading="props.isLoading" btn-type="primary" class="mx-auto mt-6 transition lg:hover:opacity-80">
       <span class="md:text-lg">{{ props.btnText || 'Ok' }}</span>
     </cw-button>
   </form>
