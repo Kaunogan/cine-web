@@ -36,7 +36,7 @@ class TmdbMovieService {
 
     try {
       const { data } = await axios.get(
-        `${basePathApi}/movie/now_playing?api_key=${apiKey}&page=${page}&region=FR`
+        `${basePathApi}/movie/now_playing?api_key=${apiKey}&page=${page}`
       )
 
       return this.parseResult(data)
