@@ -1,7 +1,7 @@
 <template>
   <div class="cw-movie-poster">
     <img :src="props.posterUrl" alt="movie-poster" />
-    <p class="text-center font-light">{{ props.title }}</p>
+    <p class="mt-2 flex h-full w-full items-center justify-center text-center text-sm font-light lg:text-base">{{ props.title }}</p>
   </div>
 </template>
 
@@ -17,10 +17,10 @@ const props = defineProps<Props>()
 
 <style lang="scss" scoped>
 .cw-movie-poster {
-  @apply flex w-52 flex-col items-center;
+  @apply flex w-36 flex-col items-center grid-lg:w-48;
 
   & img {
-    @apply rounded-xl  transition duration-300 ease-in-out hover:-translate-y-1;
+    @apply rounded-xl transition duration-300 ease-in-out hover:-translate-y-1;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
   }
 

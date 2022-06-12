@@ -3,6 +3,7 @@ module.exports = {
   theme: {
     extend: {
       screens: {
+        'grid-lg': '1300px',
         '3xl': '2200px',
       },
     },
