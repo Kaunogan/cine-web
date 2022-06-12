@@ -2,29 +2,13 @@ import HttpController from '@/controllers/Http'
 import useAuth from '@/stores/authStore'
 import * as UserService from '@/services/User'
 import * as LocalStorageController from '@/controllers/LocalStorage'
+import { IAuth } from '@/types'
 
-interface ILoginBody {
-  email: string
-  password: string
-}
-
-interface IRegisterBody {
-  email: string
-  pseudo: string
-  password: string
-}
-
-interface IAuthResponse {
-  token: string
-  userId: number
-  expiresAt: string
-}
-
-export async function login(loginBody: ILoginBody) {
+export async function login(loginBody: IAuth.LoginBody) {
   const httpController = new HttpController('/auth')
   const auth = useAuth()
 
-  const { results } = await httpController.post<IAuthResponse>('/login', loginBody)
+  const { results } = await httpController.post<IAuth.AuthResponse>('/login', loginBody)
 
   auth.token = results.token
   auth.userId = results.userId
@@ -33,11 +17,11 @@ export async function login(loginBody: ILoginBody) {
   await UserService.getUserPseudo()
 }
 
-export async function register(registerBody: IRegisterBody) {
+export async function register(registerBody: IAuth.RegisterBody) {
   const httpController = new HttpController('/auth')
   const auth = useAuth()
 
-  const { results } = await httpController.post<IAuthResponse>('/register', registerBody)
+  const { results } = await httpController.post<IAuth.AuthResponse>('/register', registerBody)
 
   auth.token = results.token
   auth.userId = results.userId
