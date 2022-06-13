@@ -1,7 +1,7 @@
 <template>
   <div class="cw-movie-poster">
     <span>
-      <img :src="props.posterUrl" alt="movie-poster" />
+      <img :src="getPosterUrl()" alt="movie-poster" />
     </span>
     <p class="mt-2 flex h-full w-full items-center justify-center text-center text-sm font-light lg:text-base">{{ props.title }}</p>
   </div>
@@ -15,6 +15,11 @@ interface Props {
 
 // Props
 const props = defineProps<Props>()
+
+// Function
+const getPosterUrl = () => {
+  return props.posterUrl.includes('null') ? 'https://pbs.twimg.com/profile_images/527991807402328064/LmS_7fXc_400x400.jpeg' : props.posterUrl
+}
 </script>
 
 <style lang="scss" scoped>

@@ -3,37 +3,35 @@
     <div v-if="!isFirstPage" class="cw-pagination__item" @click="decreasePage">
       <ph-caret-left size="24" class="" />
     </div>
-    <h2 class="mx-4 text-xl">{{ page }}</h2>
-    <div class="cw-pagination__item" @click="incrementPage">
+    <h2 class="mx-4 text-xl">{{ props.currentPage }}</h2>
+    <div v-if="props.showLastPaginate" class="cw-pagination__item" @click="incrementPage">
       <ph-caret-right size="24" class="" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
 interface Props {
+  currentPage: number
+  showLastPaginate: boolean | true
   onPageChanged: Function
 }
-
-const page = ref(1)
 
 // Props
 const props = defineProps<Props>()
 
 // Computed
-const isFirstPage = computed(() => page.value === 1)
+const isFirstPage = computed(() => props.currentPage === 1)
 
 // Function
 const decreasePage = () => {
-  page.value -= 1
-  props.onPageChanged(page.value)
+  props.onPageChanged(props.currentPage - 1)
 }
 
 const incrementPage = () => {
-  page.value += 1
-  props.onPageChanged(page.value)
+  props.onPageChanged(props.currentPage + 1)
 }
 </script>
 

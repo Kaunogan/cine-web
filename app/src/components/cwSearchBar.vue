@@ -1,7 +1,7 @@
 <template>
   <div class="cw-searchbar">
     <ph-magnifying-glass size="24" class="test mr-2" />
-    <input v-model="query" type="text" name="search-bar" class="cw-g-input" :placeholder="props.placeholder" @keyup.enter="props.callback(query)" />
+    <input v-model="query" type="text" name="search-bar" class="cw-g-input" :placeholder="props.placeholder" @keyup.enter="props.querySearched(query)" />
   </div>
 </template>
 
@@ -10,7 +10,7 @@ import { ref } from 'vue'
 
 interface Props {
   placeholder: string
-  callback: Function
+  querySearched: Function
 }
 
 const query = ref()

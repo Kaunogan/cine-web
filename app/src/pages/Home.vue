@@ -3,13 +3,15 @@
     <div class="cw-home-navbar">
       <h1 class="hidden text-2xl font-light lg:block">Hello {{ user.pseudo }} 🍿</h1>
       <ph-list size="28" class="lg:hidden" @click="components.slideSideBar()" />
-      <cw-search-bar placeholder="Search for a movie" :callback="sendQuery" />
+      <cw-search-bar placeholder="Search for a movie" :query-searched="querySearched" />
       <cw-settings-dropdown />
     </div>
     <div class="cw-home-content">
-      <cw-movie-poster v-for="movie in movies" :key="movie.tmdb_movie_id" class="" :poster-url="movie.poster_url" :title="movie.title" />
+      <cw-movie-poster v-for="movie in state.paginateMovies" :key="movie.tmdb_movie_id" class="" :poster-url="movie.poster_url" :title="movie.title" />
     </div>
-    <div class="cw-home-footer"></div>
+    <div class="cw-home-footer">
+      <cw-pagination :current-page="state.currentPage" :show-last-paginate="showLastPaginate" :on-page-changed="pageChanged" />
+    </div>
   </div>
 </template>
 
@@ -17,39 +19,55 @@
 import CwSearchBar from '@/components/cwSearchBar.vue'
 import CwSettingsDropdown from '@/components/cwSettingsDropdown.vue'
 import CwMoviePoster from '@/components/cwMoviePoster.vue'
-
+import CwPagination from '@/components/cwPagination.vue'
+import { IMovie } from '@/types'
 import useUser from '@/stores/userStore'
 import { useThrottleFn } from '@vueuse/core'
 import useComponents from '@/stores/componentsStore'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, reactive } from 'vue'
 import * as MovieService from '@/services/Movies'
-import { IMovie } from '@/types'
+import paginateArray from '@/features/paginateArray'
+
+let movies = <IMovie.ShortDetails[]>[]
+let pageReq = 1
+let query = ''
 
 // State
+const state = reactive({
+  currentPage: 1,
+  paginateMovies: <IMovie.ShortDetails[]>[],
+})
 const user = useUser()
 const components = useComponents()
 
-const movies = ref<IMovie.ShortDetails[]>()
-
-movies.value = [
-  { tmdb_movie_id: 639933, title: 'The Northman', poster_url: 'https://themoviedb.org/t/p/original/zhLKlUaF1SEpO58ppHIAyENkwgw.jpg' },
-  { tmdb_movie_id: 507086, title: 'Jurassic World Dominion', poster_url: 'https://themoviedb.org/t/p/original/kAVRgw7GgK1CfYEJq8ME6EvRIgU.jpg' },
-  { tmdb_movie_id: 453395, title: 'Doctor Strange in the Multiverse of Madness', poster_url: 'https://themoviedb.org/t/p/original/9Gtg2DzBhmYamXBS1hKAhiwbBKS.jpg' },
-  { tmdb_movie_id: 361743, title: 'Top Gun: Maverick', poster_url: 'https://themoviedb.org/t/p/original/wxP2Mzv9CdjOK6t4dNnFGqIQl0V.jpg' },
-  { tmdb_movie_id: 936074, title: 'Tenor', poster_url: 'https://themoviedb.org/t/p/original/t8ShCiZxrbiy7kuO06OilLI3PeL.jpg' },
-  { tmdb_movie_id: 532710, title: 'Firestarter', poster_url: 'https://themoviedb.org/t/p/original/2MTGip0nfahQ1jPQCZSfCsPBZes.jpg' },
-  { tmdb_movie_id: 819876, title: 'Crimes of the Future', poster_url: 'https://themoviedb.org/t/p/original/5DuwY8TXNMOegpi2yXVk7giPGe5.jpg' },
-  { tmdb_movie_id: 780609, title: 'Men', poster_url: 'https://themoviedb.org/t/p/original/jo1Kv3P3UgDVk7JnUFr2Cl8WWUM.jpg' },
-]
+// Computed
+const showLastPaginate = computed(() => state.paginateMovies?.length === 8)
 
 // Function
-const sendQuery = useThrottleFn((query: string) => {
-  console.log(query)
+const querySearched = useThrottleFn(async (newQuery: string) => {
+  pageReq = 1
+  query = newQuery
+  state.currentPage = 1
+  movies = await MovieService.getMovies(query, pageReq)
+  state.paginateMovies = paginateArray(movies, 8, state.currentPage)
 }, 1000)
 
 onMounted(async () => {
-  // movies.value = await MovieService.getMovies()
+  movies = await MovieService.getMovies(query, pageReq)
+  state.paginateMovies = paginateArray(movies, 8, state.currentPage)
 })
+
+const pageChanged = async (page: number) => {
+  state.currentPage = page
+  state.paginateMovies = paginateArray(movies, 8, state.currentPage)
+
+  if (state.paginateMovies?.length !== 8) {
+    pageReq += 1
+    const newMovies = await MovieService.getMovies(query, pageReq)
+    movies = [...movies, ...newMovies]
+    state.paginateMovies = paginateArray(movies, 8, state.currentPage)
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -61,11 +79,11 @@ onMounted(async () => {
   @apply mt-4 flex h-32 w-full max-w-screen-2xl items-center justify-between md:mt-0;
 }
 .cw-home-content {
-  @apply my-6 grid w-full max-w-screen-2xl grid-flow-col grid-rows-4 place-content-around gap-y-4 md:my-0 md:grid-rows-2 md:place-content-between md:gap-y-8;
+  @apply mt-6 grid w-full max-w-screen-2xl grid-flow-col grid-rows-4 place-content-around gap-y-4 md:mt-0 md:grid-rows-2 md:place-content-between md:gap-y-8;
 }
 
 .cw-home-footer {
-  @apply flex justify-center;
+  @apply flex h-16 w-full justify-center py-3 md:py-0;
 }
 
 .card {
