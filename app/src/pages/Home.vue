@@ -8,7 +8,7 @@
     </cw-container-nav-bar>
 
     <cw-container-content>
-      <cw-grid-list :nb-of-rows="2" :centered="paginateMoviesIsEmpty" msg-empty-data="No movies found">
+      <cw-grid-list :is-loading="state.isLoading" :nb-of-rows="2" :centered="paginateMoviesIsEmpty" msg-empty-data="No movies found">
         <cw-movie-poster v-for="(movie, index) in state.paginateMovies" :key="index" :poster-url="movie.poster_url" :title="movie.title" />
       </cw-grid-list>
     </cw-container-content>
@@ -46,6 +46,7 @@ const nbOfMoviesDisplayed = 8
 const state = reactive({
   currentPage: 1,
   paginateMovies: <IMovie.ShortDetails[]>[],
+  isLoading: true,
 })
 const user = useUser()
 const components = useComponents()
@@ -56,16 +57,19 @@ const paginateMoviesIsEmpty = computed(() => state.paginateMovies.length === 0)
 
 // Function
 const querySearched = useThrottleFn(async (newQuery: string) => {
+  state.isLoading = true
   pageReq = 1
   query = newQuery
   state.currentPage = 1
   movies = await MovieService.getMovies(query, pageReq)
   state.paginateMovies = paginateArray(movies, nbOfMoviesDisplayed, state.currentPage)
+  state.isLoading = false
 }, 1000)
 
 onMounted(async () => {
   movies = await MovieService.getMovies(query, pageReq)
   state.paginateMovies = paginateArray(movies, nbOfMoviesDisplayed, state.currentPage)
+  state.isLoading = false
 })
 
 const pageChanged = async (page: number) => {
@@ -73,10 +77,12 @@ const pageChanged = async (page: number) => {
   state.paginateMovies = paginateArray(movies, nbOfMoviesDisplayed, state.currentPage)
 
   if (state.paginateMovies?.length !== 8) {
+    state.isLoading = true
     pageReq += 1
     const newMovies = await MovieService.getMovies(query, pageReq)
     movies = [...movies, ...newMovies]
     state.paginateMovies = paginateArray(movies, nbOfMoviesDisplayed, state.currentPage)
+    state.isLoading = false
   }
 }
 </script>
