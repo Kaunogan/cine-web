@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import PhosphorVue from 'phosphor-vue'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import App from '@/App.vue'
 import router from '@/router'
 import Toast, { PluginOptions } from 'vue-toastification'
@@ -14,6 +15,7 @@ const toastOptions: PluginOptions = {
 }
 
 const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
 
 const app = createApp(App)
 

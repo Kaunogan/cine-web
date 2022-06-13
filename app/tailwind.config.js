@@ -1,7 +1,12 @@
 module.exports = {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        'grid-lg': '1800px',
+        '3xl': '2200px',
+      },
+    },
     colors: {
       white: '#FFFEFF',
       primary: '#7671F0',

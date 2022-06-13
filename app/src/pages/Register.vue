@@ -38,7 +38,7 @@ import { useThrottleFn } from '@vueuse/core'
 import CwForm from '@/components/cwForm.vue'
 import CwFormInput from '@/components/cwFormInput.vue'
 
-import * as AuthService from '@/services/AuthService'
+import * as AuthService from '@/services/Auth'
 import { useRouter } from 'vue-router'
 
 // State
@@ -63,7 +63,7 @@ const register = useThrottleFn(async () => {
       password: state.password,
     })
 
-    await router.push({ name: 'Home' })
+    await router.push({ path: '/home' })
   } finally {
     state.isLoading = false
   }

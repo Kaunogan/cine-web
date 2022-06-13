@@ -22,21 +22,21 @@ class TmdbMovieService {
     return data.results.map(
       (item) =>
         <IMovie>{
-          tmdbMovieId: item.id,
+          tmdb_movie_id: item.id,
           title: item.title,
-          posterUrl: this.getOriginalImagePath(item.poster_path),
+          poster_url: this.getOriginalImagePath(item.poster_path),
         }
     )
   }
 
   // Get a list of the current popular movies on TMDB
-  public async getPopularMovie(page: number): Promise<IMovie[]> {
+  public async getNowPlayingMovie(page: number): Promise<IMovie[]> {
     const basePathApi = this.config.basePath.api
     const { apiKey } = this.config
 
     try {
       const { data } = await axios.get(
-        `${basePathApi}/movie/popular?api_key=${apiKey}&page=${page}`
+        `${basePathApi}/movie/now_playing?api_key=${apiKey}&page=${page}`
       )
 
       return this.parseResult(data)
@@ -86,9 +86,9 @@ class TmdbMovieService {
         tmdb_movie_id: movieData.id,
         title: movieData.original_title,
         overview: movieData.overview,
-        posterUrl: this.getOriginalImagePath(movieData.poster_path),
-        backdropUrl: this.getOriginalImagePath(movieData.backdrop_path),
-        trailerUrl,
+        poster_url: this.getOriginalImagePath(movieData.poster_path),
+        backdrop_url: this.getOriginalImagePath(movieData.backdrop_path),
+        trailer_url: trailerUrl,
       }
     } catch ({ response }) {
       throw new TmdbRequestException(response.data.status_message, response.status, 'E_TMDB_API')

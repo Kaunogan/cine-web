@@ -1,5 +1,6 @@
 import * as VueRouter from 'vue-router'
 import useAuth from '@/stores/authStore'
+import * as LocalStorageController from '@/controllers/LocalStorage'
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,7 @@ const router = VueRouter.createRouter({
       path: '/signin',
       name: 'Signin',
       component: () => import('@/pages/Signin.vue'),
+      meta: { needLoggedIn: false },
       // eslint-disable-next-line consistent-return
       beforeEnter: () => {
         const auth = useAuth()
@@ -60,6 +62,7 @@ const router = VueRouter.createRouter({
       path: '/register',
       name: 'Register',
       component: () => import('@/pages/Register.vue'),
+      meta: { needLoggedIn: false },
       // eslint-disable-next-line consistent-return
       beforeEnter: () => {
         const auth = useAuth()
@@ -94,6 +97,7 @@ const router = VueRouter.createRouter({
       path: '/notfound',
       name: 'NotFound',
       component: () => import('@/pages/NotFound.vue'),
+      meta: { needLoggedIn: false },
     },
 
     /*
@@ -135,9 +139,13 @@ const router = VueRouter.createRouter({
 |
 */
 // eslint-disable-next-line consistent-return
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
   const auth = useAuth()
-  if (to.meta.needLoggedIn && auth.isExpired) return '/signin'
+
+  if (to.meta.needLoggedIn && auth.isExpired) {
+    await LocalStorageController.clearApplication()
+    return '/signin'
+  }
 })
 
 export default router

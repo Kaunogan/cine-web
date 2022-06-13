@@ -26,7 +26,7 @@
       - application/json
     responses:
       200:
-        $ref: '#/components/movieResponses/PopularMovies'
+        $ref: '#/components/movieResponses/NowPlayingMovies'
       401:
         $ref: '#/components/globalResponses/UnauthorizedAccess'
 

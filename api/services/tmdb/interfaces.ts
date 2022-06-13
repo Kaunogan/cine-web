@@ -11,9 +11,9 @@
 |
 */
 interface IMovie {
-  tmdbMovieId: number
+  tmdb_movie_id: number
   title: string
-  posterUrl: string
+  poster_url: string
 }
 
 /*
@@ -35,9 +35,9 @@ interface IMovieDetails {
   tmdb_movie_id: number
   title: string
   overview: string
-  posterUrl: string
-  backdropUrl: string
-  trailerUrl: string
+  poster_url: string
+  backdrop_url: string
+  trailer_url: string
 }
 
 export { IMovie, IMovieDetails }

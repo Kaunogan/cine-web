@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen flex">
+  <div class="flex h-screen">
     <cw-sidebar></cw-sidebar>
     <router-view></router-view>
   </div>
