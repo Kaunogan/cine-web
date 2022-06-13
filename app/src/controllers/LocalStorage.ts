@@ -1,7 +1,7 @@
 import useAuth from '@/stores/authStore'
 import useUser from '@/stores/userStore'
 
-export function clearStoresApplication(): Promise<void> {
+export function clearApplication(): Promise<void> {
   return new Promise((resolve) => {
     const auth = useAuth()
     const user = useUser()

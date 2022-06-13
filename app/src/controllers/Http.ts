@@ -1,19 +1,8 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestHeaders } from 'axios'
 import { useToast } from 'vue-toastification'
-import router from '@/router'
 import * as LocalStorageController from '@/controllers/LocalStorage'
-
-interface IErrorResponse {
-  message: string
-  status: number
-  errorCode: string
-}
-
-interface IResponse<T> {
-  message: string
-  status: string
-  results: T
-}
+import router from '@/router'
+import { IHttp } from '@/types'
 
 export default class HttpController {
   private instance: AxiosInstance
@@ -35,12 +24,12 @@ export default class HttpController {
       const errorData = response.data
 
       if (errorData) {
-        const error = <IErrorResponse>errorData
+        const error = <IHttp.Error>errorData
 
         if (error.status === 401) {
-          await LocalStorageController.clearStoresApplication()
-          await router.push({ path: '/signin' })
           error.message = 'Please signin again'
+          await LocalStorageController.clearApplication()
+          await router.push({ path: '/signin' })
         }
 
         this.toast.info(error.message)
@@ -51,13 +40,13 @@ export default class HttpController {
     }
   }
 
-  public async get<T>(url: string, headers: AxiosRequestHeaders = {}): Promise<IResponse<T>> {
+  public async get<T>(url: string, headers: AxiosRequestHeaders = {}): Promise<IHttp.Response<T>> {
     try {
-      const { data } = await this.instance.get<IResponse<T>>(url, { headers })
+      const { data } = await this.instance.get<IHttp.Response<T>>(url, { headers })
       return data
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        this.handleError(error)
+        await this.handleError(error)
       } else {
         this.toast.error('An unexpected error occurred')
       }
@@ -66,13 +55,13 @@ export default class HttpController {
     }
   }
 
-  public async post<T>(url: string, body: any, headers: AxiosRequestHeaders = {}): Promise<IResponse<T>> {
+  public async post<T>(url: string, body: any, headers: AxiosRequestHeaders = {}): Promise<IHttp.Response<T>> {
     try {
-      const { data } = await this.instance.post<IResponse<T>>(url, body, { headers })
+      const { data } = await this.instance.post<IHttp.Response<T>>(url, body, { headers })
       return data
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        this.handleError(error)
+        await this.handleError(error)
       } else {
         this.toast.error('An unexpected error occurred')
       }

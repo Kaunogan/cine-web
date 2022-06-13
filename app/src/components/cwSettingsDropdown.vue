@@ -41,10 +41,7 @@ const changeVisibility = () => {
   isVisible.value = !isVisible.value
 }
 
-const logout = async () => {
-  await AuthService.logout()
-  await router.push({ name: 'Signin' })
-}
+const logout = () => AuthService.logout()
 
 onClickOutside(target, () => {
   if (!isVisible.value) return

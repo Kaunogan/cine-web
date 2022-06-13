@@ -143,7 +143,7 @@ router.beforeEach(async (to) => {
   const auth = useAuth()
 
   if (to.meta.needLoggedIn && auth.isExpired) {
-    await LocalStorageController.clearStoresApplication()
+    await LocalStorageController.clearApplication()
     return '/signin'
   }
 })

@@ -2,6 +2,28 @@
 
 /*
 |--------------------------------------------------------------------------
+| Http Interface
+|--------------------------------------------------------------------------
+|
+| Http Interface contains the details information of the api response
+|
+*/
+export declare module IHttp {
+  export interface Error {
+    message: string
+    status: number
+    errorCode: string
+  }
+
+  export interface Response<T> {
+    message: string
+    status: string
+    results: T
+  }
+}
+
+/*
+|--------------------------------------------------------------------------
 | Authentication Interface
 |--------------------------------------------------------------------------
 |

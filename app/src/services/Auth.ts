@@ -2,6 +2,7 @@ import HttpController from '@/controllers/Http'
 import useAuth from '@/stores/authStore'
 import * as UserService from '@/services/User'
 import * as LocalStorageController from '@/controllers/LocalStorage'
+import router from '@/router'
 import { IAuth } from '@/types'
 
 export async function login(loginBody: IAuth.LoginBody) {
@@ -36,5 +37,7 @@ export async function logout() {
 
   await httpController.post('/logout', {}, { Authorization: `Bearer ${auth.token}` })
 
-  LocalStorageController.clearStoresApplication()
+  await LocalStorageController.clearApplication()
+
+  await router.push({ path: '/signin' })
 }
