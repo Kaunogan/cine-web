@@ -9,7 +9,7 @@ const useAuth = defineStore('auth', {
   }),
   getters: {
     isExpired: (state): boolean => {
-      if (!state.expireAt) return true
+      if (state.expireAt === '') return true
       return moment().isAfter(state.expireAt)
     },
   },

@@ -39,7 +39,8 @@ export default class HttpController {
 
         if (error.status === 401) {
           await LocalStorageController.clearStoresApplication()
-          await router.push({ name: 'Signin' })
+          await router.push({ path: '/signin' })
+          error.message = 'Please signin again'
         }
 
         this.toast.info(error.message)

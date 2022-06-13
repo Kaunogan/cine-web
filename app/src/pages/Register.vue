@@ -63,7 +63,7 @@ const register = useThrottleFn(async () => {
       password: state.password,
     })
 
-    await router.push({ name: 'Home' })
+    await router.push({ path: '/home' })
   } finally {
     state.isLoading = false
   }
