@@ -13,17 +13,15 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-interface Props {
-  currentPage: number
-  showLastPaginate: boolean | true
-  onPageChanged: Function
-}
-
 // Props
-const props = defineProps<Props>()
+const props = defineProps({
+  currentPage: { type: Number, required: true },
+  showLastPaginate: { type: Boolean, default: true },
+  onPageChanged: { type: Function, required: true },
+})
 
 // Computed
-const isFirstPage = computed(() => props.currentPage === 1)
+const isFirstPage = computed(() => <Number>props.currentPage === 1)
 
 // Function
 const decreasePage = () => {

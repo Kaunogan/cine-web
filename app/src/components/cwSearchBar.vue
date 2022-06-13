@@ -8,15 +8,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-interface Props {
-  placeholder: string
-  querySearched: Function
-}
-
 const query = ref()
 
 // Props
-const props = defineProps<Props>()
+const props = defineProps({
+  placeholder: { type: String, default: '' },
+  querySearched: { type: Function, required: true },
+})
 </script>
 
 <style lang="scss" scoped>

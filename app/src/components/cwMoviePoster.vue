@@ -10,16 +10,14 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 
-interface Props {
-  tmdbId: number
-  posterUrl: string
-  title: string
-}
-
 const router = useRouter()
 
 // Props
-const props = defineProps<Props>()
+const props = defineProps({
+  tmdbMovieId: { type: Number, required: true },
+  posterUrl: { type: String, required: true },
+  title: { type: String, required: true },
+})
 
 // Function
 const getPosterUrl = () => {
@@ -27,7 +25,7 @@ const getPosterUrl = () => {
 }
 
 const goToDetails = () => {
-  router.push({ path: `/movie/${props.tmdbId}` })
+  router.push({ path: `/movie/${props.tmdbMovieId}` })
 }
 </script>
 
