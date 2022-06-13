@@ -8,6 +8,6 @@
 
 <style lang="scss" scoped>
 .cw-container-content {
-  @apply w-full max-w-screen-2xl;
+  @apply w-full max-w-screen-2xl bg-white;
 }
 </style>
