@@ -1,5 +1,7 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestHeaders } from 'axios'
 import { useToast } from 'vue-toastification'
+import router from '@/router'
+import * as LocalStorageController from '@/controllers/LocalStorage'
 
 interface IErrorResponse {
   message: string
@@ -28,12 +30,18 @@ export default class HttpController {
     })
   }
 
-  private handleError({ response, message }: AxiosError) {
+  private async handleError({ response, message }: AxiosError) {
     if (response) {
       const errorData = response.data
 
       if (errorData) {
         const error = <IErrorResponse>errorData
+
+        if (error.status === 401) {
+          await LocalStorageController.clearStoresApplication()
+          await router.push({ name: 'Signin' })
+        }
+
         this.toast.info(error.message)
         return
       }
