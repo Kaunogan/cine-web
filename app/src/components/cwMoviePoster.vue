@@ -1,5 +1,5 @@
 <template>
-  <div class="cw-movie-poster">
+  <div class="cw-movie-poster" @click="goToDetails">
     <span>
       <img :src="getPosterUrl()" alt="movie-poster" />
     </span>
@@ -8,10 +8,15 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
+
 interface Props {
+  tmdbId: number
   posterUrl: string
   title: string
 }
+
+const router = useRouter()
 
 // Props
 const props = defineProps<Props>()
@@ -19,6 +24,10 @@ const props = defineProps<Props>()
 // Function
 const getPosterUrl = () => {
   return props.posterUrl.includes('null') ? 'https://pbs.twimg.com/profile_images/527991807402328064/LmS_7fXc_400x400.jpeg' : props.posterUrl
+}
+
+const goToDetails = () => {
+  router.push({ path: `/movie/${props.tmdbId}` })
 }
 </script>
 

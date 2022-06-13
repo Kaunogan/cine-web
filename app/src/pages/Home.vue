@@ -2,14 +2,14 @@
   <cw-container>
     <cw-container-nav-bar>
       <cw-search-bar placeholder="Search for a movie" :query-searched="querySearched" />
-      <h1 class="hidden text-2xl font-light text-tertiary lg:block">Hello {{ user.pseudo }} 🍿</h1>
+      <h2 class="hidden text-2xl font-light text-tertiary lg:block">Hello {{ user.pseudo }} 🍿</h2>
       <ph-list size="28" class="lg:hidden" @click="components.slideSideBar()" />
       <cw-settings-dropdown />
     </cw-container-nav-bar>
 
     <cw-container-content>
       <cw-grid-list :is-loading="state.isLoading" :nb-of-rows="2" :centered="paginateMoviesIsEmpty" msg-empty-data="No movies found">
-        <cw-movie-poster v-for="(movie, index) in state.paginateMovies" :key="index" :poster-url="movie.poster_url" :title="movie.title" />
+        <cw-movie-poster v-for="(movie, index) in state.paginateMovies" :key="index" :tmdb-id="movie.tmdb_movie_id" :poster-url="movie.poster_url" :title="movie.title" />
       </cw-grid-list>
     </cw-container-content>
 
