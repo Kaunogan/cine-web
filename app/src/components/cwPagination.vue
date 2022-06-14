@@ -3,7 +3,7 @@
     <div v-if="!isFirstPage" class="cw-pagination__item" @click="decreasePage">
       <ph-caret-left size="24" class="" />
     </div>
-    <h2 class="mx-4 text-xl">{{ props.currentPage }}</h2>
+    <h2 class="mx-4 font-header text-xl">{{ props.currentPage }}</h2>
     <div v-if="props.showLastPaginate" class="cw-pagination__item" @click="incrementPage">
       <ph-caret-right size="24" class="" />
     </div>

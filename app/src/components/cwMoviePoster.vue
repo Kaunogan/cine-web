@@ -1,7 +1,7 @@
 <template>
   <div class="cw-movie-poster" @click="goToDetails">
     <span>
-      <img :src="getPosterUrl()" alt="movie-poster" />
+      <img :src="getPosterUrl()" alt=" movie-poster" />
     </span>
     <p class="mt-2 flex h-full w-full items-center justify-center text-center text-sm font-light lg:text-base">{{ props.title }}</p>
   </div>
@@ -35,7 +35,6 @@ const goToDetails = () => {
 
   & img {
     @apply h-52 rounded-xl transition duration-300 ease-in-out hover:-translate-y-1 grid-lg:h-72;
-    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
   }
 
   & img:hover {
