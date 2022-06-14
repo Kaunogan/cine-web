@@ -9,13 +9,13 @@
 |
 */
 export declare module IHttp {
-  export interface Error {
+  interface Error {
     message: string
     status: number
     errorCode: string
   }
 
-  export interface Response<T> {
+  interface Response<T> {
     message: string
     status: string
     results: T
@@ -32,18 +32,18 @@ export declare module IHttp {
 |
 */
 export declare module IAuth {
-  export interface LoginBody {
+  interface LoginBody {
     email: string
     password: string
   }
 
-  export interface RegisterBody {
+  interface RegisterBody {
     email: string
     pseudo: string
     password: string
   }
 
-  export interface AuthResponse {
+  interface AuthResponse {
     token: string
     userId: number
     expiresAt: string
@@ -81,5 +81,14 @@ export declare module IMovie {
     title: string
     poster_url: string
     tmdb_movie_id: number
+  }
+
+  interface Details {
+    tmdb_movie_id: number
+    title: string
+    overview: string
+    poster_url: string
+    backdrop_url: string
+    trailer_url: string
   }
 }

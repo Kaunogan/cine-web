@@ -10,3 +10,12 @@ export async function getMovies(query: string = '', page: number = 1): Promise<I
 
   return results
 }
+
+export async function getMoviesDetails(tmdbMovieId: number): Promise<IMovie.Details> {
+  const httpController = new HttpController('/movies')
+  const auth = useAuth()
+
+  const { results } = await httpController.get<IMovie.Details>(`/${tmdbMovieId}`, { Authorization: `Bearer ${auth.token}` })
+
+  return results
+}
