@@ -22,7 +22,10 @@ const tmdbConfig = {
   */
   basePath: {
     api: 'https://api.themoviedb.org/3',
-    originalImage: 'https://themoviedb.org/t/p/original',
+    basePathImage: {
+      poster: 'https://image.tmdb.org/t/p/w220_and_h330_face',
+      backdrop: 'https://image.tmdb.org/t/p/w1920_and_h800_multi_faces',
+    },
     youtubeEmbed: 'https://youtube.com/embed/',
   },
 }
