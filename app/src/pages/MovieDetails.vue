@@ -1,16 +1,13 @@
 <template>
   <div v-if="movie" class="cw-movie-details-container">
     <div class="cw-movie-details-container__header">
-      <img :src="movie.backdrop_url" alt="backdrop-movie" class="backdrop" />
-      <div class="cw-movie-details-container__header-content">
-        <h1 class="movie-title">{{ movie.title }}</h1>
-        <p class="movie-overview">{{ movie.overview }}</p>
-      </div>
+      <h1 class="cw-movie-details-title">{{ movie.title }}</h1>
+      <p class="cw-movie-details-overview">{{ movie.overview }}</p>
     </div>
     <div class="cw-movie-details-container__content">
       <div class="cw-movie-details-container__content-trailer">
         <h2 class="max-w-screen-2xl text-center font-header text-2xl font-light text-tertiary md:text-3xl">Trailer</h2>
-        <iframe v-if="movie.trailer_url" :src="movie.trailer_url" class="trailer" allowfullscreen></iframe>
+        <iframe v-if="movie.trailer_url" :src="movie.trailer_url" class="cw-movie-details-trailer" allowfullscreen></iframe>
         <h2 v-else class="text-xl font-thin text-primary md:text-2xl">No trailer</h2>
       </div>
     </div>
@@ -32,6 +29,10 @@ const tmdbMovieId = Number(route.params.id)
 const movie = ref<IMovie.Details>()
 
 // Function
+const getCssBackgroundImage = () => {
+  return movie.value?.backdrop_url.includes('null') ? `url(https://pbs.twimg.com/profile_images/527991807402328064/LmS_7fXc_400x400.jpeg)` : `url(${movie.value?.backdrop_url})`
+}
+
 onMounted(async () => {
   movie.value = await MovieService.getMoviesDetails(tmdbMovieId)
 
@@ -45,13 +46,9 @@ onMounted(async () => {
   @apply flex flex-1 flex-col bg-secondary bg-white;
 
   &__header {
-    @apply relative h-72 w-full md:h-1/3;
-    background-color: black;
+    @apply flex w-full flex-col items-center justify-evenly bg-cover bg-center px-6 md:h-1/3 md:px-12 2xl:px-48;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.527), rgba(0, 0, 0, 0.5)), v-bind('getCssBackgroundImage()');
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-  }
-
-  &__header-content {
-    @apply absolute top-0 left-0 flex h-full w-full flex-col items-center justify-evenly px-6 md:px-12 2xl:px-48;
   }
 
   &__content {
@@ -63,22 +60,23 @@ onMounted(async () => {
   }
 }
 
-.backdrop {
-  @apply h-full w-full object-cover object-center opacity-40;
-}
-
-.movie-title {
+.cw-movie-details-title {
   @apply max-w-screen-2xl text-center font-header text-2xl text-white md:text-3xl 2xl:text-4xl;
 }
 
-.movie-overview {
+.cw-movie-details-overview {
   @apply w-full max-w-screen-2xl overflow-hidden text-center font-light text-white md:text-lg;
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
 }
 
-.trailer {
-  @apply h-3/4 w-full;
+.cw-movie-details-trailer {
+  @apply h-3/4 w-full rounded-2xl transition ease-in-out;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  }
 }
 </style>
