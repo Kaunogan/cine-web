@@ -31,10 +31,10 @@ const goToDetails = () => {
 
 <style lang="scss" scoped>
 .cw-movie-poster {
-  @apply flex w-36 flex-col items-center grid-lg:w-48;
+  @apply flex w-36 flex-col items-center 2xl:w-48;
 
   & img {
-    @apply h-52 rounded-xl transition duration-300 ease-in-out hover:-translate-y-1 grid-lg:h-72;
+    @apply h-52 rounded-xl transition duration-300 ease-in-out hover:-translate-y-1 2xl:h-72;
   }
 
   & img:hover {
