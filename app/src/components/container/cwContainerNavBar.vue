@@ -1,14 +1,10 @@
 <template>
-  <div class="cw-container-navbar" :class="`h-${props.height}`">
+  <div class="cw-container-navbar md:h-32">
     <slot />
   </div>
 </template>
 
-<script setup lang="ts">
-const props = defineProps({
-  height: { type: Number, default: 32 },
-})
-</script>
+<script setup lang="ts"></script>
 
 <style lang="scss" scoped>
 .cw-container-navbar {
