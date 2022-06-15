@@ -1,5 +1,5 @@
 <template>
-  <div ref="test" class="cw-grid-list" :class="isCentered + ` cw-grid-list__${props.nbOfRows}-rows`">
+  <div ref="test" class="cw-grid-list" :class="isCentered + ` cw-grid-list--${props.nbOfRows}-rows`">
     <cw-loader v-if="props.isLoading" />
     <slot v-else> {{ props.msgEmptyData }} </slot>
   </div>
@@ -29,11 +29,11 @@ const isCentered = computed(() => (props.centered || props.isLoading ? 'cw-grid-
     @apply place-content-center;
   }
 
-  &__2-rows {
+  &--2-rows {
     @apply grid-rows-4 md:grid-rows-2;
   }
 
-  &__3-rows {
+  &--3-rows {
     @apply grid-rows-6 md:grid-rows-3;
   }
 }

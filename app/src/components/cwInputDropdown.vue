@@ -36,7 +36,7 @@ interface Props {
 const state = reactive({
   limit: 6,
   search: '',
-  selected: <{ id: number; name: string }>{},
+  selected: <{ id: number; name: string }>{ id: 0, name: '' },
 })
 
 const load: any = ref<Element>()
