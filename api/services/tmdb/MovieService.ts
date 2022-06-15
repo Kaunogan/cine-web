@@ -11,10 +11,17 @@ class TmdbMovieService {
   }
 
   // Get the original TMDB image path
-  private getOriginalImagePath(imageId: string): string {
-    const { originalImage } = this.config.basePath
+  private getPosterImagePath(imageId: string): string {
+    const { basePathImage } = this.config.basePath
 
-    return originalImage + imageId
+    return basePathImage.poster + imageId
+  }
+
+  // Get the backdrop TMDB image path
+  private getBackDropPath(imageId: string): string {
+    const { basePathImage } = this.config.basePath
+
+    return basePathImage.backdrop + imageId
   }
 
   // Parse result as IMovie type
@@ -24,7 +31,7 @@ class TmdbMovieService {
         <IMovie>{
           tmdb_movie_id: item.id,
           title: item.title,
-          poster_url: this.getOriginalImagePath(item.poster_path),
+          poster_url: this.getPosterImagePath(item.poster_path),
         }
     )
   }
@@ -86,8 +93,8 @@ class TmdbMovieService {
         tmdb_movie_id: movieData.id,
         title: movieData.original_title,
         overview: movieData.overview,
-        poster_url: this.getOriginalImagePath(movieData.poster_path),
-        backdrop_url: this.getOriginalImagePath(movieData.backdrop_path),
+        poster_url: this.getPosterImagePath(movieData.poster_path),
+        backdrop_url: this.getBackDropPath(movieData.backdrop_path),
         trailer_url: trailerUrl,
       }
     } catch ({ response }) {

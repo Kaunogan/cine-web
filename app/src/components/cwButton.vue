@@ -8,13 +8,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-interface Props {
-  btnType: 'primary' | 'primary-outlined'
-  isLoading?: boolean
-}
-
 // Props
-const props = defineProps<Props>()
+const props = defineProps({
+  btnType: { type: String, default: 'primary' },
+  isLoading: { type: Boolean, default: false },
+})
 
 // Computed
 const btnClass = computed(() => `cw-btn--${props.btnType}`)

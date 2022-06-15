@@ -1,5 +1,5 @@
 <template>
-  <div class="cw-container-navbar">
+  <div class="cw-container__navbar">
     <slot />
   </div>
 </template>
@@ -7,7 +7,7 @@
 <script setup lang="ts"></script>
 
 <style lang="scss" scoped>
-.cw-container-navbar {
-  @apply mt-4 flex h-32 w-full max-w-screen-2xl items-center justify-between md:mt-0;
+.cw-container__navbar {
+  @apply mt-4 flex w-full max-w-screen-2xl items-center justify-between bg-white md:mt-0 md:h-32;
 }
 </style>

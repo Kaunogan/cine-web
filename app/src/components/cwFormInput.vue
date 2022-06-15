@@ -8,13 +8,11 @@
 </template>
 
 <script setup lang="ts">
-interface Props {
-  for: string
-  label: string
-}
-
 // Props
-const props = defineProps<Props>()
+const props = defineProps({
+  for: { type: String, required: true },
+  label: { type: String, required: true },
+})
 </script>
 
 <style scoped>

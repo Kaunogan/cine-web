@@ -26,12 +26,9 @@
 import { computed, ref } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import * as AuthService from '@/services/Auth'
-import { useRouter } from 'vue-router'
 
 const isVisible = ref(false)
 const target = ref(null)
-
-const router = useRouter()
 
 // Computed
 const getAnimationsClasses = computed(() => `${isVisible.value ? 'lg:hover:opacity-100 rotate-45' : 'lg:hover:opacity-80 rotate-0'}`)

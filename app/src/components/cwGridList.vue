@@ -9,15 +9,13 @@
 import { computed } from 'vue'
 import CwLoader from '@/components/cwLoader.vue'
 
-interface Props {
-  nbOfRows: 2 | 3
-  centered: boolean
-  msgEmptyData: string
-  isLoading: boolean
-}
-
 // Props
-const props = defineProps<Props>()
+const props = defineProps({
+  nbOfRows: { type: Number, default: 2 },
+  centered: { type: Boolean, default: false },
+  msgEmptyData: { type: String, default: 'No data found' },
+  isLoading: { type: Boolean, default: false },
+})
 
 // Computed
 const isCentered = computed(() => (props.centered || props.isLoading ? 'cw-grid-list--centered' : ''))
