@@ -3,7 +3,7 @@
     <cw-container-nav-bar>
       <h2 class="hidden font-header text-2xl font-light text-tertiary lg:block">Hello {{ user.pseudo }} 🍿</h2>
       <ph-list size="28" class="lg:hidden" @click="components.slideSideBar()" />
-      <cw-search-bar placeholder="Search for a movie" :query-searched="querySearched" />
+      <cw-search-bar placeholder="Search for a movie" @query-searched="querySearched" />
       <cw-settings-dropdown />
     </cw-container-nav-bar>
 
@@ -14,7 +14,7 @@
     </cw-container-content>
 
     <cw-container-footer>
-      <cw-pagination v-if="!paginateMoviesIsEmpty" :current-page="state.currentPage" :show-last-paginate="showLastPaginate" :on-page-changed="pageChanged" />
+      <cw-pagination v-if="!paginateMoviesIsEmpty" :current-page="state.currentPage" :show-last-paginate="showLastPaginate" @page-changed="pageChanged" />
     </cw-container-footer>
   </cw-container>
 </template>
@@ -59,9 +59,13 @@ const paginateMoviesIsEmpty = computed(() => state.paginateMovies.length === 0)
 const querySearched = useThrottleFn(async (newQuery: string) => {
   state.isLoading = true
   pageReq = 1
-  query = newQuery
   state.currentPage = 1
-  movies = await MovieService.getMovies(query, pageReq)
+
+  if (newQuery !== query) {
+    query = newQuery
+    movies = await MovieService.getMovies(query, pageReq)
+  }
+
   state.paginateMovies = paginateArray(movies, nbOfMoviesDisplayed, state.currentPage)
   state.isLoading = false
 }, 1000)

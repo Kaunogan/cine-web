@@ -17,19 +17,24 @@ import { computed } from 'vue'
 const props = defineProps({
   currentPage: { type: Number, required: true },
   showLastPaginate: { type: Boolean, default: true },
-  onPageChanged: { type: Function, required: true },
 })
+
+// Emits
+const emit = defineEmits<{
+  // eslint-disable-next-line no-unused-vars
+  (e: 'pageChanged', value: number): void
+}>()
 
 // Computed
 const isFirstPage = computed(() => <Number>props.currentPage === 1)
 
 // Function
 const decreasePage = () => {
-  props.onPageChanged(props.currentPage - 1)
+  emit('pageChanged', props.currentPage - 1)
 }
 
 const incrementPage = () => {
-  props.onPageChanged(props.currentPage + 1)
+  emit('pageChanged', props.currentPage + 1)
 }
 </script>
 
