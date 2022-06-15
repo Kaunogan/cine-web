@@ -5,10 +5,14 @@
       <p class="cw-movie-details-overview">{{ movie.overview }}</p>
     </div>
     <div class="cw-movie-details-container__content">
-      <div class="cw-movie-details-container__content-trailer">
-        <h2 class="max-w-screen-2xl text-center font-header text-2xl font-light text-tertiary md:text-3xl">Trailer</h2>
+      <div class="cw-movie-details-container__content-top">
+        <h2 class="text-center font-header text-2xl font-light text-tertiary md:text-3xl">Trailer</h2>
         <iframe v-if="movie.trailer_url" :src="movie.trailer_url" class="cw-movie-details-trailer" allowfullscreen></iframe>
         <h2 v-else class="text-xl font-thin text-primary md:text-2xl">No trailer</h2>
+      </div>
+      <div class="cw-movie-details-container__content-bottom">
+        <h2 class="text-center font-header text-2xl font-light text-tertiary">Choose a category</h2>
+        <cw-input-dropdown />
       </div>
     </div>
   </div>
@@ -18,10 +22,13 @@
 </template>
 
 <script setup lang="ts">
+import CwLoader from '@/components/cwLoader.vue'
+import CwInputDropdown from '@/components/cwInputDropdown.vue'
+
 import { useRoute } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import * as MovieService from '@/services/Movies'
-import CwLoader from '@/components/cwLoader.vue'
+
 import { IMovie } from '@/types'
 
 const route = useRoute()
@@ -46,17 +53,21 @@ onMounted(async () => {
   @apply flex flex-1 flex-col bg-secondary bg-white;
 
   &__header {
-    @apply flex w-full flex-col items-center justify-evenly bg-cover bg-center px-6 md:h-1/3 md:px-12 2xl:px-48;
+    @apply flex h-1/2 w-full flex-col items-center justify-evenly bg-cover bg-center px-6 md:h-1/3 md:px-12 2xl:px-48;
     background-image: linear-gradient(rgba(0, 0, 0, 0.527), rgba(0, 0, 0, 0.5)), v-bind('getCssBackgroundImage()');
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
   }
 
   &__content {
-    @apply flex h-full w-full items-center justify-center px-4 lg:px-0;
+    @apply flex h-full w-full flex-col items-center justify-evenly px-4 lg:px-0;
   }
 
-  &__content-trailer {
+  &__content-top {
     @apply flex h-3/4 w-full max-w-screen-sm flex-col items-center justify-evenly px-4 3xl:max-w-screen-lg;
+  }
+
+  &__content-bottom {
+    @apply flex h-1/4 w-full max-w-screen-sm flex-col items-center justify-evenly 3xl:max-w-screen-lg;
   }
 }
 
