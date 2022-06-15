@@ -1,15 +1,66 @@
 <template>
-  <v-select class="w-80" :options="state.countries" append-to-body :calculate-position="withPopper" />
+  <div class="cw-input-dropdown">
+    <v-select
+      v-model="state.selected"
+      class="w-80"
+      append-to-body
+      :options="paginated"
+      :calculate-position="withPopper"
+      :filterable="false"
+      label="name"
+      @open="onOpen"
+      @close="onClose"
+      @search="(query) => (state.search = query)"
+    >
+      <template #list-footer>
+        <li v-show="hasNextPage" ref="load" class="loader">{{ props.msgLoadingItem }}</li>
+      </template>
+    </v-select>
+    <cw-button class="mt-4" @click="onItemClick">Add</cw-button>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { createPopper } from '@popperjs/core'
-import { reactive } from 'vue'
+import { computed, nextTick, onMounted, reactive, ref } from 'vue'
 import VSelect from 'vue-select'
+import CwButton from '@/components/cwButton.vue'
+
+interface Props {
+  defaultSelected?: { id: number; name: string }
+  items: { id: number; name: string }[]
+  msgLoadingItem: string
+}
 
 // State
 const state = reactive({
-  countries: ['Canada', 'United States', 'France', 'France', 'France', 'France'],
+  limit: 6,
+  search: '',
+  selected: <{ id: number; name: string }>{},
+})
+
+const load: any = ref<Element>()
+
+// Props
+const props = defineProps<Props>()
+
+// Emit
+const emit = defineEmits<{
+  // eslint-disable-next-line no-unused-vars
+  (e: 'select', item: { id: number; name: string }): void
+}>()
+
+// Computed
+const filtered = computed(() => {
+  return props.items.filter((item) => item.name.includes(state.search))
+})
+
+const paginated = computed(() => {
+  return filtered.value.slice(0, state.limit)
+})
+
+const hasNextPage = computed(() => {
+  return paginated.value.length < filtered.value.length
 })
 
 // Function
@@ -56,9 +107,44 @@ const withPopper = (dropdownList: any, component: any, { width }: any) => {
    */
   return () => popper.destroy()
 }
+
+const infiniteScroll = async ([{ isIntersecting, target }]: any) => {
+  setTimeout(async () => {
+    if (isIntersecting) {
+      const ul = target.offsetParent
+      const { scrollTop } = target.offsetParent
+      state.limit += 3
+      await nextTick()
+      ul.scrollTop = scrollTop
+    }
+  }, 2000)
+}
+
+const observer = new IntersectionObserver(infiniteScroll)
+
+const onOpen = async () => {
+  if (hasNextPage.value) {
+    await nextTick()
+    observer.observe(load.value)
+  }
+}
+
+const onClose = () => {
+  observer.disconnect()
+}
+
+const onItemClick = () => emit('select', state.selected)
+
+onMounted(() => {
+  state.selected = props.defaultSelected
+})
 </script>
 
 <style lang="scss">
+.cw-input-dropdown {
+  @apply flex flex-col items-center justify-center;
+}
+
 .vs__dropdown-option {
   @apply text-tertiary;
 
@@ -77,9 +163,14 @@ const withPopper = (dropdownList: any, component: any, { width }: any) => {
 }
 
 [data-popper-placement='top'] {
-  @apply text-lg;
+  @apply max-h-44 text-lg;
   border-radius: 4px 4px 0 0;
   border-top-style: solid;
   box-shadow: 0 -3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.loader {
+  text-align: center;
+  color: #bbbbbb;
 }
 </style>

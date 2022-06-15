@@ -12,7 +12,7 @@
       </div>
       <div class="cw-movie-details-container__content-bottom">
         <h2 class="text-center font-header text-2xl font-light text-tertiary">Choose a category</h2>
-        <cw-input-dropdown />
+        <cw-input-dropdown :items="categories" :default-selected="{ id: 1, name: 'Action' }" msg-loading-item="Loading more categories..." @select="saveCategory" />
       </div>
     </div>
   </div>
@@ -34,10 +34,19 @@ import { IMovie } from '@/types'
 const route = useRoute()
 const tmdbMovieId = Number(route.params.id)
 const movie = ref<IMovie.Details>()
+const categories = [
+  { id: 1, name: 'Action' },
+  { id: 2, name: 'Adventure' },
+  { id: 3, name: 'Netflix' },
+]
 
 // Function
 const getCssBackgroundImage = () => {
   return movie.value?.backdrop_url.includes('null') ? `url(https://pbs.twimg.com/profile_images/527991807402328064/LmS_7fXc_400x400.jpeg)` : `url(${movie.value?.backdrop_url})`
+}
+
+const saveCategory = (value: { id: number; name: string }) => {
+  // TODO: send request to api
 }
 
 onMounted(async () => {
