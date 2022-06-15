@@ -136,7 +136,9 @@ const onClose = () => {
 const onItemClick = () => emit('select', state.selected)
 
 onMounted(() => {
-  state.selected = props.defaultSelected
+  if (props.defaultSelected) {
+    state.selected = props.defaultSelected
+  }
 })
 </script>
 
