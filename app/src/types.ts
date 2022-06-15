@@ -92,3 +92,16 @@ export declare module IMovie {
     trailer_url: string
   }
 }
+
+/*
+|--------------------------------------------------------------------------
+| Category Interface
+|--------------------------------------------------------------------------
+|
+| Category Interface contains the details information of the category
+|
+*/
+export interface ICategory {
+  id: number
+  name: string
+}
