@@ -11,7 +11,7 @@
         <h2 v-else class="text-xl font-thin text-primary md:text-2xl">No trailer</h2>
       </div>
       <div class="cw-movie-details-container__content-bottom">
-        <h2 class="mb-2 text-center font-header text-lg font-light text-tertiary md:mb-0 md:text-2xl">Choose a category</h2>
+        <h2 class="mb-2 text-center font-header text-lg font-light text-tertiary md:text-2xl 2xl:mb-0">Choose a category</h2>
         <cw-input-dropdown :items="categories" :default-selected="{ id: 1, name: 'Action' }" msg-loading-item="Loading more categories..." @select="saveCategory" />
       </div>
     </div>
