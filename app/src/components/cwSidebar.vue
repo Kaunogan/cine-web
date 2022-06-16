@@ -47,7 +47,7 @@ watch(width, () => {
 })
 
 // Functions
-const getClass = (path: string) => (route.path === path ? 'text-secondary' : 'transition ease-in-out hover:translate-x-2')
+const getClass = (path: string) => (route.path.includes(path) ? 'text-secondary' : 'transition ease-in-out hover:translate-x-2')
 
 onClickOutside(target, () => {
   if (!components.sidebar.isOpen) return

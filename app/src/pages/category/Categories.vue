@@ -13,7 +13,7 @@
         </div>
       </cw-grid-list>
 
-      <cw-button btn-type="primary-outlined" class="mt-9 mb-6 md:mt-0 md:mb-0">Add a category</cw-button>
+      <cw-button btn-type="primary-outlined" class="mt-9 mb-6 md:mt-0 md:mb-0" @click="goToAddCategory">Add a category</cw-button>
     </cw-container-content>
 
     <cw-container-footer>
@@ -35,6 +35,7 @@ import { ICategory } from '@/types'
 import CwContainerFooter from '@/components/container/cwContainerFooter.vue'
 import CwButton from '@/components/cwButton.vue'
 import CwPagination from '@/components/cwPagination.vue'
+import { useRouter } from 'vue-router'
 
 const components = useComponents()
 
@@ -44,6 +45,8 @@ const state = reactive({
   currentPage: 1,
   nextCategories: <ICategory[]>[],
 })
+
+const router = useRouter()
 
 // Computed
 const currentCategoriesIsEmpty = computed(() => state.currentCategories.length === 0)
@@ -62,6 +65,10 @@ const pageChanged = async (newPage: number) => {
 
   state.currentCategories = await CategoryService.getCategories(state.currentPage)
   state.nextCategories = await CategoryService.getCategories(state.currentPage + 1)
+}
+
+const goToAddCategory = async () => {
+  await router.push({ path: '/categories/add' })
 }
 
 onMounted(async () => {
