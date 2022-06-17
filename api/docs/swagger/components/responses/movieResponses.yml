@@ -69,3 +69,29 @@ components:
                   trailer_url:
                     type: string
                     description: The url of movie trailer
+
+    #|--------------------------------------------------------------------------
+    #| Response ==> RelatedCategories : 200
+    #|--------------------------------------------------------------------------
+    RelatedCategories:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Message responses.
+              status:
+                type: string
+                description: The status http code.
+              results:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: The id of category
+                  name:
+                    type: string
+                    description: The name of category

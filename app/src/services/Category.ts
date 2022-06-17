@@ -1,6 +1,15 @@
 import HttpController from '@/controllers/Http'
 import useAuth from '@/stores/authStore'
-import { ICategory } from '@/types'
+import { ICategory, IMovie } from '@/types'
+
+export async function getAllCategories() {
+  const auth = useAuth()
+  const httpController = new HttpController(`/users/${auth.userId}`)
+
+  const { results } = await httpController.get<ICategory[]>('/categories', { Authorization: `Bearer ${auth.token}` })
+
+  return results
+}
 
 export async function getCategories(page: number = 1, limit: number = 12) {
   const auth = useAuth()
@@ -16,4 +25,11 @@ export async function addCategory(category: { name: string }) {
   const httpController = new HttpController(`/users/${auth.userId}`)
 
   await httpController.post('/categories', category, { Authorization: `Bearer ${auth.token}` })
+}
+
+export async function addMovieInCategory(categoryId: number, tmdbMovie: IMovie.ShortDetails) {
+  const auth = useAuth()
+  const httpController = new HttpController(`/users/${auth.userId}`)
+
+  await httpController.post(`/categories/${categoryId}/movies`, tmdbMovie, { Authorization: `Bearer ${auth.token}` })
 }

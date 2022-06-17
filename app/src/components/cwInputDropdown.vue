@@ -117,7 +117,7 @@ const infiniteScroll = async ([{ isIntersecting, target }]: any) => {
       await nextTick()
       ul.scrollTop = scrollTop
     }
-  }, 2000)
+  }, 500)
 }
 
 const observer = new IntersectionObserver(infiniteScroll)
