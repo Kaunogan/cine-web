@@ -5,13 +5,11 @@
       <ph-list size="28" class="lg:hidden" @click="components.slideSideBar()" />
       <cw-settings-dropdown />
     </cw-container-nav-bar>
-    <cw-container-content class="flex h-full w-full items-center justify-center">
-      <div class="items-centers flex flex-col items-center justify-center md:w-auto">
-        <cw-form-input for="add" label="Category name">
-          <input id="add" type="text" name="Add" class="cw-g-input w-72" placeholder="My superb category" />
-        </cw-form-input>
-        <cw-button class="mt-6 w-12">Add</cw-button>
-      </div>
+    <cw-container-content class="flex h-full flex-col items-center justify-center">
+      <cw-form-input for="add" label="Category name">
+        <input id="add" v-model="category" type="text" name="Add" class="cw-g-input w-72" placeholder="My superb category" />
+      </cw-form-input>
+      <cw-button class="mt-6 w-12" @click="addCategory">Add</cw-button>
     </cw-container-content>
   </cw-container>
 </template>
@@ -24,8 +22,30 @@ import useComponents from '@/stores/componentsStore'
 import CwContainerContent from '@/components/container/cwContainerContent.vue'
 import CwFormInput from '@/components/cwFormInput.vue'
 import CwButton from '@/components/cwButton.vue'
+import { ref } from 'vue'
+import { useThrottleFn } from '@vueuse/core'
+import * as CategoryService from '@/services/Category'
+import { useRouter } from 'vue-router'
+import { useToast } from 'vue-toastification'
 
 const components = useComponents()
+const router = useRouter()
+const toast = useToast()
+const category = ref('')
+
+// Function
+const addCategory = useThrottleFn(async () => {
+  if (!category.value) {
+    toast.info('Please enter a category name')
+    return
+  }
+
+  await CategoryService.addCategory({ name: category.value })
+
+  await router.push({ path: '/categories' })
+
+  toast.success(`Category ${category.value} created successfully`)
+}, 2000)
 </script>
 
 <style lang="scss" scoped></style>
