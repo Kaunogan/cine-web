@@ -1,8 +1,8 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestHeaders } from 'axios'
 import { useToast } from 'vue-toastification'
-import * as LocalStorageController from '@/controllers/LocalStorage'
-import router from '@/router'
 import { IHttp } from '@/types'
+import router from '@/router'
+import * as LocalStorageController from '@/controllers/LocalStorage'
 
 export default class HttpController {
   private instance: AxiosInstance
@@ -31,6 +31,8 @@ export default class HttpController {
           await LocalStorageController.clearApplication()
           await router.push({ path: '/signin' })
         }
+
+        if (error.status === 404) await router.push({ path: '/home' })
 
         this.toast.info(error.message)
         return

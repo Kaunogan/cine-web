@@ -40,11 +40,11 @@ const addCategory = useThrottleFn(async () => {
     return
   }
 
-  await CategoryService.addCategory({ name: category.value })
+  const message = await CategoryService.addCategory({ name: category.value })
 
   await router.push({ path: '/categories' })
 
-  toast.success(`Category ${category.value} created successfully`)
+  toast.success(message)
 }, 2000)
 </script>
 

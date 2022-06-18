@@ -2,7 +2,7 @@ import HttpController from '@/controllers/Http'
 import useAuth from '@/stores/authStore'
 import { IMovie } from '@/types'
 
-export async function getMovies(query: string = '', page: number = 1): Promise<IMovie.ShortDetails[]> {
+export async function getMovies(query: string = '', page: number = 1) {
   const httpController = new HttpController('/movies')
   const auth = useAuth()
 
@@ -11,7 +11,7 @@ export async function getMovies(query: string = '', page: number = 1): Promise<I
   return results
 }
 
-export async function getMoviesDetails(tmdbMovieId: number): Promise<IMovie.Details> {
+export async function getMoviesDetails(tmdbMovieId: number) {
   const httpController = new HttpController('/movies')
   const auth = useAuth()
 

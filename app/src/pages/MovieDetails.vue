@@ -25,8 +25,8 @@
 import CwLoader from '@/components/cwLoader.vue'
 import CwInputDropdown from '@/components/cwInputDropdown.vue'
 
-import { useRoute } from 'vue-router'
-import { computed, onMounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { onMounted, ref } from 'vue'
 import * as MovieService from '@/services/Movies'
 import * as CategoryService from '@/services/Category'
 
@@ -35,6 +35,7 @@ import { useThrottleFn } from '@vueuse/core'
 import { useToast } from 'vue-toastification'
 
 const route = useRoute()
+const router = useRouter()
 const toast = useToast()
 const tmdbMovieId = Number(route.params.id)
 const movie = ref<IMovie.Details>()
@@ -56,16 +57,21 @@ const saveCategory = useThrottleFn(async (value: { id: number; name: string }) =
     }
   } else return
 
-  await CategoryService.addMovieInCategory(value.id, movieShortDetails)
+  const message = await CategoryService.addMovieInCategory(value.id, movieShortDetails)
 
-  toast.success('Movie addedd successfully')
+  toast.success(message)
 }, 2000)
 
 onMounted(async () => {
+  if (Number.isNaN(tmdbMovieId)) {
+    await router.push({ path: '/home' })
+    return
+  }
+
   movie.value = await MovieService.getMoviesDetails(tmdbMovieId)
 
   movie.value.backdrop_url = movie.value.backdrop_url.includes('null') ? 'https://pbs.twimg.com/profile_images/527991807402328064/LmS_7fXc_400x400.jpeg' : movie.value.backdrop_url
-  movie.value.overview = movie.value.overview !== '' ? movie.value?.overview : 'No overview for this movie'
+  movie.value.overview = movie.value.overview !== '' ? movie.value.overview : 'No overview for this movie'
 
   categories.value = await CategoryService.getAllCategories()
 })

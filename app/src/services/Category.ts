@@ -24,12 +24,16 @@ export async function addCategory(category: { name: string }) {
   const auth = useAuth()
   const httpController = new HttpController(`/users/${auth.userId}`)
 
-  await httpController.post('/categories', category, { Authorization: `Bearer ${auth.token}` })
+  const { message } = await httpController.post('/categories', category, { Authorization: `Bearer ${auth.token}` })
+
+  return message
 }
 
 export async function addMovieInCategory(categoryId: number, tmdbMovie: IMovie.ShortDetails) {
   const auth = useAuth()
   const httpController = new HttpController(`/users/${auth.userId}`)
 
-  await httpController.post(`/categories/${categoryId}/movies`, tmdbMovie, { Authorization: `Bearer ${auth.token}` })
+  const { message } = await httpController.post(`/categories/${categoryId}/movies`, tmdbMovie, { Authorization: `Bearer ${auth.token}` })
+
+  return message
 }
