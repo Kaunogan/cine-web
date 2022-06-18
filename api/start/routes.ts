@@ -32,7 +32,6 @@ Route.group(() => {
     Route.post('/auth/logout', 'AuthController.logout')
     Route.get('/categories/shared/:shared_id', 'UserCategoriesController.share')
     Route.get('/users/:id/profile', 'UsersController.getProfile')
-    Route.get('/users/:id/movies/:movie_id/categories', 'MoviesController.getRelatedCategories')
   }).middleware('auth')
 
   Route.post('/auth/register', 'AuthController.register')
