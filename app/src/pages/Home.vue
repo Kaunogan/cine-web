@@ -8,7 +8,7 @@
     </cw-container-nav-bar>
 
     <cw-container-content>
-      <cw-grid-list :is-loading="state.isLoading" :centered="currentPaginateMoviesIsEmpty" msg-empty-data="No movies found">
+      <cw-grid-list :evenly="state.isEvenly" :is-loading="state.isLoading" :centered="currentPaginateMoviesIsEmpty" msg-empty-data="No movies found">
         <cw-movie-poster v-for="(movie, index) in state.currentPaginateMovies" :key="index" :tmdb-movie-id="movie.tmdb_movie_id" :poster-url="movie.poster_url" :title="movie.title" />
       </cw-grid-list>
     </cw-container-content>
@@ -28,9 +28,9 @@ import CwContainer from '@/components/container/cwContainer.vue'
 import CwContainerNavBar from '@/components/container/cwContainerNavBar.vue'
 import { IMovie } from '@/types'
 import useUser from '@/stores/userStore'
-import { useThrottleFn } from '@vueuse/core'
+import { breakpointsTailwind, useBreakpoints, useThrottleFn, useWindowSize } from '@vueuse/core'
 import useComponents from '@/stores/componentsStore'
-import { computed, onMounted, reactive } from 'vue'
+import { computed, onMounted, reactive, watch } from 'vue'
 import * as MovieService from '@/services/Movies'
 import paginateArray from '@/features/paginateArray'
 import CwContainerContent from '@/components/container/cwContainerContent.vue'
@@ -49,13 +49,26 @@ const state = reactive({
   currentPaginateMovies: <IMovie.ShortDetails[]>[],
   nextPaginateMovies: <IMovie.ShortDetails[]>[],
   isLoading: true,
+  isEvenly: false,
 })
 const user = useUser()
 const components = useComponents()
+const { width } = useWindowSize()
+const breakpoints = useBreakpoints(breakpointsTailwind)
 
 // Computed
 const currentPaginateMoviesIsEmpty = computed(() => state.currentPaginateMovies.length === 0)
 const nextPaginateMoviesIsEmpty = computed(() => state.nextPaginateMovies.length === 0)
+
+// Watch
+watch(width, () => {
+  if (breakpoints.isSmaller('md')) {
+    state.isEvenly = false
+    return
+  }
+
+  state.isEvenly = state.currentPaginateMovies.length <= 4
+})
 
 // Function
 const querySearched = useThrottleFn(async (newQuery: string) => {
@@ -88,6 +101,7 @@ const pageChanged = async (page: number) => {
   }
 
   state.nextPaginateMovies = paginateArray(movies, nbOfMoviesDisplayed, state.currentPage + 1)
+  state.isEvenly = state.currentPaginateMovies.length <= 4
 
   state.isLoading = false
 }
@@ -97,6 +111,7 @@ onMounted(async () => {
   state.currentPaginateMovies = paginateArray(movies, nbOfMoviesDisplayed, state.currentPage)
 
   state.nextPaginateMovies = paginateArray(movies, nbOfMoviesDisplayed, state.currentPage + 1)
+  state.isEvenly = state.currentPaginateMovies.length <= 4
 
   state.isLoading = false
 })

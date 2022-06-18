@@ -1,5 +1,5 @@
 <template>
-  <div ref="test" class="cw-grid-list" :class="isCentered + ` cw-grid-list--${props.nbOfRows}-rows`">
+  <div ref="test" class="cw-grid-list" :class="isCentered + isEvenly + ` cw-grid-list--${props.nbOfRows}-rows`">
     <cw-loader v-if="props.isLoading" />
     <slot v-else> {{ props.msgEmptyData }} </slot>
   </div>
@@ -13,12 +13,14 @@ import CwLoader from '@/components/cwLoader.vue'
 const props = defineProps({
   nbOfRows: { type: Number, default: 2 },
   centered: { type: Boolean, default: false },
+  evenly: { type: Boolean, default: false },
   msgEmptyData: { type: String, default: 'No data found' },
   isLoading: { type: Boolean, default: false },
 })
 
 // Computed
 const isCentered = computed(() => (props.centered || props.isLoading ? 'cw-grid-list--centered' : ''))
+const isEvenly = computed(() => (props.evenly ? 'cw-grid-list--evenly' : ''))
 </script>
 
 <style lang="scss" scoped>
@@ -27,6 +29,14 @@ const isCentered = computed(() => (props.centered || props.isLoading ? 'cw-grid-
 
   &--centered {
     @apply place-content-center;
+  }
+
+  &--evenly {
+    @apply place-content-evenly;
+  }
+
+  &--evenly {
+    @apply place-content-evenly;
   }
 
   &--2-rows {
