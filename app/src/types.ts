@@ -101,7 +101,28 @@ export declare module IMovie {
 | Category Interface contains the details information of the category
 |
 */
-export interface ICategory {
-  id: number
-  name: string
+export declare module ICategory {
+  interface ShortDetails {
+    id: number
+    name: string
+  }
+
+  interface Details {
+    id: number
+    name: string
+    shared_id: string
+    created_at: string
+    updated_at: string
+    visibility: {
+      id: number
+      type: string
+    }
+    movies: {
+      id: number
+      title: string
+      poster_url: string
+      tmdb_movie_id: number
+      created_at: string
+    }[]
+  }
 }

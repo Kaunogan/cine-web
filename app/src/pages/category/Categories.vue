@@ -8,7 +8,7 @@
 
     <cw-container-content class="flex flex-col items-center justify-evenly md:h-full">
       <cw-grid-list :evenly="state.isEvenly" :nb-of-rows="3" :centered="currentCategoriesIsEmpty" msg-empty-data="No categories found">
-        <div v-for="(category, index) in state.currentCategories" :key="category.id" class="cw-categories-card" :class="getTextColor(index)">
+        <div v-for="(category, index) in state.currentCategories" :key="category.id" class="cw-categories-card" :class="getTextColor(index)" @click="goToCategory(category.id)">
           <p class="text-center lg:text-lg">{{ category.name }}</p>
         </div>
       </cw-grid-list>
@@ -84,6 +84,10 @@ const pageChanged = async (newPage: number) => {
 
 const goToAddCategory = async () => {
   await router.push({ path: '/categories/add' })
+}
+
+const goToCategory = (id: number) => {
+  router.push({ path: `/categories/${id}` })
 }
 
 onMounted(async () => {

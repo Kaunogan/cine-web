@@ -117,6 +117,21 @@ const router = VueRouter.createRouter({
 
     /*
     |--------------------------------------------------------------------------
+    | Category Details
+    |--------------------------------------------------------------------------
+    |
+    | Route to category details
+    |
+    */
+    {
+      path: '/categories/:id',
+      name: 'CategoryDetails',
+      component: () => import('@/pages/category/CategoryDetails.vue'),
+      meta: { needLoggedIn: true },
+    },
+
+    /*
+    |--------------------------------------------------------------------------
     | Add Category
     |--------------------------------------------------------------------------
     |
