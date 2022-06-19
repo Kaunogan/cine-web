@@ -39,7 +39,7 @@ const router = useRouter()
 const toast = useToast()
 const tmdbMovieId = Number(route.params.id)
 const movie = ref<IMovie.Details>()
-const categories = ref<ICategory[]>([])
+const categories = ref<ICategory.ShortDetails[]>([])
 
 // Function
 const getCssBackgroundImage = () => {

@@ -78,7 +78,7 @@ export declare module IUser {
 */
 export declare module IMovie {
   interface ShortDetails {
-    id: number
+    id?: number
     title: string
     poster_url: string
     tmdb_movie_id: number
