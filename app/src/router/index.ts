@@ -1,6 +1,7 @@
 import * as VueRouter from 'vue-router'
 import useAuth from '@/stores/authStore'
 import * as LocalStorageController from '@/controllers/LocalStorage'
+import useComponents from '@/stores/componentsStore'
 
 /*
 |--------------------------------------------------------------------------
@@ -201,6 +202,9 @@ const router = VueRouter.createRouter({
 // eslint-disable-next-line consistent-return
 router.beforeEach(async (to) => {
   const auth = useAuth()
+  const components = useComponents()
+
+  if (components.sidebar.isOpen) components.slideSideBar()
 
   if (to.meta.needLoggedIn && auth.isExpired) {
     await LocalStorageController.clearApplication()
