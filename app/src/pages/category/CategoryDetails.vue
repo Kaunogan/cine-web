@@ -10,14 +10,22 @@
       </div>
       <div class="cw-category-details-nav-bar-right">
         <cw-button btn-type="primary-outlined">Settings</cw-button>
-        <ph-pencil size="30" class="mx-16 text-primary" />
+        <ph-pencil size="30" class="mx-16 cursor-pointer transition duration-300 ease-in-out" :class="state.deleteMode ? 'text-secondary' : 'text-primary'" @click="changeDeleteMode" />
         <cw-settings-dropdown />
       </div>
     </cw-container-nav-bar>
 
     <cw-container-content>
-      <cw-grid-list :evenly="state.isEvenly" :is-loading="state.isLoading" :centered="currentPaginateMoviesIsEmpty" msg-empty-data="No movies found">
-        <cw-movie-poster v-for="(movie, index) in state.currentPaginateMovies" :key="index" :tmdb-movie-id="movie.tmdb_movie_id" :poster-url="movie.poster_url" :title="movie.title" />
+      <cw-grid-list :evenly="state.isEvenly" :is-loading="state.isLoading" :centered="currentPaginateMoviesIsEmpty" msg-empty-data="No movies in this category">
+        <cw-movie-poster
+          v-for="(movie, index) in state.currentPaginateMovies"
+          :key="index"
+          :show-delete="state.deleteMode"
+          :tmdb-movie-id="movie.tmdb_movie_id"
+          :poster-url="movie.poster_url"
+          :title="movie.title"
+          @delete="deleteMovie(movie.id)"
+        />
       </cw-grid-list>
     </cw-container-content>
 
@@ -44,14 +52,16 @@ import CwSettingsDropdown from '@/components/cwSettingsDropdown.vue'
 import useComponents from '@/stores/componentsStore'
 import CwGridList from '@/components/cwGridList.vue'
 import CwMoviePoster from '@/components/cwMoviePoster.vue'
-import { breakpointsTailwind, useBreakpoints, useWindowSize } from '@vueuse/core'
+import { breakpointsTailwind, useBreakpoints, useThrottleFn, useWindowSize } from '@vueuse/core'
 import paginateArray from '@/features/paginateArray'
 import CwContainerFooter from '@/components/container/cwContainerFooter.vue'
 import CwPagination from '@/components/cwPagination.vue'
+import { useToast } from 'vue-toastification'
 
 // State
 const route = useRoute()
 const router = useRouter()
+const toast = useToast()
 const { width } = useWindowSize()
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const categoryId = Number(route.params.id)
@@ -65,6 +75,7 @@ const state = reactive({
   category: <ICategory.Details>{},
   isEvenly: false,
   isLoading: true,
+  deleteMode: false,
 })
 
 // Computed
@@ -78,7 +89,7 @@ watch(width, () => {
     return
   }
 
-  state.isEvenly = state.currentPaginateMovies.length <= 4
+  state.isEvenly = state.currentPaginateMovies.length <= 4 && state.currentPaginateMovies.length !== 0
 })
 
 // Function
@@ -86,8 +97,22 @@ const pageChanged = async (page: number) => {
   state.currentPage = page
   state.currentPaginateMovies = paginateArray(state.category.movies, nbOfMoviesDisplayed, state.currentPage)
   state.nextPaginateMovies = paginateArray(state.category.movies, nbOfMoviesDisplayed, state.currentPage + 1)
-  state.isEvenly = state.currentPaginateMovies.length <= 4
+  state.isEvenly = state.currentPaginateMovies.length <= 4 && state.currentPaginateMovies.length !== 0
 }
+
+const changeDeleteMode = () => {
+  state.deleteMode = !state.deleteMode
+}
+
+const deleteMovie = useThrottleFn(async (id: number) => {
+  const message = await CategoryService.deleteMovieInCategory(categoryId, id)
+  state.currentPage = 1
+  state.category.movies = state.category.movies.filter((movie) => movie.id !== id)
+  state.currentPaginateMovies = paginateArray(state.category.movies, nbOfMoviesDisplayed, state.currentPage)
+  state.nextPaginateMovies = paginateArray(state.category.movies, nbOfMoviesDisplayed, state.currentPage + 1)
+  state.isEvenly = state.currentPaginateMovies.length <= 4 && state.currentPaginateMovies.length !== 0
+  toast.success(message)
+}, 2000)
 
 onMounted(async () => {
   if (Number.isNaN(categoryId)) {
@@ -100,7 +125,7 @@ onMounted(async () => {
   state.currentPaginateMovies = paginateArray(state.category.movies, nbOfMoviesDisplayed, state.currentPage)
 
   state.nextPaginateMovies = paginateArray(state.category.movies, nbOfMoviesDisplayed, state.currentPage + 1)
-  state.isEvenly = state.currentPaginateMovies.length <= 4
+  state.isEvenly = state.currentPaginateMovies.length <= 4 && state.currentPaginateMovies.length !== 0
 
   state.isLoading = false
 })

@@ -74,4 +74,19 @@ export default class HttpController {
       throw new Error()
     }
   }
+
+  public async delete<T>(url: string, headers: AxiosRequestHeaders = {}): Promise<IHttp.Response<T>> {
+    try {
+      const { data } = await this.instance.delete<IHttp.Response<T>>(url, { headers })
+      return data
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        await this.handleError(error)
+      } else {
+        this.toast.error('An unexpected error occurred')
+      }
+
+      throw new Error()
+    }
+  }
 }

@@ -46,3 +46,12 @@ export async function addMovieInCategory(categoryId: number, tmdbMovie: IMovie.S
 
   return message
 }
+
+export async function deleteMovieInCategory(categoryId: number, id: number) {
+  const auth = useAuth()
+  const httpController = new HttpController(`/users/${auth.userId}`)
+
+  const { message } = await httpController.delete(`/categories/${categoryId}/movies/${id}`, { Authorization: `Bearer ${auth.token}` })
+
+  return message
+}

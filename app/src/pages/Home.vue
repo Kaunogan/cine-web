@@ -67,7 +67,7 @@ watch(width, () => {
     return
   }
 
-  state.isEvenly = state.currentPaginateMovies.length <= 4
+  state.isEvenly = state.currentPaginateMovies.length <= 4 && state.currentPaginateMovies.length !== 0
 })
 
 // Function
@@ -101,7 +101,7 @@ const pageChanged = async (page: number) => {
   }
 
   state.nextPaginateMovies = paginateArray(movies, nbOfMoviesDisplayed, state.currentPage + 1)
-  state.isEvenly = state.currentPaginateMovies.length <= 4
+  state.isEvenly = state.currentPaginateMovies.length <= 4 && state.currentPaginateMovies.length !== 0
 
   state.isLoading = false
 }
@@ -111,7 +111,7 @@ onMounted(async () => {
   state.currentPaginateMovies = paginateArray(movies, nbOfMoviesDisplayed, state.currentPage)
 
   state.nextPaginateMovies = paginateArray(movies, nbOfMoviesDisplayed, state.currentPage + 1)
-  state.isEvenly = state.currentPaginateMovies.length <= 4
+  state.isEvenly = state.currentPaginateMovies.length <= 4 && state.currentPaginateMovies.length !== 0
 
   state.isLoading = false
 })
