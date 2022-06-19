@@ -1,10 +1,19 @@
 <template>
-  <cw-container v-if="!state.isLoading">
+  <cw-container v-if="!state.isLoading" class="relative">
+    <cw-modal :show-modal="state.showModal">
+      <div class="cw-g-card z-10 flex flex-col items-center justify-evenly">
+        <h1 class="font-header text-xl text-tertiary">Are you sure ?</h1>
+        <div class="mt-6 flex items-center justify-center">
+          <cw-button btn-type="primary" @click="changeModalVisibility">Cancel</cw-button>
+          <cw-button btn-type="danger" class="ml-6" @click="deleteMovie">Delete</cw-button>
+        </div>
+      </div>
+    </cw-modal>
     <cw-container-nav-bar class="flex-col lg:flex-row">
       <div class="cw-category-details-nav-bar-left">
         <ph-list size="28" class="lg:hidden" @click="components.slideSideBar()" />
-        <h2 class="text-lg md:text-2xl">Category name "{{ state.category.name }}"</h2>
-        <h3 class="text-lg font-light">
+        <h2 class="font-header text-lg md:text-2xl">{{ state.category.name }}</h2>
+        <h3 class="font-header text-lg font-light">
           Visibility: <span class="text-primary">{{ state.category.visibility.type }}</span>
         </h3>
       </div>
@@ -24,7 +33,7 @@
           :tmdb-movie-id="movie.tmdb_movie_id"
           :poster-url="movie.poster_url"
           :title="movie.title"
-          @delete="deleteMovie(movie.id)"
+          @delete="changeModalVisibility(movie.id)"
         />
       </cw-grid-list>
     </cw-container-content>
@@ -57,6 +66,7 @@ import paginateArray from '@/features/paginateArray'
 import CwContainerFooter from '@/components/container/cwContainerFooter.vue'
 import CwPagination from '@/components/cwPagination.vue'
 import { useToast } from 'vue-toastification'
+import CwModal from '@/components/cwModal.vue'
 
 // State
 const route = useRoute()
@@ -67,6 +77,7 @@ const breakpoints = useBreakpoints(breakpointsTailwind)
 const categoryId = Number(route.params.id)
 const components = useComponents()
 const nbOfMoviesDisplayed = 8
+let tmdbMovieIdToDelete = 0
 
 const state = reactive({
   currentPage: 1,
@@ -76,6 +87,7 @@ const state = reactive({
   isEvenly: false,
   isLoading: true,
   deleteMode: false,
+  showModal: false,
 })
 
 // Computed
@@ -104,13 +116,27 @@ const changeDeleteMode = () => {
   state.deleteMode = !state.deleteMode
 }
 
-const deleteMovie = useThrottleFn(async (id: number) => {
-  const message = await CategoryService.deleteMovieInCategory(categoryId, id)
+const changeModalVisibility = (tmdbMovieId: number = 0) => {
+  if (!state.showModal) {
+    state.showModal = true
+    tmdbMovieIdToDelete = tmdbMovieId
+    return
+  }
+
+  state.showModal = false
+  tmdbMovieIdToDelete = tmdbMovieId
+}
+
+const deleteMovie = useThrottleFn(async () => {
+  if (tmdbMovieIdToDelete === 0) return
+
+  const message = await CategoryService.deleteMovieInCategory(categoryId, tmdbMovieIdToDelete)
   state.currentPage = 1
-  state.category.movies = state.category.movies.filter((movie) => movie.id !== id)
+  state.category.movies = state.category.movies.filter((movie) => movie.id !== tmdbMovieIdToDelete)
   state.currentPaginateMovies = paginateArray(state.category.movies, nbOfMoviesDisplayed, state.currentPage)
   state.nextPaginateMovies = paginateArray(state.category.movies, nbOfMoviesDisplayed, state.currentPage + 1)
   state.isEvenly = state.currentPaginateMovies.length <= 4 && state.currentPaginateMovies.length !== 0
+  state.showModal = false
   toast.success(message)
 }, 2000)
 
