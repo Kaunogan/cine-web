@@ -1,4 +1,33 @@
 #|--------------------------------------------------------------------------
+#| Route ==> all categories
+#|--------------------------------------------------------------------------
+/api/users/{userId}/categories/all:
+  #| Get categories
+  #|--------------------------------------------------------------------------
+  get:
+    summary: Get all user categories
+    tags:
+      - Category
+    security:
+      - bearerAuth: [ ]
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/categoryResponses/AllCategories'
+      401:
+        $ref: '#/components/globalResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/globalResponses/Forbidden'
+
+#|--------------------------------------------------------------------------
 #| Route ==> categories
 #|--------------------------------------------------------------------------
 /api/users/{userId}/categories:
@@ -6,7 +35,7 @@
   #| Get categories
   #|--------------------------------------------------------------------------
   get:
-    summary: Get user categories
+    summary: Get user categories with pagination
     tags:
       - Category
     security:

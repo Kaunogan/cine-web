@@ -3,6 +3,34 @@ components:
     #|--------------------------------------------------------------------------
     #| Response ==> Categories : 200
     #|--------------------------------------------------------------------------
+    AllCategories:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Message responses.
+              status:
+                type: string
+                description: The status http code.
+              results:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: The id of category
+                    name:
+                      type: string
+                      description: The name of category
+
+    #|--------------------------------------------------------------------------
+    #| Response ==> Categories : 200
+    #|--------------------------------------------------------------------------
     Categories:
       description: OK
       content:

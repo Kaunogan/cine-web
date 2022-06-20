@@ -13,6 +13,25 @@ interface IDecryptedSharedKey {
 }
 
 export default class UserCategoriesController {
+  public async getAllCategories({bouncer, request, response}: HttpContextContract) {
+    const userId = request.param('id')
+
+    await bouncer.with('UserPolicy').authorize('view', userId)
+
+    const user = await User.findOrFail(userId)
+
+    const results = await user
+      .related('categories')
+      .query()
+      .select(['id', 'name'])
+
+    return {
+      message: 'Ok',
+      status: response.getStatus(),
+      results: results,
+    }
+  }
+
   public async index({ bouncer, request, response }: HttpContextContract) {
     const userId = request.param('user_id')
     const page = request.input('page', 1)

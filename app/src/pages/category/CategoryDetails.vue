@@ -5,7 +5,7 @@
         <h1 class="font-header text-xl text-tertiary">Are you sure ?</h1>
         <div class="mt-6 flex items-center justify-center">
           <cw-button btn-type="primary" @click="changeModalVisibility">Cancel</cw-button>
-          <cw-button btn-type="danger" class="ml-6" @click="deleteMovie">Delete</cw-button>
+          <cw-button btn-type="danger" class="ml-6" @click="onDeleteBtnModal">Delete</cw-button>
         </div>
       </div>
       <div v-else class="cw-g-card cw-category-details-modal-content relative mx-4 h-auto w-full max-w-xl">
@@ -31,7 +31,7 @@
         </div>
         <div class="mt-6 flex items-center justify-center">
           <cw-button btn-type="primary" @click="updateCategory">Ok</cw-button>
-          <cw-button btn-type="danger" class="ml-6">Delete</cw-button>
+          <cw-button btn-type="danger" class="ml-6" @click="state.isSettingsModal = false">Delete</cw-button>
         </div>
       </div>
     </cw-modal>
@@ -44,9 +44,15 @@
         </h3>
       </div>
       <div class="cw-category-details-nav-bar-right">
-        <cw-button btn-type="primary-outlined" @click="changeModalVisibility('settings')">Settings</cw-button>
-        <ph-pencil size="30" class="mx-16 cursor-pointer transition duration-300 ease-in-out" :class="state.deleteMode ? 'text-secondary' : 'text-primary'" @click="changeDeleteMode" />
-        <cw-settings-dropdown />
+        <cw-button btn-type="primary-outlined" class="lg:mr-3" @click="changeModalVisibility('settings')">Settings</cw-button>
+        <ph-pencil
+          v-if="showEditMode"
+          size="30"
+          class="cursor-pointer transition duration-300 ease-in-out lg:mx-6"
+          :class="state.isDeleteMovieMode ? 'text-secondary' : 'text-primary'"
+          @click="changeDeleteMovieMode"
+        />
+        <cw-settings-dropdown class="lg:ml-3" />
       </div>
     </cw-container-nav-bar>
 
@@ -55,7 +61,7 @@
         <cw-movie-poster
           v-for="(movie, index) in state.currentPaginateMovies"
           :key="index"
-          :show-delete="state.deleteMode"
+          :show-delete="state.isDeleteMovieMode"
           :tmdb-movie-id="movie.tmdb_movie_id"
           :poster-url="movie.poster_url"
           :title="movie.title"
@@ -114,7 +120,7 @@ const state = reactive({
   category: <ICategory.Details>{},
   isEvenly: false,
   isLoading: true,
-  deleteMode: false,
+  isDeleteMovieMode: false,
   showModal: false,
   isSettingsModal: false,
   visibility: '',
@@ -137,6 +143,7 @@ const sharedEncodedUrl = computed(() => {
   const encodedSharedId = encodeURIComponent(state.category.shared_id)
   return `${basePath}/${encodedSharedId}`
 })
+const showEditMode = computed(() => state.category.movies.length !== 0)
 
 // Watch
 watch(width, () => {
@@ -156,8 +163,8 @@ const pageChanged = async (page: number) => {
   state.isEvenly = state.currentPaginateMovies.length <= 4 && state.currentPaginateMovies.length !== 0
 }
 
-const changeDeleteMode = () => {
-  state.deleteMode = !state.deleteMode
+const changeDeleteMovieMode = () => {
+  state.isDeleteMovieMode = !state.isDeleteMovieMode
 }
 
 const copyUrl = useThrottleFn(() => {
@@ -166,16 +173,18 @@ const copyUrl = useThrottleFn(() => {
 }, 2000)
 
 const changeModalVisibility = (modalType: string = '', tmdbMovieId: number = 0) => {
+  tmdbMovieIdToDelete = tmdbMovieId
+
   if (!state.showModal) {
     state.showModal = true
     state.isSettingsModal = modalType === 'settings'
-    tmdbMovieIdToDelete = tmdbMovieId
+    if (state.isSettingsModal) state.isDeleteMovieMode = false
     return
   }
 
   state.showModal = false
   state.isSettingsModal = false
-  tmdbMovieIdToDelete = tmdbMovieId
+  state.isDeleteMovieMode = false
 }
 
 const getVisibilityId = () => {
@@ -194,16 +203,28 @@ const updateCategory = useThrottleFn(async () => {
   changeModalVisibility()
 }, 2000)
 
-const deleteMovie = useThrottleFn(async () => {
-  if (tmdbMovieIdToDelete === 0) return
+const onDeleteBtnModal = useThrottleFn(async () => {
+  if (state.isDeleteMovieMode) {
+    if (tmdbMovieIdToDelete === 0) return
 
-  const message = await CategoryService.deleteMovieInCategory(categoryId, tmdbMovieIdToDelete)
-  state.currentPage = 1
-  state.category.movies = state.category.movies.filter((movie) => movie.id !== tmdbMovieIdToDelete)
-  state.currentPaginateMovies = paginateArray(state.category.movies, nbOfMoviesDisplayed, state.currentPage)
-  state.nextPaginateMovies = paginateArray(state.category.movies, nbOfMoviesDisplayed, state.currentPage + 1)
-  state.isEvenly = state.currentPaginateMovies.length <= 4 && state.currentPaginateMovies.length !== 0
-  state.showModal = false
+    const message = await CategoryService.deleteMovieInCategory(categoryId, tmdbMovieIdToDelete)
+    state.currentPage = 1
+    state.category.movies = state.category.movies.filter((movie) => movie.id !== tmdbMovieIdToDelete)
+    state.currentPaginateMovies = paginateArray(state.category.movies, nbOfMoviesDisplayed, state.currentPage)
+    state.nextPaginateMovies = paginateArray(state.category.movies, nbOfMoviesDisplayed, state.currentPage + 1)
+    state.isEvenly = state.currentPaginateMovies.length <= 4 && state.currentPaginateMovies.length !== 0
+    state.showModal = false
+
+    if (state.category.movies.length === 0) state.isDeleteMovieMode = false
+
+    toast.success(message)
+    return
+  }
+
+  const message = await CategoryService.deleteCategory(categoryId)
+
+  await router.push({ path: '/categories' })
+
   toast.success(message)
 }, 2000)
 

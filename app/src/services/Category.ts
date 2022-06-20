@@ -6,7 +6,7 @@ export async function getAllCategories() {
   const auth = useAuth()
   const httpController = new HttpController(`/users/${auth.userId}`)
 
-  const { results } = await httpController.get<ICategory.ShortDetails[]>('/categories', { Authorization: `Bearer ${auth.token}` })
+  const { results } = await httpController.get<ICategory.ShortDetails[]>('/categories/all', { Authorization: `Bearer ${auth.token}` })
 
   return results
 }
@@ -59,6 +59,15 @@ export async function deleteMovieInCategory(categoryId: number, id: number) {
   const httpController = new HttpController(`/users/${auth.userId}`)
 
   const { message } = await httpController.delete(`/categories/${categoryId}/movies/${id}`, { Authorization: `Bearer ${auth.token}` })
+
+  return message
+}
+
+export async function deleteCategory(categoryId: number) {
+  const auth = useAuth()
+  const httpController = new HttpController(`/users/${auth.userId}`)
+
+  const { message } = await httpController.delete(`/categories/${categoryId}`, { Authorization: `Bearer ${auth.token}` })
 
   return message
 }

@@ -7,7 +7,7 @@
     </cw-container-nav-bar>
     <cw-container-content class="flex h-full flex-col items-center justify-center">
       <cw-form-input for="add" label="Category name">
-        <input id="add" v-model="category" type="text" name="Add" class="cw-g-input w-72" placeholder="My superb category" />
+        <input id="add" v-model="category" type="text" name="Add" class="cw-g-input w-72" placeholder="My superb category" @keyup.enter="addCategory" />
       </cw-form-input>
       <cw-button class="mt-6 w-12" @click="addCategory">Add</cw-button>
     </cw-container-content>
