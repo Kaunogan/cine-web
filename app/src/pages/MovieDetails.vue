@@ -12,7 +12,7 @@
       </div>
       <div class="cw-movie-details-container__content-bottom">
         <h2 class="mb-2 text-center font-header text-lg font-light text-tertiary md:text-2xl 2xl:mb-0">Choose a category</h2>
-        <cw-input-dropdown :items="categories" msg-loading-item="Loading more categories..." @select="saveCategory" />
+        <cw-input-dropdown :items="categories" msg-loading-item="Loading more categories..." @select="saveMovieInCategory" />
       </div>
     </div>
   </div>
@@ -46,7 +46,7 @@ const getCssBackgroundImage = () => {
   return movie.value?.backdrop_url.includes('null') ? `url(https://pbs.twimg.com/profile_images/527991807402328064/LmS_7fXc_400x400.jpeg)` : `url(${movie.value?.backdrop_url})`
 }
 
-const saveCategory = useThrottleFn(async (value: { id: number; name: string }) => {
+const saveMovieInCategory = useThrottleFn(async (value: { id: number; name: string }) => {
   let movieShortDetails: IMovie.ShortDetails
 
   if (movie.value) {

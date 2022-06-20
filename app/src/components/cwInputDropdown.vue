@@ -136,6 +136,7 @@ const onClose = () => {
 const emitSelect = () => {
   if (state.selected.id === -1) return
   emit('select', state.selected)
+  state.selected = { id: -1, name: 'Click me 👋' }
 }
 
 onMounted(() => {
