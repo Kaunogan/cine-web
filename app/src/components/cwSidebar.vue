@@ -26,7 +26,7 @@ import { computed, ref, watch } from 'vue'
 import useComponents from '@/stores/componentsStore'
 import { onClickOutside, useBreakpoints, useWindowSize, breakpointsTailwind } from '@vueuse/core'
 
-const routesNotAllowed = ['/', '/signin', '/register', '/notfound']
+const routesNotAllowed = ['/signin', '/register', '/category', '/notfound']
 const target = ref(null)
 const { width } = useWindowSize()
 const breakpoints = useBreakpoints(breakpointsTailwind)
@@ -36,7 +36,9 @@ const route = useRoute()
 const components = useComponents()
 
 // Computed
-const showSideBar = computed(() => !routesNotAllowed.includes(route.path))
+const showSideBar = computed(() => {
+  return routesNotAllowed.findIndex((routeNotAllowed) => route.path.includes(routeNotAllowed)) === -1
+})
 const slideSideBar = computed(() => (components.sidebar.isOpen ? 'translate-x-0' : '-translate-x-full'))
 
 // Watch
@@ -47,7 +49,7 @@ watch(width, () => {
 })
 
 // Functions
-const getClass = (path: string) => (route.path === path ? 'text-secondary' : 'transition ease-in-out hover:translate-x-2')
+const getClass = (path: string) => (route.path.includes(path) ? 'text-secondary' : 'transition ease-in-out hover:translate-x-2')
 
 onClickOutside(target, () => {
   if (!components.sidebar.isOpen) return
@@ -57,7 +59,7 @@ onClickOutside(target, () => {
 
 <style lang="scss" scoped>
 .cw-sidebar {
-  @apply fixed h-full w-1/2 flex-none bg-white transition duration-300 md:w-72 lg:static;
+  @apply fixed z-30 h-full w-1/2 flex-none bg-white transition duration-300 md:w-72 lg:static;
   box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
 
   &__header {

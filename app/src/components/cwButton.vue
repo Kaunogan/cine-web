@@ -29,5 +29,13 @@ const btnClass = computed(() => `cw-btn--${props.btnType}`)
   &--primary-outlined {
     @apply border border-primary bg-white text-primary;
   }
+
+  &--danger {
+    @apply bg-secondary text-white;
+  }
+
+  &--danger-outlined {
+    @apply border border-primary bg-secondary text-primary;
+  }
 }
 </style>

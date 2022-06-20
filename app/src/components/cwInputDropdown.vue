@@ -16,7 +16,7 @@
         <li v-show="hasNextPage" ref="load" class="loader">{{ props.msgLoadingItem }}</li>
       </template>
     </v-select>
-    <cw-button class="mt-4" @click="onItemClick">Add</cw-button>
+    <cw-button class="mt-4" @click="emitSelect">Add</cw-button>
   </div>
 </template>
 
@@ -36,7 +36,7 @@ interface Props {
 const state = reactive({
   limit: 6,
   search: '',
-  selected: <{ id: number; name: string }>{},
+  selected: <{ id: number; name: string }>{ id: -1, name: 'Click me 👋' },
 })
 
 const load: any = ref<Element>()
@@ -117,7 +117,7 @@ const infiniteScroll = async ([{ isIntersecting, target }]: any) => {
       await nextTick()
       ul.scrollTop = scrollTop
     }
-  }, 2000)
+  }, 500)
 }
 
 const observer = new IntersectionObserver(infiniteScroll)
@@ -133,7 +133,11 @@ const onClose = () => {
   observer.disconnect()
 }
 
-const onItemClick = () => emit('select', state.selected)
+const emitSelect = () => {
+  if (state.selected.id === -1) return
+  emit('select', state.selected)
+  state.selected = { id: -1, name: 'Click me 👋' }
+}
 
 onMounted(() => {
   if (props.defaultSelected) {

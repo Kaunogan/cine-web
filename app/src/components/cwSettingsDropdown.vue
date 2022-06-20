@@ -52,7 +52,7 @@ onClickOutside(target, () => {
 }
 
 .cw-settings-dropdown {
-  @apply absolute right-0 top-10  mt-1.5 h-40 w-48 rounded-xl bg-white;
+  @apply absolute right-0 top-10  z-20 mt-1.5 h-40 w-48 rounded-xl bg-white;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 
   &__container {

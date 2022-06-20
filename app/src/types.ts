@@ -78,6 +78,7 @@ export declare module IUser {
 */
 export declare module IMovie {
   interface ShortDetails {
+    id?: number
     title: string
     poster_url: string
     tmdb_movie_id: number
@@ -90,5 +91,56 @@ export declare module IMovie {
     poster_url: string
     backdrop_url: string
     trailer_url: string
+  }
+}
+
+/*
+|--------------------------------------------------------------------------
+| Category Interface
+|--------------------------------------------------------------------------
+|
+| Category Interface contains the details information of the category
+|
+*/
+export declare module ICategory {
+  interface ShortDetails {
+    id: number
+    name: string
+  }
+
+  interface Details {
+    id: number
+    name: string
+    shared_id: string
+    created_at: string
+    updated_at: string
+    visibility: {
+      id: number
+      type: string
+    }
+    movies: {
+      id: number
+      title: string
+      poster_url: string
+      tmdb_movie_id: number
+      created_at: string
+    }[]
+  }
+
+  interface Update {
+    name: string
+    visibility_id: number
+  }
+
+  interface Shared {
+    category_name: string
+    created_by: string
+    movies: {
+      id: number
+      title: string
+      poster_url: string
+      tmdb_movie_id: number
+      created_at: string
+    }[]
   }
 }

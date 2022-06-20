@@ -1,7 +1,8 @@
 <template>
-  <div class="cw-movie-poster" @click="goToDetails">
-    <span>
-      <img :src="getPosterUrl()" alt=" movie-poster" />
+  <div class="cw-movie-poster">
+    <span class="relative">
+      <img :src="getPosterUrl()" alt="movie-poster" class="relative z-10" :class="translate" @click="goToDetails" />
+      <ph-trash size="28" class="absolute top-1/2 -left-2 z-0 cursor-pointer text-secondary transition duration-300" :class="props.showDelete ? 'opacity-100' : 'opacity-0'" @click="emit('delete')" />
     </span>
     <p class="mt-2 flex h-full w-full items-center justify-center text-center text-sm font-light lg:text-base">{{ props.title }}</p>
   </div>
@@ -9,6 +10,7 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import { computed } from 'vue'
 
 const router = useRouter()
 
@@ -17,7 +19,14 @@ const props = defineProps({
   tmdbMovieId: { type: Number, required: true },
   posterUrl: { type: String, required: true },
   title: { type: String, required: true },
+  showDelete: { type: Boolean, required: false, default: false },
 })
+
+// Emit
+const emit = defineEmits(['delete'])
+
+// Computed
+const translate = computed(() => (props.showDelete ? 'translate-x-6' : ''))
 
 // Function
 const getPosterUrl = () => {

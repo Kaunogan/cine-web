@@ -1,8 +1,8 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestHeaders } from 'axios'
 import { useToast } from 'vue-toastification'
-import * as LocalStorageController from '@/controllers/LocalStorage'
-import router from '@/router'
 import { IHttp } from '@/types'
+import router from '@/router'
+import * as LocalStorageController from '@/controllers/LocalStorage'
 
 export default class HttpController {
   private instance: AxiosInstance
@@ -32,6 +32,15 @@ export default class HttpController {
           await router.push({ path: '/signin' })
         }
 
+        if (error.status === 403) {
+          await router.push({ path: '/home' })
+        }
+
+        if (error.status === 404) {
+          error.message = 'Not found'
+          await router.push({ path: '/home' })
+        }
+
         this.toast.info(error.message)
         return
       }
@@ -58,6 +67,36 @@ export default class HttpController {
   public async post<T>(url: string, body: any, headers: AxiosRequestHeaders = {}): Promise<IHttp.Response<T>> {
     try {
       const { data } = await this.instance.post<IHttp.Response<T>>(url, body, { headers })
+      return data
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        await this.handleError(error)
+      } else {
+        this.toast.error('An unexpected error occurred')
+      }
+
+      throw new Error()
+    }
+  }
+
+  public async put<T>(url: string, body: any, headers: AxiosRequestHeaders = {}): Promise<IHttp.Response<T>> {
+    try {
+      const { data } = await this.instance.put<IHttp.Response<T>>(url, body, { headers })
+      return data
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        await this.handleError(error)
+      } else {
+        this.toast.error('An unexpected error occurred')
+      }
+
+      throw new Error()
+    }
+  }
+
+  public async delete<T>(url: string, headers: AxiosRequestHeaders = {}): Promise<IHttp.Response<T>> {
+    try {
+      const { data } = await this.instance.delete<IHttp.Response<T>>(url, { headers })
       return data
     } catch (error) {
       if (axios.isAxiosError(error)) {

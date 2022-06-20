@@ -11,8 +11,8 @@
         <h2 v-else class="text-xl font-thin text-primary md:text-2xl">No trailer</h2>
       </div>
       <div class="cw-movie-details-container__content-bottom">
-        <h2 class="mb-2 text-center font-header text-lg font-light text-tertiary md:mb-0 md:text-2xl">Choose a category</h2>
-        <cw-input-dropdown :items="categories" :default-selected="{ id: 1, name: 'Action' }" msg-loading-item="Loading more categories..." @select="saveCategory" />
+        <h2 class="mb-2 text-center font-header text-lg font-light text-tertiary md:text-2xl 2xl:mb-0">Choose a category</h2>
+        <cw-input-dropdown :items="categories" msg-loading-item="Loading more categories..." @select="saveMovieInCategory" />
       </div>
     </div>
   </div>
@@ -25,35 +25,55 @@
 import CwLoader from '@/components/cwLoader.vue'
 import CwInputDropdown from '@/components/cwInputDropdown.vue'
 
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import * as MovieService from '@/services/Movies'
+import * as CategoryService from '@/services/Category'
 
-import { IMovie } from '@/types'
+import { ICategory, IMovie } from '@/types'
+import { useThrottleFn } from '@vueuse/core'
+import { useToast } from 'vue-toastification'
 
 const route = useRoute()
+const router = useRouter()
+const toast = useToast()
 const tmdbMovieId = Number(route.params.id)
 const movie = ref<IMovie.Details>()
-const categories = [
-  { id: 1, name: 'Action' },
-  { id: 2, name: 'Adventure' },
-  { id: 3, name: 'Netflix' },
-]
+const categories = ref<ICategory.ShortDetails[]>([])
 
 // Function
 const getCssBackgroundImage = () => {
   return movie.value?.backdrop_url.includes('null') ? `url(https://pbs.twimg.com/profile_images/527991807402328064/LmS_7fXc_400x400.jpeg)` : `url(${movie.value?.backdrop_url})`
 }
 
-const saveCategory = (value: { id: number; name: string }) => {
-  // TODO: send request to api
-}
+const saveMovieInCategory = useThrottleFn(async (value: { id: number; name: string }) => {
+  let movieShortDetails: IMovie.ShortDetails
+
+  if (movie.value) {
+    movieShortDetails = {
+      tmdb_movie_id: movie.value.tmdb_movie_id,
+      title: movie.value.title,
+      poster_url: movie.value.poster_url,
+    }
+  } else return
+
+  const message = await CategoryService.addMovieInCategory(value.id, movieShortDetails)
+
+  toast.success(message)
+}, 2000)
 
 onMounted(async () => {
+  if (Number.isNaN(tmdbMovieId)) {
+    await router.push({ path: '/home' })
+    return
+  }
+
   movie.value = await MovieService.getMoviesDetails(tmdbMovieId)
 
   movie.value.backdrop_url = movie.value.backdrop_url.includes('null') ? 'https://pbs.twimg.com/profile_images/527991807402328064/LmS_7fXc_400x400.jpeg' : movie.value.backdrop_url
-  movie.value.overview = movie.value.overview !== '' ? movie.value?.overview : 'No overview for this movie'
+  movie.value.overview = movie.value.overview !== '' ? movie.value.overview : 'No overview for this movie'
+
+  categories.value = await CategoryService.getAllCategories()
 })
 </script>
 

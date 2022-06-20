@@ -1,6 +1,7 @@
 import * as VueRouter from 'vue-router'
 import useAuth from '@/stores/authStore'
 import * as LocalStorageController from '@/controllers/LocalStorage'
+import useComponents from '@/stores/componentsStore'
 
 /*
 |--------------------------------------------------------------------------
@@ -102,6 +103,66 @@ const router = VueRouter.createRouter({
 
     /*
     |--------------------------------------------------------------------------
+    | Categories
+    |--------------------------------------------------------------------------
+    |
+    | Route to categories
+    |
+    */
+    {
+      path: '/categories',
+      name: 'Categories',
+      component: () => import('@/pages/category/Categories.vue'),
+      meta: { needLoggedIn: true },
+    },
+
+    /*
+    |--------------------------------------------------------------------------
+    | Category Details
+    |--------------------------------------------------------------------------
+    |
+    | Route to category details
+    |
+    */
+    {
+      path: '/categories/:id',
+      name: 'CategoryDetails',
+      component: () => import('@/pages/category/CategoryDetails.vue'),
+      meta: { needLoggedIn: true },
+    },
+
+    /*
+    |--------------------------------------------------------------------------
+    | Category Shared
+    |--------------------------------------------------------------------------
+    |
+    | Route to shared category
+    |
+    */
+    {
+      path: '/category/shared/:sharedId',
+      name: 'CategoryShared',
+      component: () => import('@/pages/category/CategoryShared.vue'),
+      meta: { needLoggedIn: true },
+    },
+
+    /*
+    |--------------------------------------------------------------------------
+    | Add Category
+    |--------------------------------------------------------------------------
+    |
+    | Route to add a new category
+    |
+    */
+    {
+      path: '/categories/add',
+      name: 'AddCategory',
+      component: () => import('@/pages/category/AddCategory.vue'),
+      meta: { needLoggedIn: true },
+    },
+
+    /*
+    |--------------------------------------------------------------------------
     | Not Found
     |--------------------------------------------------------------------------
     |
@@ -156,6 +217,9 @@ const router = VueRouter.createRouter({
 // eslint-disable-next-line consistent-return
 router.beforeEach(async (to) => {
   const auth = useAuth()
+  const components = useComponents()
+
+  if (components.sidebar.isOpen) components.slideSideBar()
 
   if (to.meta.needLoggedIn && auth.isExpired) {
     await LocalStorageController.clearApplication()
