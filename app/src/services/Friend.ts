@@ -10,3 +10,12 @@ export async function getFriends(page: number = 1, limit: number = 12) {
 
   return results
 }
+
+export async function addFriend(friendEmail: { friend_email: string }) {
+  const auth = useAuth()
+  const httpController = new HttpController(`/users/${auth.userId}`)
+
+  const { message } = await httpController.post('/friends', friendEmail, { Authorization: `Bearer ${auth.token}` })
+
+  return message
+}

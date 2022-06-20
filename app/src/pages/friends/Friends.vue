@@ -13,7 +13,7 @@
         </div>
       </cw-grid-list>
 
-      <cw-button btn-type="primary-outlined" class="mt-9 mb-6 md:mt-0 md:mb-0" @click="goToAddFriend">Add a Friend</cw-button>
+      <cw-button btn-type="primary-outlined" class="mt-9 mb-6 md:mt-0 md:mb-0" @click="goToAddFriend">Add a friend</cw-button>
     </cw-container-content>
 
     <cw-container-footer>
@@ -80,7 +80,7 @@ const pageChanged = async (newPage: number) => {
 }
 
 const goToAddFriend = async () => {
-  await router.push({ path: '/Friends/add' })
+  await router.push({ path: '/friends/add' })
 }
 
 onMounted(async () => {
