@@ -163,6 +163,36 @@ const router = VueRouter.createRouter({
 
     /*
     |--------------------------------------------------------------------------
+    | Friends
+    |--------------------------------------------------------------------------
+    |
+    | Route displayed user friends
+    |
+    */
+    {
+      path: '/friends',
+      name: 'Friends',
+      component: () => import('@/pages/friends/Friends.vue'),
+      meta: { needLoggedIn: false },
+    },
+
+    /*
+    |--------------------------------------------------------------------------
+    | Add Friend
+    |--------------------------------------------------------------------------
+    |
+    | Route to add a new user friend
+    |
+    */
+    {
+      path: '/friends/add',
+      name: 'AddFriend',
+      component: () => import('@/pages/friends/AddFriend.vue'),
+      meta: { needLoggedIn: true },
+    },
+
+    /*
+    |--------------------------------------------------------------------------
     | Not Found
     |--------------------------------------------------------------------------
     |

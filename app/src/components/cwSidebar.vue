@@ -37,6 +37,8 @@ const components = useComponents()
 
 // Computed
 const showSideBar = computed(() => {
+  if (route.path === '/') return false
+
   return routesNotAllowed.findIndex((routeNotAllowed) => route.path.includes(routeNotAllowed)) === -1
 })
 const slideSideBar = computed(() => (components.sidebar.isOpen ? 'translate-x-0' : '-translate-x-full'))

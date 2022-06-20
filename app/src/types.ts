@@ -144,3 +144,16 @@ export declare module ICategory {
     }[]
   }
 }
+
+/*
+|--------------------------------------------------------------------------
+| Friend Interface
+|--------------------------------------------------------------------------
+|
+| Friend Interface contains the details information of user friend
+|
+*/
+export interface IFriendUser {
+  id: number
+  pseudo: string
+}
