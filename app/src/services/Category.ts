@@ -29,6 +29,13 @@ export async function getCategory(id: number) {
   return results
 }
 
+export async function updateCategory(categoryId: number, body: ICategory.Update) {
+  const auth = useAuth()
+  const httpController = new HttpController(`/users/${auth.userId}`)
+
+  return httpController.put<{ shared_id: string }>(`/categories/${categoryId}`, body, { Authorization: `Bearer ${auth.token}` })
+}
+
 export async function addCategory(category: { name: string }) {
   const auth = useAuth()
   const httpController = new HttpController(`/users/${auth.userId}`)

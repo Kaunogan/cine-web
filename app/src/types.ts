@@ -126,4 +126,9 @@ export declare module ICategory {
       created_at: string
     }[]
   }
+
+  interface Update {
+    name: string
+    visibility_id: number
+  }
 }

@@ -133,6 +133,21 @@ const router = VueRouter.createRouter({
 
     /*
     |--------------------------------------------------------------------------
+    | Category Shared
+    |--------------------------------------------------------------------------
+    |
+    | Route to shared category
+    |
+    */
+    {
+      path: '/category/shared/:sharedId',
+      name: 'CategoryShared',
+      component: () => import('@/pages/category/CategoryShared.vue'),
+      meta: { needLoggedIn: true },
+    },
+
+    /*
+    |--------------------------------------------------------------------------
     | Add Category
     |--------------------------------------------------------------------------
     |

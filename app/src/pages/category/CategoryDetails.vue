@@ -8,11 +8,13 @@
           <cw-button btn-type="danger" class="ml-6" @click="deleteMovie">Delete</cw-button>
         </div>
       </div>
-      <div v-else class="cw-g-card cw-category-details-modal-content mx-4 h-auto w-full max-w-xl">
+      <div v-else class="cw-g-card cw-category-details-modal-content relative mx-4 h-auto w-full max-w-xl">
+        <ph-x size="24" class="absolute top-5 right-5 cursor-pointer text-tertiary transition ease-in hover:text-secondary" @click="changeModalVisibility" />
+
         <div class="flex h-full w-full flex-col justify-around">
           <cw-form-input for="shared" label="Shared">
-            <input id="shared" class="cw-g-input" type="text" name="shared" :value="`http://localhost:3000/category/shared/${state.category.shared_id}`" />
-            <cw-button class="ml-4">Copy</cw-button>
+            <input id="shared" class="cw-g-input" type="text" name="shared" :value="sharedUrl" readonly />
+            <cw-button v-if="state.category.shared_id" class="ml-4" @click="copyUrl">Copy</cw-button>
           </cw-form-input>
 
           <cw-form-input for="category-name" label="Name">
@@ -20,25 +22,15 @@
           </cw-form-input>
 
           <h3 class="my-6 text-center font-header text-lg">Visibility</h3>
-          <div class="mx-auto flex w-24 flex-col">
-            <span class="flex items-center">
-              <input id="vs-all" v-model="state.visibility" type="radio" value="All" />
-              <label for="vs-all" class="ml-2 text-lg font-light">All</label>
-            </span>
-
-            <span class="flex items-center">
-              <input id="vs-friends" v-model="state.visibility" type="radio" value="Friends" />
-              <label for="vs-friends" class="ml-2 text-lg font-light">Friends</label>
-            </span>
-
-            <span class="flex items-center">
-              <input id="vs-only-you" v-model="state.visibility" type="radio" value="Only you" />
-              <label for="vs-only-you" class="ml-2 text-lg font-light">Only you</label>
+          <div class="mx-auto flex w-32 flex-col">
+            <span v-for="(visibility, index) in visibilities" :key="index" class="flex items-center">
+              <input :id="`vs-${visibility}`" v-model="state.visibility" type="radio" :value="visibility" />
+              <label :for="`vs-${visibility}`" class="ml-2 text-lg font-light">{{ visibility }}</label>
             </span>
           </div>
         </div>
         <div class="mt-6 flex items-center justify-center">
-          <cw-button btn-type="primary" @click="changeModalVisibility">Ok</cw-button>
+          <cw-button btn-type="primary" @click="updateCategory">Ok</cw-button>
           <cw-button btn-type="danger" class="ml-6">Delete</cw-button>
         </div>
       </div>
@@ -113,6 +105,7 @@ const categoryId = Number(route.params.id)
 const components = useComponents()
 const nbOfMoviesDisplayed = 8
 let tmdbMovieIdToDelete = 0
+const visibilities = ['All', 'Friends only', 'You only']
 
 const state = reactive({
   currentPage: 1,
@@ -130,6 +123,20 @@ const state = reactive({
 // Computed
 const currentPaginateMoviesIsEmpty = computed(() => state.currentPaginateMovies.length === 0)
 const nextPaginateMoviesIsEmpty = computed(() => state.nextPaginateMovies.length === 0)
+const sharedUrl = computed(() => {
+  const APP_PORT = import.meta.env.VITE_APP_PORT
+  const basePath = `http://localhost:${APP_PORT}/category/shared`
+
+  if (!state.category.shared_id) return 'No shared url'
+
+  return `${basePath}/${state.category.shared_id}`
+})
+const sharedEncodedUrl = computed(() => {
+  const APP_PORT = import.meta.env.VITE_APP_PORT
+  const basePath = `http://localhost:${APP_PORT}/category/shared`
+  const encodedSharedId = encodeURIComponent(state.category.shared_id)
+  return `${basePath}/${encodedSharedId}`
+})
 
 // Watch
 watch(width, () => {
@@ -153,7 +160,12 @@ const changeDeleteMode = () => {
   state.deleteMode = !state.deleteMode
 }
 
-const changeModalVisibility = (modalType: string, tmdbMovieId: number = 0) => {
+const copyUrl = useThrottleFn(() => {
+  navigator.clipboard.writeText(sharedEncodedUrl.value)
+  toast.info('Copied in clipboard !')
+}, 2000)
+
+const changeModalVisibility = (modalType: string = '', tmdbMovieId: number = 0) => {
   if (!state.showModal) {
     state.showModal = true
     state.isSettingsModal = modalType === 'settings'
@@ -165,6 +177,22 @@ const changeModalVisibility = (modalType: string, tmdbMovieId: number = 0) => {
   state.isSettingsModal = false
   tmdbMovieIdToDelete = tmdbMovieId
 }
+
+const getVisibilityId = () => {
+  return visibilities.findIndex((visibility) => visibility === state.visibility) + 1
+}
+
+const updateCategory = useThrottleFn(async () => {
+  const body = <ICategory.Update>{ name: state.category.name, visibility_id: getVisibilityId() }
+
+  const res = await CategoryService.updateCategory(categoryId, body)
+
+  toast.success(res.message)
+
+  state.category.shared_id = res.results.shared_id
+
+  changeModalVisibility()
+}, 2000)
 
 const deleteMovie = useThrottleFn(async () => {
   if (tmdbMovieIdToDelete === 0) return
