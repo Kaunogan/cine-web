@@ -131,4 +131,16 @@ export declare module ICategory {
     name: string
     visibility_id: number
   }
+
+  interface Shared {
+    category_name: string
+    created_by: string
+    movies: {
+      id: number
+      title: string
+      poster_url: string
+      tmdb_movie_id: number
+      created_at: string
+    }[]
+  }
 }

@@ -26,7 +26,7 @@ import { computed, ref, watch } from 'vue'
 import useComponents from '@/stores/componentsStore'
 import { onClickOutside, useBreakpoints, useWindowSize, breakpointsTailwind } from '@vueuse/core'
 
-const routesNotAllowed = ['/', '/signin', '/register', '/notfound']
+const routesNotAllowed = ['/signin', '/register', '/category', '/notfound']
 const target = ref(null)
 const { width } = useWindowSize()
 const breakpoints = useBreakpoints(breakpointsTailwind)
@@ -36,7 +36,9 @@ const route = useRoute()
 const components = useComponents()
 
 // Computed
-const showSideBar = computed(() => !routesNotAllowed.includes(route.path))
+const showSideBar = computed(() => {
+  return routesNotAllowed.findIndex((routeNotAllowed) => route.path.includes(routeNotAllowed)) === -1
+})
 const slideSideBar = computed(() => (components.sidebar.isOpen ? 'translate-x-0' : '-translate-x-full'))
 
 // Watch

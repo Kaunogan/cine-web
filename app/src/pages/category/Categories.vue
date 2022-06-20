@@ -7,7 +7,7 @@
     </cw-container-nav-bar>
 
     <cw-container-content class="flex flex-col items-center justify-evenly md:h-full">
-      <cw-grid-list :evenly="state.isEvenly" :nb-of-rows="3" :centered="currentCategoriesIsEmpty" msg-empty-data="No categories found">
+      <cw-grid-list :is-loading="state.isLoading" :evenly="state.isEvenly" :nb-of-rows="3" :centered="currentCategoriesIsEmpty" msg-empty-data="No categories found">
         <div v-for="(category, index) in state.currentCategories" :key="category.id" class="cw-categories-card" :class="getTextColor(index)" @click="goToCategory(category.id)">
           <p class="text-center lg:text-lg">{{ category.name }}</p>
         </div>
@@ -44,9 +44,10 @@ const breakpoints = useBreakpoints(breakpointsTailwind)
 
 // State
 const state = reactive({
-  currentCategories: <ICategory[]>[],
+  currentCategories: <ICategory.ShortDetails[]>[],
   currentPage: 1,
-  nextCategories: <ICategory[]>[],
+  nextCategories: <ICategory.ShortDetails[]>[],
+  isLoading: true,
   isEvenly: false,
 })
 
@@ -63,7 +64,7 @@ watch(width, () => {
     return
   }
 
-  state.isEvenly = state.currentCategories.length <= 6
+  state.isEvenly = state.currentCategories.length <= 6 && state.currentCategories.length !== 0
 })
 
 // Function
@@ -75,11 +76,14 @@ const getTextColor = (number: number) => {
 }
 
 const pageChanged = async (newPage: number) => {
+  state.isLoading = true
+
   state.currentPage = newPage
 
   state.currentCategories = await CategoryService.getCategories(state.currentPage)
   state.nextCategories = await CategoryService.getCategories(state.currentPage + 1)
-  state.isEvenly = state.currentCategories.length <= 6
+  state.isEvenly = state.currentCategories.length <= 6 && state.currentCategories.length !== 0
+  state.isLoading = false
 }
 
 const goToAddCategory = async () => {
@@ -93,7 +97,9 @@ const goToCategory = (id: number) => {
 onMounted(async () => {
   state.currentCategories = await CategoryService.getCategories(state.currentPage)
   state.nextCategories = await CategoryService.getCategories(state.currentPage + 1)
-  state.isEvenly = state.currentCategories.length <= 6
+  state.isEvenly = state.currentCategories.length <= 6 && state.currentCategories.length !== 0
+
+  state.isLoading = false
 })
 </script>
 

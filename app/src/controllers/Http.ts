@@ -32,6 +32,10 @@ export default class HttpController {
           await router.push({ path: '/signin' })
         }
 
+        if (error.status === 403) {
+          await router.push({ path: '/home' })
+        }
+
         if (error.status === 404) {
           error.message = 'Not found'
           await router.push({ path: '/home' })

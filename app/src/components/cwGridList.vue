@@ -35,10 +35,6 @@ const isEvenly = computed(() => (props.evenly ? 'cw-grid-list--evenly' : ''))
     @apply place-content-evenly;
   }
 
-  &--evenly {
-    @apply place-content-evenly;
-  }
-
   &--2-rows {
     @apply grid-rows-4 md:grid-rows-2;
   }

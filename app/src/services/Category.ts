@@ -29,6 +29,15 @@ export async function getCategory(id: number) {
   return results
 }
 
+export async function getSharedCategory(sharedId: string) {
+  const auth = useAuth()
+  const httpController = new HttpController(`/categories/shared`)
+
+  const { results } = await httpController.get<ICategory.Shared>(`/${sharedId}`, { Authorization: `Bearer ${auth.token}` })
+
+  return results
+}
+
 export async function updateCategory(categoryId: number, body: ICategory.Update) {
   const auth = useAuth()
   const httpController = new HttpController(`/users/${auth.userId}`)

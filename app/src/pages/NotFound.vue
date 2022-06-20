@@ -2,7 +2,7 @@
   <div class="z-10 m-5">
     <cw-button btn-type="primary-outlined" @click="goBack">
       <ph-arrow-arc-left class="mr-2"></ph-arrow-arc-left>
-      Back to app
+      <p>Back to app</p>
     </cw-button>
   </div>
   <div class="fixed z-0 flex h-full w-full flex-col items-center justify-center p-3">
