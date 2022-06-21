@@ -2,7 +2,7 @@
   <cw-container>
     <cw-container-nav-bar>
       <h2 class="hidden font-header text-2xl font-light text-tertiary lg:block">Hello {{ user.pseudo }} 🍿</h2>
-      <ph-list size="28" class="lg:hidden" @click="componentscomponents.slideSideBar()" />
+      <ph-list size="28" class="lg:hidden" @click="components.slideSideBar()" />
       <cw-search-bar placeholder="Search for a movie" @query-searched="querySearched" />
       <cw-settings-dropdown />
     </cw-container-nav-bar>

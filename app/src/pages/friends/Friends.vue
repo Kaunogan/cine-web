@@ -2,7 +2,7 @@
   <cw-container class="relative">
     <cw-modal :show-modal="state.showModal">
       <div class="cw-g-card cw-category-details-modal-content">
-        <h1 class="font-header text-xl text-tertiary">Are you sure ?</h1>
+        <h1 class="text-center font-header text-xl text-tertiary">Are you sure ?</h1>
         <div class="mt-6 flex items-center justify-center">
           <cw-button btn-type="primary" @click="changeModalVisibility">Cancel</cw-button>
           <cw-button btn-type="danger" class="ml-6" @click="deleteUser">Delete</cw-button>

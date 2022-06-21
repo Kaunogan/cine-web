@@ -1,5 +1,15 @@
 <template>
-  <cw-container>
+  <cw-container class="relative">
+    <cw-modal :show-modal="state.showModal">
+      <div class="cw-g-card cw-category-details-modal-content">
+        <h1 class="text-center font-header text-xl text-tertiary">Are you sure ?</h1>
+        <div class="mt-6 flex items-center justify-center">
+          <cw-button btn-type="primary" @click="changeModalVisibility">Cancel</cw-button>
+          <cw-button btn-type="danger" class="ml-6" @click="deleteUserAccount">Delete</cw-button>
+        </div>
+      </div>
+    </cw-modal>
+
     <cw-container-nav-bar :centered="true">
       <ph-list size="28" class="mr-7 lg:hidden" @click="components.slideSideBar()" />
       <h2 class="font-header text-2xl">Account</h2>
@@ -27,7 +37,7 @@
             <span class="md:text-lg">Update</span>
           </cw-button>
           <cw-button btn-type="danger" class="ml-6 transition lg:hover:opacity-80">
-            <span class="md:text-lg">Delete</span>
+            <span class="md:text-lg" @click="changeModalVisibility">Delete</span>
           </cw-button>
         </div>
       </div>
@@ -48,8 +58,11 @@ import { IUser } from '@/types'
 import { useToast } from 'vue-toastification'
 import useUser from '@/stores/userStore'
 import { useThrottleFn } from '@vueuse/core'
+import CwModal from '@/components/cwModal.vue'
+import { useRouter } from 'vue-router'
 
 // State
+const router = useRouter()
 const components = useComponents()
 const user = useUser()
 const toast = useToast()
@@ -58,6 +71,7 @@ const state = reactive({
   email: '',
   pseudo: '',
   password: '',
+  showModal: false,
 })
 
 // Function
@@ -79,6 +93,18 @@ const updateUserAccount = useThrottleFn(async () => {
 
   toast.success(message)
 }, 2000)
+
+const changeModalVisibility = () => {
+  state.showModal = !state.showModal
+}
+
+const deleteUserAccount = async () => {
+  const message = await UserService.deleteUserAccount()
+
+  await router.push({ path: '/signin' })
+
+  toast.success(message)
+}
 
 onMounted(async () => {
   const { email, pseudo } = await UserService.getUserInfo()

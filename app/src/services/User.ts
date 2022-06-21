@@ -30,3 +30,12 @@ export async function updateUserAccount(body: IUser.RequestBody) {
 
   return message
 }
+
+export async function deleteUserAccount() {
+  const httpController = new HttpController('/users')
+  const auth = useAuth()
+
+  const { message } = await httpController.delete(`/${auth.userId}`, { Authorization: `Bearer ${auth.token}` })
+
+  return message
+}
