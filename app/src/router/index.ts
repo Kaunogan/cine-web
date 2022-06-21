@@ -196,13 +196,28 @@ const router = VueRouter.createRouter({
     | User Account
     |--------------------------------------------------------------------------
     |
-    | Route to add a new user friend
+    | Route to see user account
     |
     */
     {
       path: '/user/account',
       name: 'UserAccount',
       component: () => import('@/pages/UserAccount.vue'),
+      meta: { needLoggedIn: true },
+    },
+
+    /*
+    |--------------------------------------------------------------------------
+    | User Profile
+    |--------------------------------------------------------------------------
+    |
+    | Route to see user profile
+    |
+    */
+    {
+      path: '/user/:id/profile',
+      name: 'UserProfile',
+      component: () => import('@/pages/UserProfile.vue'),
       meta: { needLoggedIn: true },
     },
 

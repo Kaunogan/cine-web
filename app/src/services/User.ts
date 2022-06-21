@@ -12,6 +12,15 @@ export async function getUserInfo() {
   return results
 }
 
+export async function getUserProfile(userId: number) {
+  const httpController = new HttpController('/users')
+  const auth = useAuth()
+
+  const { results } = await httpController.get<IUser.Profile>(`/${userId}/profile`, { Authorization: `Bearer ${auth.token}` })
+
+  return results
+}
+
 export async function getUserPseudo() {
   const httpController = new HttpController('/users')
   const auth = useAuth()

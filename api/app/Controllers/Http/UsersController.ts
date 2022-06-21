@@ -77,10 +77,10 @@ export default class UsersController {
       .preload('visibility')
       .preload('movies')
 
-    const userFriends = await user.related('friends').query()
+    const userFriends = await connectedUser!.related('friends').query()
 
     const connectedUserIsFriend =
-      userFriends.find((friend) => friend.id === connectedUser?.id) !== undefined
+      userFriends.find((friend) => friend.id === userId) !== undefined
 
     const isConnectedUser = connectedUser?.id === userId
 

@@ -72,6 +72,19 @@ export declare module IUser {
     pseudo?: string
     password?: string
   }
+
+  interface Profile {
+    user_pseudo: string
+    friend: boolean
+    total: {
+      categories: number
+      movies: number
+    }
+    categories: {
+      id: number
+      name: string
+    }[]
+  }
 }
 
 /*

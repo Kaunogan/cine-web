@@ -26,7 +26,7 @@ import { computed, ref, watch } from 'vue'
 import useComponents from '@/stores/componentsStore'
 import { onClickOutside, useBreakpoints, useWindowSize, breakpointsTailwind } from '@vueuse/core'
 
-const routesNotAllowed = ['/signin', '/register', '/category', '/notfound']
+const routesNotAllowed = ['/signin', '/register', '/category', '/notfound', '/profile']
 const target = ref(null)
 const { width } = useWindowSize()
 const breakpoints = useBreakpoints(breakpointsTailwind)
