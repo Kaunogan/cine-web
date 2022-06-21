@@ -120,6 +120,8 @@ const deleteUser = async () => {
   state.nextFriends = await FriendService.getFriends(state.currentPage + 1)
   state.isEvenly = state.currentFriends.length <= 6 && state.currentFriends.length !== 0
 
+  if (state.currentFriends.length === 0) state.isDeleteMode = false
+
   changeModalVisibility()
   toast.success(message)
 }
