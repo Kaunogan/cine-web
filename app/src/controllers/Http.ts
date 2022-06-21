@@ -7,7 +7,7 @@ import * as LocalStorageController from '@/controllers/LocalStorage'
 export default class HttpController {
   private instance: AxiosInstance
 
-  private API_IP = import.meta.env.VITE_API_IP
+  private API_HOST = import.meta.env.VITE_API_HOST
 
   private API_PORT = import.meta.env.VITE_API_PORT
 
@@ -15,7 +15,7 @@ export default class HttpController {
 
   constructor(basePath: string) {
     this.instance = axios.create({
-      baseURL: `http://${this.API_IP}:${this.API_PORT}/api${basePath}`,
+      baseURL: `http://${this.API_HOST}:${this.API_PORT}/api${basePath}`,
     })
   }
 

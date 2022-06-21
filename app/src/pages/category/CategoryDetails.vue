@@ -4,12 +4,12 @@
       <div v-if="!state.isSettingsModal" class="cw-g-card cw-category-details-modal-content">
         <h1 class="text-center font-header text-xl text-tertiary">Are you sure ?</h1>
         <div class="mt-6 flex items-center justify-center">
-          <cw-button btn-type="primary" @click="changeModalVisibility">Cancel</cw-button>
+          <cw-button btn-type="primary" @click="changeModalVisibility('', 0)">Cancel</cw-button>
           <cw-button btn-type="danger" class="ml-6" @click="onDeleteBtnModal">Delete</cw-button>
         </div>
       </div>
       <div v-else class="cw-g-card cw-category-details-modal-content relative mx-4 h-auto w-full max-w-xl">
-        <ph-x size="24" class="absolute top-5 right-5 cursor-pointer text-tertiary transition ease-in hover:text-secondary" @click="changeModalVisibility" />
+        <ph-x size="24" class="absolute top-5 right-5 cursor-pointer text-tertiary transition ease-in hover:text-secondary" @click="changeModalVisibility('', 0)" />
 
         <div class="flex h-full w-full flex-col justify-around">
           <cw-form-input for="shared" label="Shared">
@@ -44,7 +44,7 @@
         </h3>
       </div>
       <div class="cw-category-details-nav-bar-right">
-        <cw-button btn-type="primary-outlined" class="lg:mr-3" @click="changeModalVisibility('settings')">Settings</cw-button>
+        <cw-button btn-type="primary-outlined" class="lg:mr-3" @click="changeModalVisibility('settings', 0)">Settings</cw-button>
         <ph-pencil
           v-if="showEditMode"
           size="30"
@@ -65,7 +65,7 @@
           :tmdb-movie-id="movie.tmdb_movie_id"
           :poster-url="movie.poster_url"
           :title="movie.title"
-          @delete="changeModalVisibility('delete', movie.id)"
+          @delete="changeModalVisibility('delete', movie.id || 0)"
         />
       </cw-grid-list>
     </cw-container-content>
@@ -172,7 +172,7 @@ const copyUrl = useThrottleFn(() => {
   toast.info('Copied in clipboard !')
 }, 2000)
 
-const changeModalVisibility = (modalType: string = '', tmdbMovieId: number = 0) => {
+const changeModalVisibility = (modalType: string, tmdbMovieId: number) => {
   tmdbMovieIdToDelete = tmdbMovieId
 
   if (!state.showModal) {
@@ -200,7 +200,7 @@ const updateCategory = useThrottleFn(async () => {
 
   state.category.shared_id = res.results.shared_id
 
-  changeModalVisibility()
+  changeModalVisibility('', 0)
 }, 2000)
 
 const onDeleteBtnModal = useThrottleFn(async () => {

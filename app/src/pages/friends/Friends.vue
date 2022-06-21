@@ -4,7 +4,7 @@
       <div class="cw-g-card cw-category-details-modal-content">
         <h1 class="text-center font-header text-xl text-tertiary">Are you sure ?</h1>
         <div class="mt-6 flex items-center justify-center">
-          <cw-button btn-type="primary" @click="changeModalVisibility">Cancel</cw-button>
+          <cw-button btn-type="primary" @click="changeModalVisibility(-1)">Cancel</cw-button>
           <cw-button btn-type="danger" class="ml-6" @click="deleteUser">Delete</cw-button>
         </div>
       </div>
@@ -107,7 +107,7 @@ const changeDeleteMode = () => {
   state.isDeleteMode = !state.isDeleteMode
 }
 
-const changeModalVisibility = (friendId: number = -1) => {
+const changeModalVisibility = (friendId: number) => {
   userFriendIdToDelete = friendId
   state.showModal = !state.showModal
 }
@@ -122,7 +122,7 @@ const deleteUser = async () => {
 
   if (state.currentFriends.length === 0) state.isDeleteMode = false
 
-  changeModalVisibility()
+  changeModalVisibility(-1)
   toast.success(message)
 }
 

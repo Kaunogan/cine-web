@@ -10,7 +10,7 @@
       label="name"
       @open="onOpen"
       @close="onClose"
-      @search="(query) => (state.search = query)"
+      @search="querySearch"
     >
       <template #list-footer>
         <li v-show="hasNextPage" ref="load" class="loader">{{ props.msgLoadingItem }}</li>
@@ -121,6 +121,8 @@ const infiniteScroll = async ([{ isIntersecting, target }]: any) => {
 }
 
 const observer = new IntersectionObserver(infiniteScroll)
+
+const querySearch = (query: string) => (state.search = query)
 
 const onOpen = async () => {
   if (hasNextPage.value) {
