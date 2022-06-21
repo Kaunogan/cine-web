@@ -7,11 +7,11 @@
       <div class="cw-settings-dropdown__container">
         <div class="cw-settings-dropdown__item">
           <ph-user-circle size="26" class="ml-3 mr-2" />
-          <p class="font-light">Profile</p>
+          <router-link class="font-light" to="/user/profile">Profile</router-link>
         </div>
         <div class="cw-settings-dropdown__item">
           <ph-wrench size="26" class="ml-3 mr-2" />
-          <p class="font-light">Params</p>
+          <router-link class="font-light" to="/user/account">Account</router-link>
         </div>
         <div class="cw-settings-dropdown__item" @click="logout">
           <ph-sign-out size="26" class="ml-3 mr-2" />

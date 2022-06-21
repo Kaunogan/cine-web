@@ -134,6 +134,6 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .cw-friends-card {
-  @apply relative flex h-32 w-36 items-center justify-center rounded-2xl border border-tertiary 2xl:w-48;
+  @apply relative flex h-32 w-48 items-center justify-center rounded-2xl border border-tertiary 2xl:w-48;
 }
 </style>
