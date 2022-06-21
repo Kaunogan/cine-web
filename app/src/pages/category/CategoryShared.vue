@@ -1,11 +1,11 @@
 <template>
   <cw-container v-if="!state.isLoading">
-    <cw-container-nav-bar class="flex-col md:flex-row">
-      <cw-button btn-type="primary-outlined" class="my-3 w-1/3 md:my-0" @click="goBack">
+    <cw-container-nav-bar class="relative flex-col md:flex-row">
+      <cw-button btn-type="primary-outlined" class="z-10 my-3 w-1/3 md:my-0" @click="goBack">
         <ph-arrow-arc-left class="mr-3"></ph-arrow-arc-left>
         <p class="whitespace-nowrap">Back to app</p>
       </cw-button>
-      <div class="w-full font-header text-xl">
+      <div class="z-0 w-full font-header text-xl lg:absolute">
         <h1 class="text-center font-light">
           Category "{{ state.categoryShared.category_name }}" by <span class="text-primary">{{ state.categoryShared.created_by }}</span>
         </h1>

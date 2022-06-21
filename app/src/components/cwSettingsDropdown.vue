@@ -7,7 +7,7 @@
       <div class="cw-settings-dropdown__container">
         <div class="cw-settings-dropdown__item">
           <ph-user-circle size="26" class="ml-3 mr-2" />
-          <router-link class="font-light" to="/user/profile">Profile</router-link>
+          <router-link class="font-light" :to="`/user/${auth.userId}/profile`">Profile</router-link>
         </div>
         <div class="cw-settings-dropdown__item">
           <ph-wrench size="26" class="ml-3 mr-2" />
@@ -26,7 +26,9 @@
 import { computed, ref } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import * as AuthService from '@/services/Auth'
+import useAuth from '@/stores/authStore'
 
+const auth = useAuth()
 const isVisible = ref(false)
 const target = ref(null)
 
