@@ -2,7 +2,7 @@ import useAuth from '@/stores/authStore'
 import HttpController from '@/controllers/Http'
 import { IFriendUser } from '@/types'
 
-export async function getFriends(page: number = 1, limit: number = 8) {
+export async function getFriends(page: number = 1, limit: number = 12) {
   const auth = useAuth()
   const httpController = new HttpController(`/users/${auth.userId}`)
 

@@ -66,6 +66,12 @@ export declare module IUser {
     created_at: string
     updated_at: string
   }
+
+  interface RequestBody {
+    email?: string
+    pseudo?: string
+    password?: string
+  }
 }
 
 /*

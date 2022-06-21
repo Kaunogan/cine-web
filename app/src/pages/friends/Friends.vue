@@ -2,7 +2,7 @@
   <cw-container class="relative">
     <cw-modal :show-modal="state.showModal">
       <div class="cw-g-card cw-category-details-modal-content">
-        <h1 class="font-header text-xl text-tertiary">Are you sure ?</h1>
+        <h1 class="text-center font-header text-xl text-tertiary">Are you sure ?</h1>
         <div class="mt-6 flex items-center justify-center">
           <cw-button btn-type="primary" @click="changeModalVisibility">Cancel</cw-button>
           <cw-button btn-type="danger" class="ml-6" @click="deleteUser">Delete</cw-button>
@@ -134,6 +134,6 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .cw-friends-card {
-  @apply relative flex h-32 w-36 items-center justify-center rounded-2xl border border-tertiary 2xl:w-48;
+  @apply relative flex h-32 w-48 items-center justify-center rounded-2xl border border-tertiary 2xl:w-48;
 }
 </style>
