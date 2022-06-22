@@ -1,0 +1,327 @@
+#|--------------------------------------------------------------------------
+#| Route ==> all categories
+#|--------------------------------------------------------------------------
+/api/users/{userId}/categories/all:
+  #| Get categories
+  #|--------------------------------------------------------------------------
+  get:
+    summary: Get all user categories
+    tags:
+      - Category
+    security:
+      - bearerAuth: [ ]
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/categoryResponses/AllCategories'
+      401:
+        $ref: '#/components/globalResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/globalResponses/Forbidden'
+
+#|--------------------------------------------------------------------------
+#| Route ==> categories
+#|--------------------------------------------------------------------------
+/api/users/{userId}/categories:
+  #|--------------------------------------------------------------------------
+  #| Get categories
+  #|--------------------------------------------------------------------------
+  get:
+    summary: Get user categories with pagination
+    tags:
+      - Category
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+      - in: query
+        name: page
+        schema:
+          type: integer
+          description: Number of page
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          description: Limit number per page
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/categoryResponses/Categories'
+      401:
+        $ref: '#/components/globalResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/globalResponses/Forbidden'
+
+  #|--------------------------------------------------------------------------
+  #| Post categories
+  #|--------------------------------------------------------------------------
+  post:
+    summary: Add a new category
+    tags:
+      - Category
+    security:
+      - bearerAuth: [ ]
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+    requestBody:
+      $ref: '#/components/categoryRequests/PostCategory'
+    produces:
+      - application/json
+    responses:
+      201:
+        $ref: '#/components/globalResponses/Success'
+      401:
+        $ref: '#/components/globalResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/globalResponses/Forbidden'
+      422:
+        $ref: '#/components/globalResponses/UnprocessableEntity'
+
+#|--------------------------------------------------------------------------
+#| Route ==> category
+#|--------------------------------------------------------------------------
+/api/users/{userId}/categories/{categoryId}:
+  #|--------------------------------------------------------------------------
+  #| Get category
+  #|--------------------------------------------------------------------------
+  get:
+    summary: Get specific category
+    tags:
+      - Category
+    security:
+      - bearerAuth: [ ]
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+      - in: path
+        name: categoryId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the category to get
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/categoryResponses/Category'
+      401:
+        $ref: '#/components/globalResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/globalResponses/Forbidden'
+      404:
+        $ref: '#/components/globalResponses/NotFound'
+
+  #|--------------------------------------------------------------------------
+  #| Put category
+  #|--------------------------------------------------------------------------
+  put:
+    summary: Update specific category
+    tags:
+      - Category
+    security:
+      - bearerAuth: [ ]
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+      - in: path
+        name: categoryId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the category to get
+    produces:
+      - application/json
+    requestBody:
+      $ref: '#/components/categoryRequests/PutCategory'
+    responses:
+      200:
+        $ref: '#/components/categoryResponses/UpdatedCategory'
+      401:
+        $ref: '#/components/globalResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/globalResponses/Forbidden'
+      404:
+        $ref: '#/components/globalResponses/NotFound'
+      422:
+        $ref: '#/components/globalResponses/UnprocessableEntity'
+
+  #|--------------------------------------------------------------------------
+  #| Delete category
+  #|--------------------------------------------------------------------------
+  delete:
+    summary: Delete specific category
+    tags:
+      - Category
+    security:
+      - bearerAuth: [ ]
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+      - in: path
+        name: categoryId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the category to get
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/globalResponses/Success'
+      401:
+        $ref: '#/components/globalResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/globalResponses/Forbidden'
+      404:
+        $ref: '#/components/globalResponses/NotFound'
+
+#|--------------------------------------------------------------------------
+#| Route ==> shared category
+#|--------------------------------------------------------------------------
+/api/categories/shared/{sharedId}:
+  #|--------------------------------------------------------------------------
+  #| Get shared category
+  #|--------------------------------------------------------------------------
+  get:
+    summary: Get shared category
+    tags:
+      - Category
+    security:
+      - bearerAuth: [ ]
+    parameters:
+      - in: path
+        name: sharedId
+        schema:
+          type: string
+          required: true
+          description: Numeric ID of the shared category to get
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/categoryResponses/SharedCategory'
+      400:
+        $ref: '#/components/globalResponses/BadRequest'
+      401:
+        $ref: '#/components/globalResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/globalResponses/Forbidden'
+
+#|--------------------------------------------------------------------------
+#| Route ==> category movies
+#|--------------------------------------------------------------------------
+/api/users/{userId}/categories/{categoryId}/movies:
+  #|--------------------------------------------------------------------------
+  #| Post movie category
+  #|--------------------------------------------------------------------------
+  post:
+    summary: Add a new movie in category
+    tags:
+      - Category movies
+    security:
+      - bearerAuth: [ ]
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+      - in: path
+        name: categoryId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the category to get
+    requestBody:
+      $ref: '#/components/categoryRequests/PostMovieCategory'
+    produces:
+      - application/json
+    responses:
+      201:
+        $ref: '#/components/globalResponses/Success'
+      401:
+        $ref: '#/components/globalResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/globalResponses/Forbidden'
+      409:
+        $ref: '#/components/globalResponses/Conflict'
+      422:
+        $ref: '#/components/globalResponses/UnprocessableEntity'
+
+
+#|--------------------------------------------------------------------------
+#| Route ==> category movie
+#|--------------------------------------------------------------------------
+/api/users/{userId}/categories/{categoryId}/movies/{movieId}:
+  #|--------------------------------------------------------------------------
+  #| Delete movie category
+  #|--------------------------------------------------------------------------
+  delete:
+    summary: Delete movie in category
+    tags:
+      - Category movies
+    security:
+      - bearerAuth: [ ]
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+      - in: path
+        name: categoryId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the category to get
+      - in: path
+        name: movieId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the movie to get
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/globalResponses/Success'
+      401:
+        $ref: '#/components/globalResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/globalResponses/Forbidden'
+      404:
+        $ref: '#/components/globalResponses/NotFound'

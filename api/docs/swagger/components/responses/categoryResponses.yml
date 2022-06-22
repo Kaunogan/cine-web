@@ -1,0 +1,218 @@
+components:
+  categoryResponses:
+    #|--------------------------------------------------------------------------
+    #| Response ==> Categories : 200
+    #|--------------------------------------------------------------------------
+    AllCategories:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Message responses.
+              status:
+                type: string
+                description: The status http code.
+              results:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: The id of category
+                    name:
+                      type: string
+                      description: The name of category
+
+    #|--------------------------------------------------------------------------
+    #| Response ==> Categories : 200
+    #|--------------------------------------------------------------------------
+    Categories:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Message responses.
+              status:
+                type: string
+                description: The status http code.
+              pagination:
+                type: object
+                properties:
+                  total:
+                    type: number
+                    description: Get number of friends
+                  per_page:
+                    type: number
+                    description: Number of friends displayed per page
+                  current_page:
+                    type: number
+                    description: Number of friends displayed in current page
+                  last_page:
+                    type: number
+                    description: Number of friends displayed in last page
+                  first_page:
+                    type: number
+                    description: Number of friends displayed in first page
+                  first_page_url:
+                    type: number
+                  last_page_url:
+                    type: number
+                  next_page_url:
+                    type: number
+                  previous_page_url:
+                    type: number
+              results:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: The id of category
+                    name:
+                      type: string
+                      description: The name of category
+
+    #|--------------------------------------------------------------------------
+    #| Response ==> Category : 200
+    #|--------------------------------------------------------------------------
+    Category:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Message responses.
+              status:
+                type: string
+                description: The status http code.
+              results:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: The id of category
+                  name:
+                    type: string
+                    description: The name of category
+                  shared_id:
+                    type: string
+                    description: The id to share category
+                  created_at:
+                    type: string
+                    description: The timestamp when category is created
+                  updated_at:
+                    type: string
+                    description: The timestamp when category is updated
+                  visibility:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        description: The id of visibility
+                      type:
+                        type: string
+                        description: The type of visibility
+                  movies:
+                    type: array
+                    description: The array of movies contained in category
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          description: The id of movie
+                        title:
+                          type: string
+                          description: The title of movie
+                        poster_url:
+                          type: string
+                          description: The url of poster
+                        tmdb_movie_id:
+                          type: number
+                          description: The id of TMDB movie
+                        created_at:
+                          type: string
+                          description: The timestamp when movie is created
+
+    #|--------------------------------------------------------------------------
+    #| Response ==> Shared category : 200
+    #|--------------------------------------------------------------------------
+    SharedCategory:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Message responses.
+              status:
+                type: string
+                description: The status http code.
+              results:
+                type: object
+                properties:
+                  category_name:
+                    type: string
+                    description: The category name
+                  created_by:
+                    type: string
+                    description: The author of category
+                  movies:
+                    type: array
+                    description: The array of movies contained in category
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          description: The id of movie
+                        title:
+                          type: string
+                          description: The title of movie
+                        poster_url:
+                          type: string
+                          description: The url of poster
+                        tmdb_movie_id:
+                          type: number
+                          description: The id of TMDB movie
+                        created_at:
+                          type: string
+                          description: The timestamp when movie is created
+
+    #|--------------------------------------------------------------------------
+    #| Response ==> UpdatedCategory : 200
+    #|--------------------------------------------------------------------------
+    UpdatedCategory:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Message responses.
+              status:
+                type: string
+                description: The status http code.
+              results:
+                type: object
+                properties:
+                  shared_id:
+                    type: string
+                    description: The id of shared category

@@ -1,0 +1,145 @@
+#|--------------------------------------------------------------------------
+#| Route ==> user friends
+#|--------------------------------------------------------------------------
+/api/users/{userId}/friends:
+  #|--------------------------------------------------------------------------
+  #| Get user friends
+  #|--------------------------------------------------------------------------
+  get:
+    summary: Get user friends
+    tags:
+      - User friend
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+      - in: query
+        name: page
+        schema:
+          type: integer
+          description: Number of page
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          description: Limit number per page
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/userFriendResponses/Friends'
+      401:
+        $ref: '#/components/globalResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/globalResponses/Forbidden'
+
+  #|--------------------------------------------------------------------------
+  #| Post user friend
+  #|--------------------------------------------------------------------------
+  post:
+    summary: Add a user friend
+    tags:
+      - User friend
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+    requestBody:
+      $ref: '#/components/userRequests/PostFriend'
+    produces:
+      - application/json
+    responses:
+      201:
+        $ref: '#/components/globalResponses/Success'
+      401:
+        $ref: '#/components/globalResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/globalResponses/Forbidden'
+      409:
+        $ref: '#/components/globalResponses/Conflict'
+      422:
+        $ref: '#/components/globalResponses/UnprocessableEntity'
+
+#|--------------------------------------------------------------------------
+#| Route ==> user friend
+#|--------------------------------------------------------------------------
+/api/users/{userId}/friends/{friendId}:
+  #|--------------------------------------------------------------------------
+  #| Get user friend
+  #|--------------------------------------------------------------------------
+  get:
+    summary: Get specific user friend
+    tags:
+      - User friend
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+      - in: path
+        name: friendId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the friend user to get
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/userFriendResponses/Friend'
+      401:
+        $ref: '#/components/globalResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/globalResponses/Forbidden'
+      404:
+        $ref: '#/components/globalResponses/NotFound'
+
+  #|--------------------------------------------------------------------------
+  #| Delete user friend
+  #|--------------------------------------------------------------------------
+  delete:
+    summary: Delete user friend
+    tags:
+      - User friend
+    security:
+      - bearerAuth: [ ]
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+      - in: path
+        name: friendId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the friend user to get
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/globalResponses/Success'
+      401:
+        $ref: '#/components/globalResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/globalResponses/Forbidden'
+      404:
+        $ref: '#/components/globalResponses/NotFound'
+      422:
+        $ref: '#/components/globalResponses/UnprocessableEntity'

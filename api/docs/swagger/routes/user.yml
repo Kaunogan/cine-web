@@ -1,0 +1,115 @@
+#|--------------------------------------------------------------------------
+#| Route ==> user
+#|--------------------------------------------------------------------------
+/api/users/{userId}:
+  #|--------------------------------------------------------------------------
+  #| Get user
+  #|--------------------------------------------------------------------------
+  get:
+    summary: Get user information
+    tags:
+      - User
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/userResponses/Infos'
+      401:
+        $ref: '#/components/globalResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/globalResponses/Forbidden'
+
+  #|--------------------------------------------------------------------------
+  #| Put user
+  #|--------------------------------------------------------------------------
+  put:
+    summary: Update user information
+    tags:
+      - User
+    security:
+      - bearerAuth: [ ]
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+    requestBody:
+      $ref: '#/components/userRequests/PutUser'
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/globalResponses/Success'
+      401:
+        $ref: '#/components/globalResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/globalResponses/Forbidden'
+      422:
+        $ref: '#/components/globalResponses/UnprocessableEntity'
+
+  #|--------------------------------------------------------------------------
+  #| Delete user
+  #|--------------------------------------------------------------------------
+  delete:
+    summary: Delete user
+    tags:
+      - User
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/globalResponses/Success'
+      401:
+        $ref: '#/components/globalResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/globalResponses/Forbidden'
+
+#|--------------------------------------------------------------------------
+#| Route ==> user profile
+#|--------------------------------------------------------------------------
+/api/users/{userId}/profile:
+  #|--------------------------------------------------------------------------
+  #| Get user profile
+  #|--------------------------------------------------------------------------
+  get:
+    summary: Get user profile
+    tags:
+      - User
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+          required: true
+          description: Numeric ID of the user to get
+    produces:
+      - application/json
+    responses:
+      200:
+        $ref: '#/components/userResponses/Profile'
+      401:
+        $ref: '#/components/globalResponses/UnauthorizedAccess'
+      403:
+        $ref: '#/components/globalResponses/Forbidden'

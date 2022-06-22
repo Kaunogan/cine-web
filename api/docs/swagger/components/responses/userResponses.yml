@@ -1,0 +1,83 @@
+components:
+  userResponses:
+    #|--------------------------------------------------------------------------
+    #| Response ==> Infos : 200
+    #|--------------------------------------------------------------------------
+    Infos:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Message responses.
+              status:
+                type: string
+                description: The status http code.
+              results:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    description: The id of user.
+                  email:
+                    type: string
+                    description: The email of user.
+                  pseudo:
+                    type: string
+                    description: The pseudo of user
+                  created_at:
+                    type: string
+                    description: The timestamp when user are created
+                  updated_at:
+                    type: string
+                    description: The timestamp when user are updated
+
+    #|--------------------------------------------------------------------------
+    #| Response ==> Profile : 200
+    #|--------------------------------------------------------------------------
+    Profile:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Message responses.
+              status:
+                type: string
+                description: The status http code.
+              results:
+                type: object
+                properties:
+                  user_pseudo:
+                    type: string
+                    description: The pseudo of user.
+                  friend:
+                    type: boolean
+                    description: Connected user is a user friend.
+                  total:
+                    type: object
+                    properties:
+                      categories:
+                        type: number
+                        description: The total of user categories
+                      movies:
+                        type: number
+                        description: The total of user movies
+                  categories:
+                    type: array
+                    description: The user categories
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: The id of category
+                        name:
+                          type: string
+                          description: The name of category

@@ -1,0 +1,30 @@
+components:
+  authResponses:
+    #|--------------------------------------------------------------------------
+    #| Response ==> UserOAT : 200
+    #|--------------------------------------------------------------------------
+    UserOAT:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Message responses.
+              status:
+                type: string
+                description: The status http code.
+              results:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: The opaque access token.
+                  userId:
+                    type: number
+                    description: The user id.
+                  expiresAt:
+                    type: string
+                    description: The timestamp expiration token

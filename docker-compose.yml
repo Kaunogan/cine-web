@@ -1,0 +1,51 @@
+version: '3.7'
+
+services:
+  db:
+    image: mysql:latest
+    container_name: cw-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cine-web
+      MYSQL_USER: cineweb
+      MYSQL_PASSWORD: ynov69
+    ports:
+      - "3306:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: cw-phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "8080:80"
+
+  api:
+    image: elricgumbau/cineweb-api:latest
+    container_name: cw-api
+    environment:
+      MYSQL_HOST: db
+      MYSQL_PORT: 3306
+      MYSQL_DB_NAME: cine-web
+      MYSQL_USER: cineweb
+      MYSQL_PASSWORD: ynov69
+    depends_on:
+      - phpmyadmin
+    ports:
+      - "3333:3333"
+
+  app:
+    image: elricgumbau/cineweb-app:latest
+    container_name: cw-app
+    environment:
+      API_HOST: api
+      API_PORT: 3333
+    depends_on:
+      - api
+    ports:
+      - "3000:3000"

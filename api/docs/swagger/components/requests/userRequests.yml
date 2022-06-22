@@ -1,0 +1,41 @@
+components:
+  userRequests:
+    #|--------------------------------------------------------------------------
+    #| Request ==> PutUser
+    #|--------------------------------------------------------------------------
+    PutUser:
+      description: Send user information to update
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                example: 'john.doe@cineweb.fr'
+                required: true
+              pseudo:
+                type: string
+                example: 'John Doe'
+                required: true
+              password:
+                type: string
+                example: 'cineweb'
+                required: true
+
+    #|--------------------------------------------------------------------------
+    #| Request ==> PostFriend
+    #|--------------------------------------------------------------------------
+    PostFriend:
+      description: Send email friend
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              friend_email:
+                type: string
+                example: 'john.doe@cineweb.fr'
+                required: true

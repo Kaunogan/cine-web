@@ -1,0 +1,59 @@
+components:
+  categoryRequests:
+    #|--------------------------------------------------------------------------
+    #| Request ==> PostCategory
+    #|--------------------------------------------------------------------------
+    PostCategory:
+      description: Send name of new category
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: 'My superb category'
+                required: true
+
+    #|--------------------------------------------------------------------------
+    #| Request ==> PutCategory
+    #|--------------------------------------------------------------------------
+    PutCategory:
+      description: Send name and/or visibility_id
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: 'My superb category'
+              visibility_id:
+                type: number
+                example: 2
+
+    #|--------------------------------------------------------------------------
+    #| Request ==> PostMovieCategory
+    #|--------------------------------------------------------------------------
+    PostMovieCategory:
+      description: Send movie info
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                example: 'The Hobbit: An Unexpected Journey'
+                required: true
+              poster_url:
+                type: string
+                example: 'https://themoviedb.org/t/p/original/yHA9Fc37VmpUA5UncTxxo3rTGVA.jpg'
+                required: true
+              tmdb_movie_id:
+                type: number
+                example: 49051
+                required: true
