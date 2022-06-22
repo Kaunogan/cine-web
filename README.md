@@ -41,6 +41,8 @@ search movies, add movies to categories, share categories, add friends and more!
 
 The movies are retrieved by the [TheMovieDataBase](https://www.themoviedb.org/?language=en) API
 
+![signing](./assets/signin.png)
+
 ## Prerequisites
 
 Here are the requirements for this project to be launched with Docker
@@ -134,9 +136,8 @@ Most of the functionalities are implemented :
 
 You can share categories via URL according to visibility levels:
 
-- All
-- Friends Only
-- You Only
+![categories](./assets/categories.png)
+
 
 > **_NOTE:_** Only friends added by the user will be able to access the 'Friends only' categories
 
@@ -161,7 +162,6 @@ docker-compose up -d
 
 > option '-d' launches container in detach mode
 
-Once the containers are launched, you must launch the database migration by typing the following commands
 
 ### Run migration
 
