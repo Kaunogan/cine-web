@@ -41,7 +41,7 @@ search movies, add movies to categories, share categories, add friends and more!
 
 The movies are retrieved by the [TheMovieDataBase](https://www.themoviedb.org/?language=en) API
 
-![signing](./assets/signin.png)
+![signing](./assets/signin.gif)
 
 ## Prerequisites
 
