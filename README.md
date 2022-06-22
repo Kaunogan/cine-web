@@ -6,7 +6,7 @@
 <h3 align="center">Ynov - M2 Dev Logiciel, Mobile & IoT</h3>
 </p>
 
-## Web Service
+## Web Services
 
 - [About us](#about-us)
 - [About this project](#about-this-project)
