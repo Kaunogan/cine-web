@@ -184,9 +184,11 @@ A phpMyAdmin is present in the docker-compose to facilitate access to the databa
 
 You can access to the phpmyadmin via http://localhost:8080
 
-- leave server field empty
-- User is cineweb
-- Password is ynov69
+![phpMyAdmin](./assets/phpMyAdmin.png)
+
+- Leave server field empty
+- User is **cineweb**
+- Password is **ynov69**
 
 You should see the cine-web database with the tables and fields that have been inserted 
 by the migration !
